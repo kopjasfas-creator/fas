@@ -67,7 +67,7 @@ export default function Page() {
         return (
           <>
             <div>{(pageProps.page - 1) * pageProps.limit + index + 1}</div>
-            <div className="text-xs opacity-70">{record.id}</div>
+            <div className="opacity-70">{record.id}</div>
           </>
         );
       },
@@ -81,7 +81,7 @@ export default function Page() {
         return (
           <div>
             <div>{record.name}</div>
-            <div className="text-xs opacity-70">@{record.code}</div>
+            <div className="opacity-70">@{record.code}</div>
           </div>
         );
       },
@@ -163,7 +163,7 @@ export default function Page() {
         loading={loading}
         rowKey={"id"}
         bordered
-        scroll={{ x: "max-content", y: "48vh" }}
+        scroll={{ x: "max-content", y: "57vh" }}
         pagination={{
           current: pageProps.page,
           pageSize: pageProps.limit,

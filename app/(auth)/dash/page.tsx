@@ -115,7 +115,7 @@ export default function PensionWelcomeDashboard() {
     },
     {
       href: "/dashboard",
-      title: "Dashboard Bisnis",
+      title: "Dashboard",
       description: "Lihat ringkasan portofolio pembiayaan.",
       icon: <BankOutlined />,
       access: ["read"],
@@ -125,14 +125,12 @@ export default function PensionWelcomeDashboard() {
     access.some((action) => crossAccess(action, href)),
   );
 
-  const userDetails = [
-    user?.position,
-    user?.cabang,
-    user?.sumdan,
-  ].filter((detail): detail is string => Boolean(detail));
+  const userDetails = [user?.position, user?.cabang, user?.sumdan].filter(
+    (detail): detail is string => Boolean(detail),
+  );
 
   return (
-    <div className="mx-auto w-full max-w-[1440px] space-y-5 pb-3">
+    <div className="mx-auto w-full max-w-[1440px] space-y-5 p-5">
       <section className="relative overflow-hidden rounded-[22px] bg-linear-to-br from-[#174b38] via-[#216044] to-[#39744e] px-5 py-6 text-white shadow-[0_16px_36px_rgba(23,75,56,0.14)] sm:px-7 sm:py-7">
         <div
           aria-hidden="true"

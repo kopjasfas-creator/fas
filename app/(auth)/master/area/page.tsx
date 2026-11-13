@@ -80,7 +80,8 @@ export default function Page() {
       dataIndex: "Cabang",
       key: "cabang",
       className: "text-center",
-      render(value, record, index) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      render(_, record, __) {
         return record.Cabangs.length;
       },
     },
@@ -222,6 +223,7 @@ function UpsertArea({
 
   const handleSave = async () => {
     setLoading(true);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { Cabangs, ...saved } = data;
     await fetch("/api/area", {
       method: record ? "PUT" : "POST",
@@ -235,6 +237,7 @@ function UpsertArea({
             content: `Data berhasil ${record ? "di Update" : "ditambahkan"}!`,
           });
           setOpen(false);
+          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
           getData && (await getData());
         } else {
           modal.error({
@@ -318,6 +321,7 @@ export function DeleteArea({
             content: data.msg,
           });
           setOpen(false);
+          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
           getData && (await getData());
         } else {
           modal.error({
@@ -393,9 +397,10 @@ function TableCabang({
       title: "Kontak",
       dataIndex: "address",
       key: "address",
-      render(value, record, index) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      render(_, record, __) {
         return (
-          <div className="text-xs">
+          <div className="">
             <p>
               <EnvironmentOutlined /> {record.address}
             </p>
@@ -525,6 +530,7 @@ function UpsertCabang({
             content: `Data berhasil ${record ? "di Update" : "ditambahkan"}!`,
           });
           setOpen(false);
+          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
           getData && (await getData());
         } else {
           modal.error({
@@ -626,6 +632,7 @@ export function DeleteCabang({
             content: data.msg,
           });
           setOpen(false);
+          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
           getData && (await getData());
         } else {
           modal.error({

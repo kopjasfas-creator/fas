@@ -21,7 +21,12 @@ import {
 import { HookAPI } from "antd/es/modal/useModal";
 import { useState } from "react";
 import { FormInput } from "./FormUtils";
-import { GetAngsuran, GetDetailDapem, IDRFormat } from "./PembiayaanUtil";
+import {
+  GetAngsuran,
+  GetDetailDapem,
+  GetProvisiAmount,
+  IDRFormat,
+} from "./PembiayaanUtil";
 import * as XLSX from "xlsx";
 import moment from "moment";
 import {
@@ -372,7 +377,7 @@ export const MappingToExcelDapem = (data: IDapem[]) => {
       B_ADM_SUMDAN: d.plafond * (d.c_adm_sumdan / 100),
       B_ADM_KOPERASI: d.plafond * (d.c_adm / 100),
       B_ASURANSI: d.plafond * (d.c_insurance / 100),
-      B_PROV_SUMDAN: d.plafond * (d.c_provisi_sumdan / 100),
+      B_PROV_SUMDAN: GetProvisiAmount(d.plafond, d.c_provisi_sumdan),
       B_FEE_BPP: d.plafond * (d.c_fee_bpp / 100),
       B_REKENING_SUMDAN: d.c_account_sumdan,
       B_TATALAKSANA: d.c_gov,

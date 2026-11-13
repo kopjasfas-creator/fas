@@ -81,7 +81,7 @@ export default function Page() {
         return (
           <>
             <div>{(pageProps.page - 1) * pageProps.limit + index + 1}</div>
-            <div className="text-xs opacity-70">{record.id}</div>
+            <div className=" opacity-70">{record.id}</div>
           </>
         );
       },
@@ -98,7 +98,7 @@ export default function Page() {
       key: "biaya",
       render(value, record, index) {
         return (
-          <div className="text-xs">
+          <div className="">
             <p>Blokir : {record.c_blokir}x</p>
             <p>Biaya Mutasi : {IDRFormat(record.c_mutasi)}</p>
           </div>
@@ -106,12 +106,12 @@ export default function Page() {
       },
     },
     {
-      title: "Status Permohonan",
+      title: "Skema Pembiayaan",
       dataIndex: "statusPermohonan",
       key: "statusPermohonan",
       render(value, record, index) {
         return (
-          <div className="text-xs">
+          <div className="">
             <p>
               Pelunasan :{" "}
               {record.status_takeover ? (

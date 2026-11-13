@@ -101,7 +101,7 @@ export default function Page() {
         return (
           <>
             <div>{(pageProps.page - 1) * pageProps.limit + index + 1}</div>
-            <div className="text-xs opacity-70">{record.id}</div>
+            <div className="opacity-70">{record.id}</div>
           </>
         );
       },
@@ -114,7 +114,7 @@ export default function Page() {
         return (
           <div>
             <div>{record.name}</div>
-            <div className="text-xs opacity-80">{record.code}</div>
+            <div className="opacity-80">@{record.code}</div>
           </div>
         );
       },
@@ -417,7 +417,7 @@ function UpsertData({
                 setData({ ...data, target: IDRToNumber(e || "0") }),
             }}
           />
-          <FormInput
+          {/* <FormInput
             data={{
               label: "Tatalaksana",
               mode: "horizontal",
@@ -426,7 +426,7 @@ function UpsertData({
               onChange: (e: string) =>
                 setData({ ...data, c_gov: IDRToNumber(e || "0") }),
             }}
-          />
+          /> */}
           <FormInput
             data={{
               label: "File PKS",

@@ -17,6 +17,9 @@ export const IDRToNumber = (str: string) => {
   return parseInt(str.replace(/\D/g, ""));
 };
 
+export const GetProvisiAmount = (plafond: number, provisi: number) =>
+  provisi < 100 ? plafond * (provisi / 100) : provisi;
+
 export function GetFullAge(startDate: Date, endDate: Date) {
   const momentBirthdate = moment(startDate);
   const dateNow = moment(endDate);
@@ -109,7 +112,8 @@ export const GetAngsuran = (
 export const GetDapem = (data: IDapem) => {
   const adm = data.plafond * ((data.c_adm_sumdan + data.c_adm) / 100);
   const provisi =
-    data.plafond * ((data.c_provisi_sumdan + data.c_fee_bpp) / 100);
+    GetProvisiAmount(data.plafond, data.c_provisi_sumdan) +
+    data.plafond * (data.c_fee_bpp / 100);
   const asuransi = data.plafond * (data.c_insurance / 100);
   const angs = GetAngsuran(
     data.plafond,
@@ -138,10 +142,13 @@ export const GetDapem = (data: IDapem) => {
 
 export const GetDetailDapem = (dapem: IDapem): IOutputDapemDetail => {
   const adm_sumdan = dapem.plafond * (dapem.c_adm_sumdan / 100);
-  const provisi_sumdan = dapem.plafond * (dapem.c_provisi_sumdan / 100);
+  const provisi_sumdan = GetProvisiAmount(
+    dapem.plafond,
+    dapem.c_provisi_sumdan,
+  );
   const asuransi = dapem.plafond * (dapem.c_insurance / 100) + dapem.c_flagging;
   const adm = dapem.plafond * (dapem.c_adm / 100);
-  const provisi = dapem.plafond * (dapem.c_provisi / 100);
+  const provisi = GetProvisiAmount(dapem.plafond, dapem.c_provisi);
 
   const lainlain =
     dapem.c_infomation + dapem.c_stamp + dapem.c_mutasi + dapem.c_fee_bpp;
@@ -162,6 +169,7 @@ export const GetDetailDapem = (dapem: IDapem): IOutputDapemDetail => {
     : Math.round(angsuran);
   const feebanpot = angs * (dapem.fee_banpot / 100);
   const angsurantotal = angs + dapem.c_ned + feebanpot;
+  const blokir = dapem.c_blokir * angsurantotal;
 
   return {
     detail: {
@@ -183,10 +191,8 @@ export const GetDetailDapem = (dapem: IDapem): IOutputDapemDetail => {
     by_sumdan: adm_sumdan + provisi_sumdan + dapem.c_account_sumdan,
     biaya,
     biayakop,
-    tk: dapem.plafond - biaya,
-    tb:
-      dapem.plafond -
-      (biaya + dapem.c_takeover + dapem.c_blokir * angsurantotal),
+    tk: dapem.plafond - (biaya + blokir),
+    tb: dapem.plafond - (biaya + dapem.c_takeover + blokir),
   };
 };
 

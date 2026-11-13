@@ -50,8 +50,7 @@ export default function ILayout({ children }: { children: React.ReactNode }) {
   const currentMenu = listMenuUI
     .flatMap((item) => [item, ...(item.children ?? [])])
     .filter(
-      (item) =>
-        pathname === item.key || pathname.startsWith(`${item.key}/`),
+      (item) => pathname === item.key || pathname.startsWith(`${item.key}/`),
     )
     .sort((a, b) => b.key.length - a.key.length)[0];
   const currentPageTitle =
@@ -553,10 +552,10 @@ export default function ILayout({ children }: { children: React.ReactNode }) {
           <Content
             className="custom-scrollbar app-shell-content"
             style={{
-              margin: "12px 0 0",
+              // margin: "12px 0 0",
               background: "#f3f6fa",
               borderRadius: 0,
-              padding: "20px 24px",
+              // padding: "10px 12px",
               border: "none",
               boxShadow: "none",
             }}
@@ -599,26 +598,37 @@ export default function ILayout({ children }: { children: React.ReactNode }) {
             }
             styles={{
               header: { borderBottom: "1px solid #e4e9f1" },
-              body: { padding: "8px 0" },
+              body: { padding: "8px 0", overflow: "hidden" },
             }}
           >
             {user && (
-              <Menu
-                theme="light"
-                mode="inline"
-                selectedKeys={[pathname]}
-                style={{ borderRight: "none" }}
-                items={menuItems}
-                onClick={(e) => {
-                  router.push(e.key);
-                  setMobileMenuOpen(false);
-                }}
-              />
+              <div
+                className="custom-scrollbar"
+                style={{ height: "100%", minHeight: 0, overflowY: "auto" }}
+              >
+                <Menu
+                  theme="light"
+                  mode="inline"
+                  selectedKeys={[pathname]}
+                  style={{ borderRight: "none" }}
+                  items={menuItems}
+                  onClick={(e) => {
+                    router.push(e.key);
+                    setMobileMenuOpen(false);
+                  }}
+                />
+              </div>
             )}
           </Drawer>
         )}
 
         <style jsx global>{`
+          .app-shell .ant-layout-sider-children {
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            overflow: hidden;
+          }
           .custom-scrollbar::-webkit-scrollbar {
             width: 6px;
             height: 6px;

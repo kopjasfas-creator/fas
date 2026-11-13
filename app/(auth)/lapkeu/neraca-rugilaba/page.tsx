@@ -26,8 +26,12 @@ export default function LaporanRugiLaba() {
       const params = new URLSearchParams();
       if (backdate) params.append("backdate", backdate);
 
-      // Gunakan method GET jika hanya mengambil data, atau pastikan API mendukung POST
-      const res = await fetch(`/api/neraca?${params.toString()}`);
+      const res = await fetch(`/api/neraca?${params.toString()}`, {
+        method: "POST",
+      });
+      if (!res.ok) {
+        throw new Error(`Gagal mengambil laporan rugi laba (${res.status})`);
+      }
       const json = await res.json();
       setData(json.data);
     } catch (err) {
@@ -38,7 +42,10 @@ export default function LaporanRugiLaba() {
   };
 
   useEffect(() => {
-    getData();
+    const timeout = setTimeout(() => {
+      void getData();
+    }, 0);
+    return () => clearTimeout(timeout);
   }, [backdate]);
 
   // Kalkulasi menggunakan useMemo
@@ -73,7 +80,9 @@ export default function LaporanRugiLaba() {
             <span className="text-sm font-normal text-gray-400">Periode:</span>
             <RangePicker
               size="small"
-              onChange={(_, dateStr) => setBackdate(dateStr.join(","))}
+              onChange={(_, dateStr) =>
+                setBackdate(dateStr[0] && dateStr[1] ? dateStr.join(",") : null)
+              }
               style={{ width: 250 }}
             />
             <Button

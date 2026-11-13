@@ -5,6 +5,7 @@ import { ExportToExcel, FilterData } from "@/components/utils/CompUtils";
 import {
   GetAngsuran,
   GetDetailDapem,
+  GetProvisiAmount,
   IDRFormat,
 } from "@/components/utils/PembiayaanUtil";
 import {
@@ -116,88 +117,86 @@ export default function Page() {
   const printSI = async (record: IDropping) => {
     switch (record.Sumdan.code) {
       case "BPR ABS": {
-        const { printSIABS } = await import(
-          "@/components/pdfutils/si/SIStandarABS"
-        );
+        const { printSIABS } =
+          await import("@/components/pdfutils/si/SIStandarABS");
         printSIABS(record);
         break;
       }
       default: {
-        const { printSIStandar } = await import(
-          "@/components/pdfutils/si/SIStandar"
-        );
+        const { printSIStandar } =
+          await import("@/components/pdfutils/si/SIStandar");
         printSIStandar(record);
         break;
       }
     }
   };
 
-  const handlePrintCIF = (record: IDapem[]) => {
-    ExportToExcel(
-      [
-        {
-          sheetname: "Page1",
-          data: record.map((r) => ({
-            "Nomor CIF": String(r.nopen ?? ""),
-            "A/C No.": String(r.nopen ?? ""),
-            FName: String(r.Debitur?.fullname ?? ""),
-            "Tempat Lahir": String(r.Debitur?.birthplace ?? ""),
-            "Tanggal Lahir": r.Debitur?.birthdate
-              ? moment(r.Debitur.birthdate).format("DD/MM/YYYY")
-              : "",
-            Agama: String(r.Debitur?.religion ?? ""),
-            Status: String(r.marriage_status ?? ""),
-            Gelar: String(r.Debitur?.education ?? ""),
-            "No. ID": String(r.Debitur?.nik ?? ""),
-            NPWP: String(r.Debitur?.npwp ?? ""),
-            Alamat: String(r.Debitur?.address ?? ""),
-            Kota: String(r.Debitur?.city ?? ""),
-            "Kode Pos": String(r.Debitur?.pos_code ?? ""),
-            "Kode ID": String(r.id ?? ""),
-            Kelurahan: String(r.Debitur?.ward ?? ""),
-            Kecamatan: String(r.Debitur?.district ?? ""),
-            "No Hp.": String(r.Debitur?.phone ?? ""),
-            "Nama Ibu Kandung": String(r.Debitur?.mother_name ?? ""),
-            Dati2: String(r.Debitur?.city ?? ""),
-          })),
-        },
-      ],
-      "txt_cif",
-    );
-  };
-  const handlePrintCredit = (record: IDapem[]) => {
-    ExportToExcel(
-      [
-        {
-          sheetname: "Page1",
-          data: record.map((r) => {
-            const detail = GetDetailDapem(r);
-            return {
-              nocif: String(r.nopen ?? ""),
-              "no rekening": `${r.ProdukPembiayaan?.Sumdan?.id?.replace("MITRA", "").replace("-", "") ?? ""}${r.id?.replace("P", "") ?? ""}`,
-              tgl_cair: r.Dropping?.created_at
-                ? moment(r.Dropping.created_at).format("DD/MM/YYYY")
-                : "",
-              // Jika plafond ingin dianggap teks, gunakan String(r.plafond ?? 0).
-              // Biarkan number jika ingin tetap bisa dihitung/di-sum di Excel:
-              plafond_pembiayaan: r.plafond ?? 0,
-              jangka_waktu: r.tenor ?? 0,
-              sifat_bunga: String(3),
-              guna_debitur: String(39),
-              sektor_ekonomi: String("009000"), // Diawali 0, wajib string agar 0 tidak hilang
-              golongan_debitur: String("874"),
-              sumber_dana: String(10),
-              no_spk: String(r.no_contract ?? ""),
-              provisi: detail?.detail?.provisi_sumdan ?? 0,
-              rate: r.c_margin_sumdan ?? 0,
-              administrasi: detail?.detail?.adm_sumdan ?? 0,
-            };
-          }),
-        },
-      ],
-      "txt_cif", // Catatan: nama file ini masih "txt_cif", sesuaikan jika ingin diganti misal "txt_credit"
-    );
-  };
+  // const handlePrintCIF = (record: IDapem[]) => {
+  //   ExportToExcel(
+  //     [
+  //       {
+  //         sheetname: "Page1",
+  //         data: record.map((r) => ({
+  //           "Nomor CIF": String(r.nopen ?? ""),
+  //           "A/C No.": String(r.nopen ?? ""),
+  //           FName: String(r.Debitur?.fullname ?? ""),
+  //           "Tempat Lahir": String(r.Debitur?.birthplace ?? ""),
+  //           "Tanggal Lahir": r.Debitur?.birthdate
+  //             ? moment(r.Debitur.birthdate).format("DD/MM/YYYY")
+  //             : "",
+  //           Agama: String(r.Debitur?.religion ?? ""),
+  //           Status: String(r.marriage_status ?? ""),
+  //           Gelar: String(r.Debitur?.education ?? ""),
+  //           "No. ID": String(r.Debitur?.nik ?? ""),
+  //           NPWP: String(r.Debitur?.npwp ?? ""),
+  //           Alamat: String(r.Debitur?.address ?? ""),
+  //           Kota: String(r.Debitur?.city ?? ""),
+  //           "Kode Pos": String(r.Debitur?.pos_code ?? ""),
+  //           "Kode ID": String(r.id ?? ""),
+  //           Kelurahan: String(r.Debitur?.ward ?? ""),
+  //           Kecamatan: String(r.Debitur?.district ?? ""),
+  //           "No Hp.": String(r.Debitur?.phone ?? ""),
+  //           "Nama Ibu Kandung": String(r.Debitur?.mother_name ?? ""),
+  //           Dati2: String(r.Debitur?.city ?? ""),
+  //         })),
+  //       },
+  //     ],
+  //     "txt_cif",
+  //   );
+  // };
+  // const handlePrintCredit = (record: IDapem[]) => {
+  //   ExportToExcel(
+  //     [
+  //       {
+  //         sheetname: "Page1",
+  //         data: record.map((r) => {
+  //           const detail = GetDetailDapem(r);
+  //           return {
+  //             nocif: String(r.nopen ?? ""),
+  //             "no rekening": `${r.ProdukPembiayaan?.Sumdan?.id?.replace("MITRA", "").replace("-", "") ?? ""}${r.id?.replace("P", "") ?? ""}`,
+  //             tgl_cair: r.Dropping?.created_at
+  //               ? moment(r.Dropping.created_at).format("DD/MM/YYYY")
+  //               : "",
+  //             // Jika plafond ingin dianggap teks, gunakan String(r.plafond ?? 0).
+  //             // Biarkan number jika ingin tetap bisa dihitung/di-sum di Excel:
+  //             plafond_pembiayaan: r.plafond ?? 0,
+  //             jangka_waktu: r.tenor ?? 0,
+  //             sifat_bunga: String(3),
+  //             guna_debitur: String(39),
+  //             sektor_ekonomi: String("009000"), // Diawali 0, wajib string agar 0 tidak hilang
+  //             golongan_debitur: String("874"),
+  //             sumber_dana: String(10),
+  //             no_spk: String(r.no_contract ?? ""),
+  //             provisi: detail?.detail?.provisi_sumdan ?? 0,
+  //             rate: r.c_margin_sumdan ?? 0,
+  //             administrasi: detail?.detail?.adm_sumdan ?? 0,
+  //           };
+  //         }),
+  //       },
+  //     ],
+  //     "txt_cif", // Catatan: nama file ini masih "txt_cif", sesuaikan jika ingin diganti misal "txt_credit"
+  //   );
+  // };
 
   const columnDropping: TableProps<IDropping>["columns"] = [
     {
@@ -233,19 +232,20 @@ export default function Page() {
           const detail = GetDetailDapem(curr);
           return (
             acc +
-            detail.by_sumdan +
-            curr.c_blokir * detail.detail.angsuran_sumdan
+            detail.detail.adm_sumdan +
+            detail.detail.provisi_sumdan +
+            curr.c_account_sumdan
           ); // Explicit return required here
         }, 0);
 
         return (
           <div>
             <div className="flex justify-between gap-2">
-              <span className="text-xs opacity-80">Plafond:</span>{" "}
+              <span className=" opacity-80">Plafond:</span>{" "}
               <Tag color={"blue"}>{IDRFormat(total)}</Tag>
             </div>
             <div className="flex justify-between gap-2">
-              <span className="text-xs opacity-80">Dropping:</span>{" "}
+              <span className=" opacity-80">Dropping:</span>{" "}
               <Tag color={"blue"}>{IDRFormat(total - biaya)}</Tag>
             </div>
           </div>
@@ -262,7 +262,8 @@ export default function Page() {
           0,
         );
         const provisi = record.Dapems.reduce(
-          (acc, curr) => acc + curr.plafond * (curr.c_provisi_sumdan / 100),
+          (acc, curr) =>
+            acc + GetProvisiAmount(curr.plafond, curr.c_provisi_sumdan),
           0,
         );
         const rek = record.Dapems.reduce(
@@ -270,10 +271,14 @@ export default function Page() {
           0,
         );
         return (
-          <div className="text-xs">
+          <div className="">
             <div className="flex justify-between gap-4">
               <span className="w-20">Admin :</span>
-              <span>{IDRFormat(adm + provisi)}</span>
+              <span>{IDRFormat(adm)}</span>
+            </div>
+            <div className="flex justify-between gap-4">
+              <span className="w-20">Provisi :</span>
+              <span>{IDRFormat(provisi)}</span>
             </div>
             <div className="flex justify-between gap-4">
               <span className="w-20">Rek :</span>
@@ -304,7 +309,7 @@ export default function Page() {
           return acc + curr.c_blokir * detail.angsuran; // Explicit return required here
         }, 0);
         return (
-          <div className="text-xs flex flex-col items-center gap-1">
+          <div className="flex flex-col items-center gap-1">
             <div className="flex justify-center gap-1">
               <Tag color={"blue"}>
                 <BankOutlined />
@@ -335,37 +340,37 @@ export default function Page() {
         </div>
       ),
     },
-    {
-      title: "Cetak Data",
-      key: "cetak",
-      dataIndex: "cetak",
-      render(value, record, index) {
-        return (
-          <div className="flex gap-2 items-center">
-            <Tooltip title={`Cetak CIF`}>
-              <Button
-                icon={<PrinterOutlined />}
-                type="primary"
-                size="small"
-                onClick={() => handlePrintCIF(record.Dapems)}
-              >
-                CIF
-              </Button>
-            </Tooltip>
-            <Tooltip title={`Cetak Kredit`}>
-              <Button
-                icon={<PrinterOutlined />}
-                type="primary"
-                size="small"
-                onClick={() => handlePrintCredit(record.Dapems)}
-              >
-                Kredit
-              </Button>
-            </Tooltip>
-          </div>
-        );
-      },
-    },
+    // {
+    //   title: "Cetak Data",
+    //   key: "cetak",
+    //   dataIndex: "cetak",
+    //   render(value, record, index) {
+    //     return (
+    //       <div className="flex gap-2 items-center">
+    //         <Tooltip title={`Cetak CIF`}>
+    //           <Button
+    //             icon={<PrinterOutlined />}
+    //             type="primary"
+    //             size="small"
+    //             onClick={() => handlePrintCIF(record.Dapems)}
+    //           >
+    //             CIF
+    //           </Button>
+    //         </Tooltip>
+    //         <Tooltip title={`Cetak Kredit`}>
+    //           <Button
+    //             icon={<PrinterOutlined />}
+    //             type="primary"
+    //             size="small"
+    //             onClick={() => handlePrintCredit(record.Dapems)}
+    //           >
+    //             Kredit
+    //           </Button>
+    //         </Tooltip>
+    //       </div>
+    //     );
+    //   },
+    // },
     {
       title: "Created",
       key: "created_at",
@@ -467,13 +472,14 @@ export default function Page() {
       <div className="flex justify-between items-center my-1 gap-2 flex-wrap">
         <div className="flex gap-2 flex-wrap">
           <FilterData
+            // eslint-disable-next-line react/no-children-prop
             children={
               <>
                 <div className="my-2">
                   <p>Periode : </p>
                   <RangePicker
                     size="small"
-                    onChange={(date, dateStr) =>
+                    onChange={(_date, dateStr) =>
                       setPageProps({ ...pageProps, backdate: dateStr })
                     }
                     style={{ width: "100%" }}
@@ -551,54 +557,44 @@ export default function Page() {
           rowExpandable: (record) => record.Dapems.length !== 0,
         }}
         summary={(pageData) => {
-          const plaf = pageData
+          const details = pageData
             .flatMap((p) => p.Dapems)
-            .reduce((acc, curr) => acc + curr.plafond, 0);
-          const drop = pageData
-            .flatMap((p) => p.Dapems)
-            .reduce(
-              (acc, curr) =>
-                acc +
-                (curr.plafond -
-                  (curr.plafond * (curr.c_adm_sumdan / 100) +
-                    curr.c_account_sumdan +
-                    curr.c_provisi_sumdan)),
-              0,
-            );
-          const adm = pageData
-            .flatMap((p) => p.Dapems)
-            .reduce(
-              (acc, curr) => acc + curr.plafond * (curr.c_adm_sumdan / 100),
-              0,
-            );
-          const provisi = pageData
-            .flatMap((p) => p.Dapems)
-            .reduce(
-              (acc, curr) => acc + curr.plafond * (curr.c_provisi_sumdan / 100),
-              0,
-            );
-          const rek = pageData
-            .flatMap((p) => p.Dapems)
-            .reduce((acc, curr) => acc + curr.c_account_sumdan, 0);
+            .map((d) => {
+              const detail = GetDetailDapem(d);
+              return {
+                ...d,
+                detail,
+                provisi: detail.detail.provisi_sumdan,
+                adm: detail.detail.adm_sumdan,
+                blokir_sumdan: d.c_blokir * detail.detail.angsuran_sumdan,
+                blokir_kop:
+                  d.c_blokir *
+                  (detail.angsuran - detail.detail.angsuran_sumdan),
+                blokir: d.c_blokir * detail.angsuran,
+              };
+            });
+          let plaf = 0;
+          let drop = 0;
+          let adm = 0;
+          let provisi = 0;
+          let rek = 0;
+          let blokir_sumdan = 0;
+          let blokir_kop = 0;
+          let blokir = 0;
 
-          const blokir = pageData
-            .flatMap((p) => p.Dapems)
-            .reduce(
-              (acc, curr) =>
-                acc +
-                curr.c_blokir *
-                  GetAngsuran(
-                    curr.plafond,
-                    curr.tenor,
-                    curr.c_margin_sumdan,
-                    curr.margin_type,
-                    curr.rounded,
-                  ).angsuran,
-              0,
-            );
+          for (const d of details) {
+            plaf += d.plafond;
+            drop += d.plafond - (d.adm + d.provisi + d.c_account_sumdan);
+            adm += d.adm;
+            provisi += d.provisi;
+            rek += d.c_account_sumdan;
+            blokir_sumdan += d.blokir_sumdan;
+            blokir_kop += d.blokir_kop;
+            blokir += d.blokir;
+          }
 
           return (
-            <Table.Summary.Row className="text-xs bg-blue-400">
+            <Table.Summary.Row className="bg-green-500 text-[10px] text-slate-100">
               <Table.Summary.Cell index={0} colSpan={4} className="text-center">
                 <b>SUMMARY</b>
               </Table.Summary.Cell>
@@ -609,18 +605,27 @@ export default function Page() {
               <Table.Summary.Cell index={6} className="text-right font-bold">
                 <div className="flex justify-between gap-2">
                   <div>Admin :</div>
-                  <div className="text-right">{IDRFormat(adm + provisi)}</div>
+                  <div className="text-right">{IDRFormat(adm)}</div>
+                </div>
+                <div className="flex justify-between gap-2">
+                  <div>Provisi :</div>
+                  <div className="text-right">{IDRFormat(provisi)}</div>
                 </div>
                 <div className="flex justify-between gap-2">
                   <div>Rek :</div>
                   <div className="text-right">{IDRFormat(rek)}</div>
                 </div>
-                <div className="border-t border-dashed">
-                  {IDRFormat(adm + provisi + rek)}
-                </div>
               </Table.Summary.Cell>
               <Table.Summary.Cell index={7} className="text-right font-bold">
-                <div className="text-right">{IDRFormat(blokir)}</div>
+                <div className="text-right flex justify-between">
+                  <span>Sumdan:</span> <span>{IDRFormat(blokir_sumdan)}</span>
+                </div>
+                <div className="text-right flex justify-between">
+                  <span>Kop:</span> <span>{IDRFormat(blokir_kop)}</span>
+                </div>
+                <div className="text-right flex justify-between border-t border-dashed border-gray-300">
+                  <span>Total:</span> <span>{IDRFormat(blokir)}</span>
+                </div>
               </Table.Summary.Cell>
             </Table.Summary.Row>
           );
@@ -933,7 +938,7 @@ const TableDapem = ({ data }: { data: IDapem[] }) => {
         return (
           <div>
             <div>{record.Debitur.fullname}</div>
-            <div className="opacity-80 text-xs">@{record.nopen}</div>
+            <div className="opacity-80">@{record.nopen}</div>
           </div>
         );
       },
@@ -946,9 +951,7 @@ const TableDapem = ({ data }: { data: IDapem[] }) => {
         return (
           <div>
             <div>{record.ProdukPembiayaan.name}</div>
-            <div className="opacity-80 text-xs">
-              {record.JenisPembiayaan.name}
-            </div>
+            <div className="opacity-80">{record.JenisPembiayaan.name}</div>
           </div>
         );
       },
@@ -973,7 +976,7 @@ const TableDapem = ({ data }: { data: IDapem[] }) => {
       render(value, record, index) {
         const temp = GetDetailDapem(record);
         return (
-          <div className="text-xs">
+          <div className="">
             <div className="flex gap-2 items-center">
               <Tag color={"blue"}>
                 <BankOutlined /> {IDRFormat(temp.detail.angsuran_sumdan)}
@@ -997,15 +1000,17 @@ const TableDapem = ({ data }: { data: IDapem[] }) => {
         return (
           <div>
             <div>
-              <span className="text-xs opacity-80">Adm:</span>
+              <span className="opacity-80">Adm:</span>
               <Tag color={"blue"}>
                 {IDRFormat(record.plafond * (record.c_adm_sumdan / 100))}
               </Tag>
             </div>
             <div>
-              <span className="text-xs opacity-80">Provisi:</span>
+              <span className="opacity-80">Provisi:</span>
               <Tag color={"blue"}>
-                {IDRFormat(record.plafond * (record.c_provisi_sumdan / 100))}
+                {IDRFormat(
+                  GetProvisiAmount(record.plafond, record.c_provisi_sumdan),
+                )}
               </Tag>
             </div>
             <div>
@@ -1023,7 +1028,7 @@ const TableDapem = ({ data }: { data: IDapem[] }) => {
       render(value, record, index) {
         const temp = GetDetailDapem(record);
         return (
-          <div className="text-xs">
+          <div className="">
             <div>
               <Tag color={"blue"}>
                 <BankOutlined /> ({record.c_blokir}x){" "}
@@ -1069,7 +1074,6 @@ const TableDapem = ({ data }: { data: IDapem[] }) => {
   return (
     <div style={{ marginLeft: 10 }}>
       <Table
-        bordered
         pagination={false}
         rowKey={"id"}
         columns={columnDapem}

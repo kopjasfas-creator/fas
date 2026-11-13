@@ -13,7 +13,6 @@ interface INeraca {
   modal: ICategoryOfAccount[];
   pendapatan: IJournalDetail[];
   beban: IJournalDetail[];
-  shu: number;
 }
 
 export default function NeracaPage() {
@@ -25,7 +24,6 @@ export default function NeracaPage() {
     modal: [],
     pendapatan: [],
     beban: [],
-    shu: 0,
   });
 
   const getData = async () => {
@@ -46,7 +44,10 @@ export default function NeracaPage() {
   };
 
   useEffect(() => {
-    getData();
+    const timeout = setTimeout(() => {
+      void getData();
+    }, 0);
+    return () => clearTimeout(timeout);
   }, [backdate]);
 
   // Kalkulasi Total menggunakan useMemo untuk performa
@@ -103,8 +104,8 @@ export default function NeracaPage() {
             0,
           ),
         0,
-      ) + data.shu,
-    [data.modal, data.shu],
+      ),
+    [data.modal],
   );
 
   return (
@@ -228,10 +229,6 @@ export default function NeracaPage() {
                     </div>
                   )),
                 )}
-                <div className="flex justify-between py-1 text-sm font-semibold italic text-green-700">
-                  <span>SHU Tahun Berjalan</span>
-                  <span className="font-mono">{IDRFormat(data.shu)}</span>
-                </div>
               </section>
             </div>
             <Divider />

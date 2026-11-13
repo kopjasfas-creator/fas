@@ -29,7 +29,7 @@ import {
   TableProps,
 } from "antd";
 import { HookAPI } from "antd/es/modal/useModal";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export default function Page() {
   const [pageProps, setPageProps] = useState<IPageProps<ICategoryOfAccount>>({
@@ -47,18 +47,13 @@ export default function Page() {
     proses: false,
     selected: undefined,
   });
+  const [createParentId, setCreateParentId] = useState<string | null>(null);
   const { modal } = App.useApp();
   const { hasAccess } = useAccess("/lapkeu/coa");
 
-  const getData = async () => {
+  const getData = useCallback(async () => {
     setLoading(true);
-    const params = new URLSearchParams();
-    params.append("page", pageProps.page.toString());
-    params.append("limit", pageProps.limit.toString());
-    if (pageProps.search) params.append("search", pageProps.search);
-    if (pageProps.type) params.append("type", pageProps.type);
-
-    const res = await fetch(`/api/coa?${params.toString()}`);
+    const res = await fetch("/api/coa?hierarchy=true");
     const json = await res.json();
     setPageProps((prev) => ({
       ...prev,
@@ -66,14 +61,39 @@ export default function Page() {
       total: json.total,
     }));
     setLoading(false);
-  };
+  }, []);
 
   useEffect(() => {
     const timeout = setTimeout(async () => {
       await getData();
     }, 200);
     return () => clearTimeout(timeout);
-  }, [pageProps.page, pageProps.limit, pageProps.search, pageProps.type]);
+  }, [getData]);
+
+  const matchesFilter = (account: ICategoryOfAccount) =>
+    (!pageProps.type || account.type === pageProps.type) &&
+    (!pageProps.search ||
+      account.id.toLowerCase().includes(pageProps.search.toLowerCase()) ||
+      account.name.toLowerCase().includes(pageProps.search.toLowerCase()));
+  const visibleAccounts = pageProps.data.flatMap((parent) => {
+    const children = parent.Childrens.filter(matchesFilter);
+    if (!matchesFilter(parent) && children.length === 0) return [];
+    return [
+      {
+        ...parent,
+        Childrens:
+          matchesFilter(parent) && !pageProps.type ? parent.Childrens : children,
+      },
+    ];
+  });
+  const tableData = visibleAccounts.map((parent) => ({
+    ...parent,
+    children: parent.Childrens.map((child) => ({ ...child, children: [] })),
+  }));
+  const openCreate = (parentId: string | null = null) => {
+    setCreateParentId(parentId);
+    setSelected({ ...selected, selected: undefined, upsert: true });
+  };
 
   const columns: TableProps<ICategoryOfAccount>["columns"] = [
     {
@@ -93,7 +113,7 @@ export default function Page() {
       title: "Account",
       dataIndex: "name",
       key: "name",
-      render(value, record, index) {
+      render(value, record) {
         return (
           <div>
             <span className="opacity-70">
@@ -111,10 +131,7 @@ export default function Page() {
                         : ""}
               -{record.id})
             </span>
-            {record.parentId && (
-              <span className="opacity-70">({record.Parent?.name})</span>
-            )}{" "}
-            {record.name}
+            <span className="ml-2 font-medium">{record.name}</span>
           </div>
         );
       },
@@ -130,6 +147,14 @@ export default function Page() {
       width: 100,
       render: (_, record) => (
         <div className="flex gap-2">
+          {!record.parentId && hasAccess("write") && (
+            <Button
+              icon={<PlusCircleOutlined />}
+              size="small"
+              title="Tambah sub akun"
+              onClick={() => openCreate(record.id)}
+            />
+          )}
           {hasAccess("update") && (
             <Button
               icon={<EditOutlined />}
@@ -172,9 +197,7 @@ export default function Page() {
               size="small"
               icon={<PlusCircleOutlined />}
               type="primary"
-              onClick={() =>
-                setSelected({ ...selected, selected: undefined, upsert: true })
-              }
+              onClick={() => openCreate()}
             >
               Add New
             </Button>
@@ -189,7 +212,9 @@ export default function Page() {
               { label: "PENDAPATAN", value: "PENDAPATAN" },
               { label: "BEBAN", value: "BEBAN" },
             ]}
-            onChange={(e) => setPageProps({ ...pageProps, type: e })}
+            onChange={(e) =>
+              setPageProps((prev) => ({ ...prev, page: 1, type: e }))
+            }
             allowClear
             style={{ width: 170 }}
           />
@@ -200,7 +225,11 @@ export default function Page() {
             style={{ width: 170 }}
             placeholder="Cari nama..."
             onChange={(e) =>
-              setPageProps({ ...pageProps, search: e.target.value })
+              setPageProps((prev) => ({
+                ...prev,
+                page: 1,
+                search: e.target.value,
+              }))
             }
           />
         </div>
@@ -208,16 +237,17 @@ export default function Page() {
 
       <Table
         columns={columns}
-        dataSource={pageProps.data}
+        dataSource={tableData}
         size="small"
         loading={loading}
         rowKey={"id"}
         bordered
+        expandable={{ defaultExpandAllRows: true }}
         scroll={{ x: "max-content", y: "60vh" }}
         pagination={{
           current: pageProps.page,
           pageSize: pageProps.limit,
-          total: pageProps.total,
+          total: visibleAccounts.length,
           onChange: (page, pageSize) => {
             setPageProps((prev) => ({
               ...prev,
@@ -237,8 +267,13 @@ export default function Page() {
         record={selected.selected}
         getData={getData}
         hook={modal}
-        key={selected.selected ? "upsert" + selected.selected.id : "create"}
+        key={
+          selected.selected
+            ? "upsert" + selected.selected.id
+            : `create${createParentId || ""}`
+        }
         lists={pageProps.data.filter((d) => !d.parentId)}
+        initialParentId={createParentId}
       />
       {selected.selected && (
         <DeleteData
@@ -263,6 +298,7 @@ const UpsertData = ({
   hook,
   record,
   lists,
+  initialParentId,
 }: {
   open: boolean;
   setOpen: Function;
@@ -270,18 +306,30 @@ const UpsertData = ({
   hook: HookAPI;
   record?: CategoryOfAccount;
   lists: CategoryOfAccount[];
+  initialParentId: string | null;
 }) => {
-  const [data, setData] = useState<CategoryOfAccount>(record || defaultdata);
+  const [data, setData] = useState<CategoryOfAccount>(
+    record || {
+      ...defaultdata,
+      type: lists.find((account) => account.id === initialParentId)?.type ??
+        defaultdata.type,
+      parentId: initialParentId,
+    },
+  );
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
     setLoading(true);
-    if ("Parent" in data) delete data.Parent;
-    if ("Children" in data) delete data.Children;
-    if ("JournalEntry" in data) delete data.JournalEntry;
+    const accountData = {
+      id: data.id,
+      name: data.name,
+      type: data.type,
+      status: data.status,
+      parentId: data.parentId,
+    };
     await fetch("/api/coa?id=" + record?.id, {
       method: record ? "PUT" : "POST",
-      body: JSON.stringify(data),
+      body: JSON.stringify(accountData),
     })
       .then((res) => res.json())
       .then(async (res) => {
@@ -324,8 +372,16 @@ const UpsertData = ({
           data={{
             label: "Tipe Akun",
             value: data.type,
-            onChange: (e: string) =>
-              setData({ ...data, type: e as AccountType }),
+            onChange: (e: AccountType) =>
+              setData({
+                ...data,
+                type: e,
+                parentId:
+                  lists.find((account) => account.id === data.parentId)?.type ===
+                  e
+                    ? data.parentId
+                    : null,
+              }),
             type: "select",
             options: [
               { label: "D - ASSET", value: "ASSET" },
@@ -340,12 +396,15 @@ const UpsertData = ({
           data={{
             label: "Parent Akun",
             value: data.parentId,
-            onChange: (e: any) => setData({ ...data, parentId: e ? e : null }),
+            onChange: (e: string | undefined) =>
+              setData({ ...data, parentId: e || null }),
             type: "select",
-            options: lists.map((d) => ({
-              label: `(${TypeAccount(d)}-${d.id}) ${d.name}`,
-              value: d.id,
-            })),
+            options: lists
+              .filter((account) => account.type === data.type)
+              .map((d) => ({
+                label: `(${TypeAccount(d)}-${d.id}) ${d.name}`,
+                value: d.id,
+              })),
           }}
         />
       </div>

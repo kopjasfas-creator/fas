@@ -22,7 +22,7 @@ export const GET = async (request: NextRequest) => {
                     JournalEntry: {
                       date: {
                         gte: moment(backdate.split(",")[0]).toDate(),
-                        lte: moment(backdate.split(",")[1]).toDate(),
+                        lte: moment(backdate.split(",")[1]).endOf("day").toDate(),
                       },
                     },
                   }),
@@ -48,7 +48,7 @@ export const GET = async (request: NextRequest) => {
                     JournalEntry: {
                       date: {
                         gte: moment(backdate.split(",")[0]).toDate(),
-                        lte: moment(backdate.split(",")[1]).toDate(),
+                        lte: moment(backdate.split(",")[1]).endOf("day").toDate(),
                       },
                     },
                   }),
@@ -74,7 +74,7 @@ export const GET = async (request: NextRequest) => {
                     JournalEntry: {
                       date: {
                         gte: moment(backdate.split(",")[0]).toDate(),
-                        lte: moment(backdate.split(",")[1]).toDate(),
+                        lte: moment(backdate.split(",")[1]).endOf("day").toDate(),
                       },
                     },
                   }),
@@ -92,7 +92,7 @@ export const GET = async (request: NextRequest) => {
             JournalEntry: {
               date: {
                 gte: moment(backdate.split(",")[0]).toDate(),
-                lte: moment(backdate.split(",")[1]).toDate(),
+                lte: moment(backdate.split(",")[1]).endOf("day").toDate(),
               },
             },
           }),
@@ -106,7 +106,7 @@ export const GET = async (request: NextRequest) => {
             JournalEntry: {
               date: {
                 gte: moment(backdate.split(",")[0]).toDate(),
-                lte: moment(backdate.split(",")[1]).toDate(),
+                lte: moment(backdate.split(",")[1]).endOf("day").toDate(),
               },
             },
           }),
@@ -115,14 +115,6 @@ export const GET = async (request: NextRequest) => {
       }),
     ]);
 
-  const nomPendapatan = pendapatan.reduce(
-    (acc: any, curr: any) => acc + (curr.credit - curr.debit),
-    0,
-  );
-  const nomBeban = beban.reduce(
-    (acc: any, curr: any) => acc + (curr.debit - curr.credit),
-    0,
-  );
   return NextResponse.json(
     {
       data: serializeForApi({
@@ -131,7 +123,6 @@ export const GET = async (request: NextRequest) => {
         modal,
         pendapatan,
         beban,
-        shu: nomPendapatan - nomBeban,
       }),
       status: 200,
     },
@@ -156,7 +147,7 @@ export const POST = async (request: NextRequest) => {
               JournalEntry: {
                 date: {
                   gte: moment(backdate.split(",")[0]).toDate(),
-                  lte: moment(backdate.split(",")[1]).toDate(),
+                  lte: moment(backdate.split(",")[1]).endOf("day").toDate(),
                 },
               },
             }),
@@ -177,7 +168,7 @@ export const POST = async (request: NextRequest) => {
               JournalEntry: {
                 date: {
                   gte: moment(backdate.split(",")[0]).toDate(),
-                  lte: moment(backdate.split(",")[1]).toDate(),
+                  lte: moment(backdate.split(",")[1]).endOf("day").toDate(),
                 },
               },
             }),

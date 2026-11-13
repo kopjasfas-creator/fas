@@ -162,7 +162,7 @@ export default function Page() {
         return (
           <div>
             <div>{(pageProps.page - 1) * pageProps.limit + index + 1}</div>
-            <div className="opacity-80 text-xs">{record.id}</div>
+            <div className="opacity-80 ">{record.id}</div>
           </div>
         );
       },
@@ -176,7 +176,7 @@ export default function Page() {
         return (
           <div>
             <p className="font-bold">{record.Debitur.fullname}</p>
-            <div className="text-xs opacity-80">
+            <div className=" opacity-80">
               <p>@{record.Debitur.nopen}</p>
             </div>
           </div>
@@ -207,7 +207,7 @@ export default function Page() {
       render(value, record, index) {
         const temp = GetDetailDapem(record);
         return (
-          <div className="text-xs">
+          <div className="">
             <div className="flex gap-2 items-center">
               <Tag color={"blue"}>
                 <BankOutlined /> {IDRFormat(temp.detail.angsuran_sumdan)}
@@ -234,7 +234,7 @@ export default function Page() {
               {record.ProdukPembiayaan.name}{" "}
               <span>({record.ProdukPembiayaan.Sumdan.code})</span>
             </p>
-            <p className="opacity-80 text-xs">{record.JenisPembiayaan.name}</p>
+            <p className="opacity-80 ">{record.JenisPembiayaan.name}</p>
           </div>
         );
       },
@@ -248,7 +248,7 @@ export default function Page() {
         return (
           <div>
             <div>{ao?.fullname}</div>
-            <div className="text-xs opacity-80">
+            <div className=" opacity-80">
               {ao?.Cabang.name} | {ao?.Cabang.Area.name}
             </div>
           </div>
@@ -355,7 +355,7 @@ export default function Page() {
           <div className="flex gap-1">
             {GetDroppingStatusTag(record.dropping_status)}
             {record.Dropping && record.Dropping.process_at && (
-              <div className="text-xs">
+              <div className="">
                 {moment(record.Dropping.process_at).format("DD/MM/YYYY HH:mm")}
               </div>
             )}
@@ -412,7 +412,7 @@ export default function Page() {
           <div>
             {record.no_contract && <div>{record.no_contract}</div>}
             {record.date_contract && (
-              <div className="text-xs opacity-80">
+              <div className=" opacity-80">
                 {moment(record.date_contract).format("DD/MM/YYYY")}
               </div>
             )}
@@ -461,7 +461,7 @@ export default function Page() {
         return (
           <div>
             <div>{record.User.fullname}</div>
-            <div className="opacity-80 text-xs">
+            <div className="opacity-80 ">
               {moment(record.created_at).format("DD/MM/YYYY")}
             </div>
           </div>
@@ -537,7 +537,7 @@ export default function Page() {
     <Card
       title={
         <div className="flex gap-2 font-bold text-xl">
-          <ReadOutlined /> Monitoring Pembiayaan
+          <ReadOutlined /> Pending Data
         </div>
       }
       styles={{ body: { padding: 5 } }}
@@ -553,6 +553,7 @@ export default function Page() {
                 agentFrontingId: "",
               }))
             }
+            // eslint-disable-next-line react/no-children-prop
             children={
               <>
                 {user && !user.sumdanId && (
@@ -644,9 +645,8 @@ export default function Page() {
             size="small"
             type="primary"
             onClick={async () => {
-              const { printMonitoring } = await import(
-                "@/components/pdfutils/etc/printMonitoring"
-              );
+              const { printMonitoring } =
+                await import("@/components/pdfutils/etc/printMonitoring");
               printMonitoring(pageProps.data, sumdans, pageProps.backdate);
             }}
           >
@@ -961,9 +961,8 @@ const PrintContractSubmission = ({
         const { msg, status, data } = res;
         if (status === 200) {
           await getData();
-          const { printContract } = await import(
-            "@/components/pdfutils/akad/Akad"
-          );
+          const { printContract } =
+            await import("@/components/pdfutils/akad/Akad");
           printContract({ ...temp, Angsuran: data } as IDapem);
         } else {
           hook.error({ content: msg });

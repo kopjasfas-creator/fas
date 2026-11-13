@@ -445,7 +445,7 @@ export const DetailDapem = ({
               <Descriptions
                 title={
                   <div>
-                    <BranchesOutlined /> Data AO & Agent
+                    <BranchesOutlined /> Data Admin, AO & Agent
                   </div>
                 }
                 bordered
@@ -456,6 +456,9 @@ export const DetailDapem = ({
                   content: { fontSize: 12 },
                 }}
               >
+                <Descriptions.Item label="Admin">
+                  {data.User.fullname} ({data.User.phone})
+                </Descriptions.Item>
                 <Descriptions.Item label="Agent Fronting">
                   {data.AgentFronting && data.AgentFronting.code}{" "}
                   {data.AgentFronting && `(${data.AgentFronting.pic})`}
@@ -521,14 +524,17 @@ export const DetailDapem = ({
                 </Descriptions.Item>
                 <Descriptions.Item label="Angsuran">
                   <div className="flex justify-between">
-                    <span>{IDRFormat(detail.detail.angsuran)}</span>{" "}
+                    <span>{IDRFormat(detail.angsuran)}</span>{" "}
                     <span className="text-gray-400" style={{ fontSize: 10 }}>
                       ({IDRFormat(detail.detail.angsuran_sumdan)} +{" "}
-                      {IDRFormat(detail.angsuran - detail.detail.angsuran)})
+                      {IDRFormat(
+                        detail.angsuran - detail.detail.angsuran_sumdan,
+                      )}
+                      )
                     </span>
                   </div>
                 </Descriptions.Item>
-                <Descriptions.Item label="NED + Fee Tagihan">
+                {/* <Descriptions.Item label="NED + Fee Tagihan">
                   <div className="flex justify-between">
                     <span>
                       {IDRFormat(data.c_ned + detail.detail.fee_banpot)}
@@ -538,10 +544,7 @@ export const DetailDapem = ({
                       {IDRFormat(detail.detail.fee_banpot)})
                     </span>
                   </div>
-                </Descriptions.Item>
-                <Descriptions.Item label="Total Angsuran">
-                  {IDRFormat(detail.angsuran)}
-                </Descriptions.Item>
+                </Descriptions.Item> */}
                 <Descriptions.Item label="Sisa Gaji">
                   <div className="flex justify-between">
                     <span>
@@ -550,9 +553,9 @@ export const DetailDapem = ({
                       )}
                     </span>{" "}
                     <span className="text-gray-400" style={{ fontSize: 10 }}>
-                      ( A
+                      (A
                       {(
-                        (detail.detail.angsuran /
+                        (detail.detail.angsuran_sumdan /
                           (data.salary || data.Debitur.salary)) *
                         100
                       ).toFixed(2)}
@@ -562,7 +565,7 @@ export const DetailDapem = ({
                           (data.salary || data.Debitur.salary)) *
                         100
                       ).toFixed(2)}
-                      % )
+                      %)
                     </span>
                   </div>
                 </Descriptions.Item>
@@ -600,50 +603,54 @@ export const DetailDapem = ({
                 <Descriptions.Item label="Rekening">
                   {data.Debitur.account_number} ({data.Debitur.account_name})
                 </Descriptions.Item>
+                <Descriptions.Item label="Tujuan Penggunaan">
+                  {data.used_for}
+                </Descriptions.Item>
               </Descriptions>
 
               <p className="mt-4 mx-2 font-bold">Rincian Biaya</p>
               <div className="p-2 flex flex-col gap-2">
                 <div className="flex justify-between border-b border-gray-400 border-dashed">
                   <div className="w-48">
-                    Adm Sumdan{" "}
+                    Administrasi{" "}
                     <span className="text-gray-400" style={{ fontSize: 10 }}>
-                      ({data.c_adm_sumdan.toFixed(2)}%)
+                      ({data.c_adm_sumdan.toFixed(2)}% + {data.c_adm.toFixed(2)}
+                      %)
                     </span>
                   </div>
                   <div className="flex-1 text-right">
-                    {IDRFormat(
-                      detail.detail.adm_sumdan + detail.detail.provisi_sumdan,
-                    )}
-                  </div>
-                </div>
-                <div className="flex justify-between border-b border-gray-400 border-dashed">
-                  <div className="w-48">Buka Rekening</div>
-                  <div className="flex-1 text-right">
-                    {IDRFormat(data.c_account_sumdan)}
-                  </div>
-                </div>
-                <div className="flex justify-between border-b border-gray-400 border-dashed">
-                  <div className="w-48">
-                    Adm Koperasi{" "}
                     <span className="text-gray-400" style={{ fontSize: 10 }}>
-                      ({data.c_adm.toFixed(2)}%)
-                    </span>
-                  </div>
-                  <div className="flex-1 text-right">
-                    {IDRFormat(detail.detail.adm)}
+                      ({IDRFormat(detail.detail.adm_sumdan)} +{" "}
+                      {IDRFormat(detail.detail.adm)})
+                    </span>{" "}
+                    {IDRFormat(detail.administrasi)}
                   </div>
                 </div>
                 <div className="flex justify-between border-b border-gray-400 border-dashed">
                   <div className="w-48">
                     Asuransi{" "}
                     <span className="text-gray-400" style={{ fontSize: 10 }}>
-                      ({data.c_insurance.toFixed(2)}% +{" "}
-                      {IDRFormat(data.c_flagging)})
+                      ({data.c_insurance.toFixed(2)}%)
                     </span>
                   </div>
                   <div className="flex-1 text-right">
                     {IDRFormat(detail.asuransi)}
+                  </div>
+                </div>
+                <div className="flex justify-between border-b border-gray-400 border-dashed">
+                  <div className="w-48">
+                    Provisi
+                    <span className="text-gray-400" style={{ fontSize: 10 }}>
+                      ({data.c_provisi_sumdan.toFixed(2)}% + {}
+                      {data.c_provisi.toFixed(2)}%)
+                    </span>
+                  </div>
+                  <div className="flex-1 text-right">
+                    <span className="text-gray-400" style={{ fontSize: 10 }}>
+                      ({IDRFormat(detail.detail.provisi_sumdan)} +{" "}
+                      {IDRFormat(detail.detail.provisi)})
+                    </span>{" "}
+                    {IDRFormat(detail.provisi)}
                   </div>
                 </div>
                 <div className="flex justify-between border-b border-gray-400 border-dashed">
@@ -653,13 +660,25 @@ export const DetailDapem = ({
                   </div>
                 </div>
                 <div className="flex justify-between border-b border-gray-400 border-dashed">
+                  <div className="w-48">Buka Rekening</div>
+                  <div className="flex-1 text-right">
+                    {IDRFormat(data.c_account_sumdan)}
+                  </div>
+                </div>
+                <div className="flex justify-between border-b border-gray-400 border-dashed">
+                  <div className="w-48">Materai</div>
+                  <div className="flex-1 text-right">
+                    {IDRFormat(data.c_stamp)}
+                  </div>
+                </div>
+                <div className="flex justify-between border-b border-gray-400 border-dashed">
                   <div className="w-48">Data Informasi</div>
                   <div className="flex-1 text-right">
                     {IDRFormat(data.c_infomation)}
                   </div>
                 </div>
                 <div className="flex justify-between border-b border-gray-400 border-dashed">
-                  <div className="w-48">Mutasi & Flagging</div>
+                  <div className="w-48">Mutasi</div>
                   <div className="flex-1 text-right">
                     {IDRFormat(data.c_mutasi)}
                   </div>
@@ -668,6 +687,17 @@ export const DetailDapem = ({
                   <div className="w-48">Total Biaya</div>
                   <div className="flex-1 text-right">
                     {IDRFormat(detail.biaya)}
+                  </div>
+                </div>
+                <div className="flex justify-between border-b border-gray-400 border-dashed">
+                  <div className="w-48">
+                    Blokir Angsuran{" "}
+                    <span className="text-gray-400" style={{ fontSize: 10 }}>
+                      ({data.c_blokir}x)
+                    </span>
+                  </div>
+                  <div className="flex-1 text-right">
+                    {IDRFormat(detail.angsuran * data.c_blokir)}
                   </div>
                 </div>
                 <div className="flex justify-between  text-blue-400 font-bold">
@@ -680,20 +710,9 @@ export const DetailDapem = ({
 
               <div className="p-2 flex flex-col gap-2 mt-2">
                 <div className="flex justify-between border-b border-gray-400 border-dashed">
-                  <div className="w-48">Nominal Takeover</div>
+                  <div className="w-48">Nominal Pelunasan</div>
                   <div className="flex-1 text-right">
                     {IDRFormat(data.c_takeover)}
-                  </div>
-                </div>
-                <div className="flex justify-between border-b border-gray-400 border-dashed">
-                  <div className="w-48">
-                    Blokir Angsuran{" "}
-                    <span className="text-gray-400" style={{ fontSize: 10 }}>
-                      ({data.c_blokir}x)
-                    </span>
-                  </div>
-                  <div className="flex-1 text-right">
-                    {IDRFormat(detail.angsuran * data.c_blokir)}
                   </div>
                 </div>
                 <div className="flex justify-between border-b border-gray-400 border-dashed text-green-400 font-bold">

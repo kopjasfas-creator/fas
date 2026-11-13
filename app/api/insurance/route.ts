@@ -90,5 +90,5 @@ export async function generateID() {
   const prefix = `INSC`;
   const padLength = 4;
   const lastRecord = await prisma.insurance.count();
-  return `${prefix}${String(lastRecord).padStart(padLength, "0")}`;
+  return `${prefix}${String(lastRecord + 1).padStart(padLength, "0")}`;
 }

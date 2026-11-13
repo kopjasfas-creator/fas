@@ -67,7 +67,7 @@ export const GET = async (req: NextRequest) => {
                 dropping_status: "PROSES",
                 droppingId: null,
                 // video_contract: { not: null },
-                file_contract: { not: null },
+                // file_contract: { not: null },
                 ...whereFunc,
               },
               orderBy: { created_at: "desc" },

@@ -83,7 +83,7 @@ export default function Page() {
     const params = new URLSearchParams({
       page: pageProps.page.toString(),
       limit: pageProps.limit.toString(),
-      verif_status: pageProps.approv_status || "all",
+      verif_status: pageProps.verif_status || "all",
       ...(pageProps.search && { search: pageProps.search }),
       ...(pageProps.sumdanId && { sumdanId: pageProps.sumdanId }),
       ...(pageProps.jenisPembiayaanId && {
@@ -91,6 +91,7 @@ export default function Page() {
       }),
       ...(pageProps.backdate && { backdate: pageProps.backdate }),
       includes: true,
+      ...(!pageProps.verif_status && { dropping_status: "PENDING" }),
     });
 
     const res = await fetch(`/api/dapem?${params.toString()}`);
@@ -140,7 +141,7 @@ export default function Page() {
         return (
           <div>
             <div>{(pageProps.page - 1) * pageProps.limit + index + 1}</div>
-            <div className="opacity-80 text-xs">{record.id}</div>
+            <div className="opacity-80 ">{record.id}</div>
           </div>
         );
       },
@@ -154,7 +155,7 @@ export default function Page() {
         return (
           <div>
             <p className="font-bold">{record.Debitur.fullname}</p>
-            <div className="text-xs opacity-80">
+            <div className=" opacity-80">
               <p>@{record.Debitur.nopen}</p>
             </div>
           </div>
@@ -185,7 +186,7 @@ export default function Page() {
       render(value, record, index) {
         const temp = GetDetailDapem(record);
         return (
-          <div className="text-xs">
+          <div className="">
             <div className="flex gap-2 items-center">
               <Tag color={"blue"}>
                 <BankOutlined /> {IDRFormat(temp.detail.angsuran_sumdan)}
@@ -212,7 +213,7 @@ export default function Page() {
               {record.ProdukPembiayaan.name}{" "}
               <span>({record.ProdukPembiayaan.Sumdan.code})</span>
             </p>
-            <p className="opacity-80 text-xs">{record.JenisPembiayaan.name}</p>
+            <p className="opacity-80 ">{record.JenisPembiayaan.name}</p>
           </div>
         );
       },
@@ -226,39 +227,9 @@ export default function Page() {
         return (
           <div>
             <div>{ao?.fullname}</div>
-            <div className="text-xs opacity-80">
+            <div className=" opacity-80">
               {ao?.Cabang.name} | {ao?.Cabang.Area.name}
             </div>
-          </div>
-        );
-      },
-    },
-    {
-      title: "Status SLIK",
-      dataIndex: "slik_status",
-      key: "slik_status",
-      width: 250,
-      render: (_, record, i) => {
-        const temp = record.slik_desc
-          ? (JSON.parse(record.slik_desc) as IDesc)
-          : null;
-        return (
-          <div className="flex gap-1">
-            {GetStatusTag(record.slik_status)}
-            {temp && (
-              <Paragraph
-                ellipsis={{
-                  rows: 2,
-                  expandable: "collapsible",
-                }}
-                style={{ fontSize: 11 }}
-              >
-                {temp.desc}
-                <p>
-                  (By {temp.name} at {moment(temp.date).format("DD/MM/YYYY")})
-                </p>
-              </Paragraph>
-            )}
           </div>
         );
       },
@@ -281,7 +252,37 @@ export default function Page() {
                   rows: 2,
                   expandable: "collapsible",
                 }}
-                style={{ fontSize: 11 }}
+                style={{ fontSize: 10 }}
+              >
+                {temp.desc}
+                <p>
+                  (By {temp.name} at {moment(temp.date).format("DD/MM/YYYY")})
+                </p>
+              </Paragraph>
+            )}
+          </div>
+        );
+      },
+    },
+    {
+      title: "Status SLIK",
+      dataIndex: "slik_status",
+      key: "slik_status",
+      width: 250,
+      render: (_, record, i) => {
+        const temp = record.slik_desc
+          ? (JSON.parse(record.slik_desc) as IDesc)
+          : null;
+        return (
+          <div className="flex gap-1">
+            {GetStatusTag(record.slik_status)}
+            {temp && (
+              <Paragraph
+                ellipsis={{
+                  rows: 2,
+                  expandable: "collapsible",
+                }}
+                style={{ fontSize: 10 }}
               >
                 {temp.desc}
                 <p>
@@ -333,7 +334,7 @@ export default function Page() {
         return (
           <div>
             <div>{record.User.fullname}</div>
-            <div className="opacity-80 text-xs">
+            <div className="opacity-80 ">
               {moment(record.created_at).format("DD/MM/YYYY")}
             </div>
           </div>
@@ -394,6 +395,7 @@ export default function Page() {
                 backdate: "",
               }))
             }
+            // eslint-disable-next-line react/no-children-prop
             children={
               <>
                 <div className="my-2">
@@ -401,7 +403,7 @@ export default function Page() {
                   <RangePicker
                     size="small"
                     value={pageProps.backdate}
-                    onChange={(date, dateStr) =>
+                    onChange={(_date, dateStr) =>
                       setPageProps({ ...pageProps, backdate: dateStr, page: 1 })
                     }
                     style={{ width: "100%" }}
@@ -448,7 +450,7 @@ export default function Page() {
                   />
                 </div>
                 <div className="my-2">
-                  <p>Status Pembiayaan</p>
+                  <p>Status Proses</p>
                   <Select
                     size="small"
                     placeholder="Pilih Status..."
@@ -558,7 +560,7 @@ export default function Page() {
           });
 
           return (
-            <Table.Summary.Row className="text-xs bg-blue-400">
+            <Table.Summary.Row className="bg-green-500 text-[10px] text-slate-100">
               <Table.Summary.Cell index={0} colSpan={2} className="text-center">
                 <b>SUMMARY</b>
               </Table.Summary.Cell>
@@ -570,7 +572,7 @@ export default function Page() {
                   {IDRFormat(angsuran_sumdan)} +{" "}
                   {IDRFormat(angsuran - angsuran_sumdan)}
                 </div>
-                <div className="border-t border-gray-500">
+                <div className="border-t border-gray-300 border-dashed">
                   {IDRFormat(angsuran)}
                 </div>
               </Table.Summary.Cell>
@@ -597,7 +599,7 @@ export default function Page() {
           user={user as IUser}
           getData={getData}
           name="verif"
-          nextname="approv_status"
+          nextname="slik_status"
         />
       )}
     </Card>

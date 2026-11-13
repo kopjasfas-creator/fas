@@ -18,6 +18,7 @@ import {
 } from "@/libs/IInterfaces";
 import { useAccess } from "@/libs/Permission";
 import {
+  BankOutlined,
   HistoryOutlined,
   PrinterOutlined,
   SaveOutlined,
@@ -33,8 +34,6 @@ import {
   App,
   Button,
   Card,
-  Descriptions,
-  Divider,
   Input,
   Modal,
   notification,
@@ -42,6 +41,7 @@ import {
   Tooltip,
 } from "antd";
 import moment from "moment";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
@@ -242,7 +242,7 @@ export default function Page() {
             type: "date",
             mode: "vertical",
             class: "flex-1",
-            disabled: !hasAccess("update"),
+            disabled: !hasAccess("update") || !hasAccess("deviasi"),
             value: moment(data.created_at).format("YYYY-MM-DD"),
             onChange: (e: string) =>
               setData({ ...data, created_at: new Date(e) }),
@@ -545,10 +545,10 @@ export default function Page() {
         </div>
         {hasAccess("deviasi") ? (
           <>
-            <div className="flex gap-2 justify-between items-center py-1 border-b border-dashed flex-wrap">
-              <div className="w-[150]">Admin Sumdan</div>
+            <div className="flex gap-3 justify-between items-center py-2 border-b border-dashed border-slate-200 flex-wrap">
+              <div className="w-[150]">Administrasi</div>
               <div className="flex-1 flex gap-2 justify-end">
-                <Tooltip title="Administrasi">
+                <Tooltip title="Sumdan">
                   <Input
                     size="small"
                     style={{ flex: 1, minWidth: 50 }}
@@ -562,50 +562,7 @@ export default function Page() {
                     }
                   />
                 </Tooltip>
-                <Tooltip title="Provisi">
-                  <Input
-                    size="small"
-                    style={{ flex: 1, minWidth: 50 }}
-                    value={data.c_provisi_sumdan}
-                    type={"number"}
-                    onChange={(e) =>
-                      setData((prev) => ({
-                        ...prev,
-                        c_provisi_sumdan: parseFloat(e.target.value || "0"),
-                      }))
-                    }
-                  />
-                </Tooltip>
-                <Input
-                  size="small"
-                  disabled
-                  value={IDRFormat(
-                    details.detail.adm_sumdan + details.detail.provisi_sumdan,
-                  )}
-                  style={{ textAlign: "right", color: "black", width: 130 }}
-                />
-              </div>
-            </div>
-            <div className="flex gap-2 justify-between items-center py-1 border-b border-dashed flex-wrap">
-              <div className="w-[150]">Buka Rekening</div>
-              <div className="flex-1 flex gap-2 justify-end">
-                <Input
-                  size="small"
-                  value={IDRFormat(data.c_account_sumdan)}
-                  style={{ textAlign: "right", color: "black", width: 130 }}
-                  onChange={(e) =>
-                    setData({
-                      ...data,
-                      c_account_sumdan: IDRToNumber(e.target.value || "0"),
-                    })
-                  }
-                />
-              </div>
-            </div>
-            <div className="flex gap-2 justify-between items-center py-1 border-b border-dashed flex-wrap">
-              <div className="w-[150]">Admin Koperasi</div>
-              <div className="flex-1 flex gap-2 justify-end">
-                <Tooltip title="Adm Kop">
+                <Tooltip title="Koperasi">
                   <Input
                     size="small"
                     style={{ flex: 1, minWidth: 50 }}
@@ -619,29 +576,15 @@ export default function Page() {
                     }
                   />
                 </Tooltip>
-                <Tooltip title="Provisi Kop">
-                  <Input
-                    size="small"
-                    style={{ flex: 1, minWidth: 50 }}
-                    value={data.c_provisi}
-                    type={"number"}
-                    onChange={(e) =>
-                      setData((prev) => ({
-                        ...prev,
-                        c_provisi: parseFloat(e.target.value || "0"),
-                      }))
-                    }
-                  />
-                </Tooltip>
                 <Input
                   size="small"
                   disabled
-                  value={IDRFormat(details.detail.adm + details.detail.provisi)}
+                  value={IDRFormat(details.administrasi)}
                   style={{ textAlign: "right", color: "black", width: 130 }}
                 />
               </div>
             </div>
-            <div className="flex gap-2 justify-between items-center py-1 border-b border-dashed flex-wrap">
+            <div className="flex gap-3 justify-between items-center py-2 border-b border-dashed border-slate-200 flex-wrap">
               <div className="w-[150]">Asuransi</div>
               <div className="flex-1 flex gap-2 justify-end">
                 <Input
@@ -658,24 +601,13 @@ export default function Page() {
                 />
                 <Input
                   size="small"
-                  style={{ flex: 1, minWidth: 50 }}
-                  value={IDRFormat(data.c_flagging || 0)}
-                  onChange={(e) =>
-                    setData((prev) => ({
-                      ...prev,
-                      c_flagging: IDRToNumber(e.target.value || "0"),
-                    }))
-                  }
-                />
-                <Input
-                  size="small"
                   disabled
                   value={IDRFormat(details.asuransi)}
                   style={{ textAlign: "right", color: "black", width: 130 }}
                 />
               </div>
             </div>
-            <div className="flex gap-2 justify-between items-center py-1 border-b border-dashed flex-wrap">
+            <div className="flex gap-3 justify-between items-center py-2 border-b border-dashed border-slate-200 flex-wrap">
               <div className="w-[150]">Tatalaksana</div>
               <div className="flex-1 flex gap-2 justify-end">
                 <Input
@@ -694,7 +626,39 @@ export default function Page() {
                 />
               </div>
             </div>
-            <div className="flex gap-2 justify-between items-center py-1 border-b border-dashed flex-wrap">
+            <div className="flex gap-3 justify-between items-center py-2 border-b border-dashed border-slate-200 flex-wrap">
+              <div className="w-[150]">Buka Rekening</div>
+              <div className="flex-1 flex gap-2 justify-end">
+                <Input
+                  size="small"
+                  value={IDRFormat(data.c_account_sumdan)}
+                  style={{ textAlign: "right", color: "black", width: 130 }}
+                  onChange={(e) =>
+                    setData({
+                      ...data,
+                      c_account_sumdan: IDRToNumber(e.target.value || "0"),
+                    })
+                  }
+                />
+              </div>
+            </div>
+            <div className="flex gap-3 justify-between items-center py-2 border-b border-dashed border-slate-200 flex-wrap">
+              <div className="w-[150]">Materai</div>
+              <div className="flex-1 flex gap-2 justify-end">
+                <Input
+                  size="small"
+                  value={IDRFormat(data.c_stamp)}
+                  style={{ textAlign: "right", color: "black", width: 130 }}
+                  onChange={(e) =>
+                    setData((prev) => ({
+                      ...prev,
+                      c_stamp: IDRToNumber(e.target.value || "0"),
+                    }))
+                  }
+                />
+              </div>
+            </div>
+            <div className="flex gap-3 justify-between items-center py-2 border-b border-dashed border-slate-200 flex-wrap">
               <div className="w-[150]">Data Informasi</div>
               <div className="flex-1 flex gap-2 justify-end">
                 <Input
@@ -710,24 +674,53 @@ export default function Page() {
                 />
               </div>
             </div>
-            {/* <div className="flex gap-2 justify-between items-center py-1 border-b border-dashed flex-wrap">
-              <div className="w-[150]">Materai</div>
+            <div className="flex gap-3 justify-between items-center py-2 border-b border-dashed border-slate-200 flex-wrap">
+              <div className="w-[150]">Provisi</div>
               <div className="flex-1 flex gap-2 justify-end">
+                <Tooltip title="Sumdan">
+                  <Input
+                    size="small"
+                    style={{ flex: 1, minWidth: 50 }}
+                    value={IDRFormat(data.c_provisi_sumdan || 0)}
+                    type={"number"}
+                    onChange={(e) =>
+                      setData((prev) => ({
+                        ...prev,
+                        c_provisi_sumdan:
+                          Number(e.target.value) > 100
+                            ? IDRToNumber(e.target.value || "0")
+                            : parseFloat(e.target.value || "0"),
+                      }))
+                    }
+                  />
+                </Tooltip>
+                <Tooltip title="Koperasi">
+                  <Input
+                    size="small"
+                    style={{ flex: 1, minWidth: 50 }}
+                    value={IDRFormat(data.c_provisi || 0)}
+                    type={"number"}
+                    onChange={(e) =>
+                      setData((prev) => ({
+                        ...prev,
+                        c_provisi:
+                          Number(e.target.value) > 100
+                            ? IDRToNumber(e.target.value || "0")
+                            : parseFloat(e.target.value || "0"),
+                      }))
+                    }
+                  />
+                </Tooltip>
                 <Input
                   size="small"
-                  value={IDRFormat(data.c_stamp)}
+                  disabled
+                  value={IDRFormat(details.provisi)}
                   style={{ textAlign: "right", color: "black", width: 130 }}
-                  onChange={(e) =>
-                    setData((prev) => ({
-                      ...prev,
-                      c_stamp: IDRToNumber(e.target.value || "0"),
-                    }))
-                  }
                 />
               </div>
-            </div> */}
-            <div className="flex gap-2 justify-between items-center py-1 border-b border-dashed flex-wrap">
-              <div className="w-[150]">Mutasi & Flagging</div>
+            </div>
+            <div className="flex gap-3 justify-between items-center py-2 border-b border-dashed border-slate-200 flex-wrap">
+              <div className="w-[150]">Mutasi</div>
               <div className="flex-1 flex gap-2 justify-end">
                 <Input
                   size="small"
@@ -745,7 +738,7 @@ export default function Page() {
           </>
         ) : (
           <>
-            <div className="flex gap-2 justify-between items-center my-1 border-b border-dashed">
+            <div className="flex gap-3 justify-between items-center py-2 border-b border-dashed border-slate-200">
               <div className="flex-1">Biaya Administrasi</div>
               <div className="flex gap-2 flex-2">
                 <Input
@@ -753,12 +746,7 @@ export default function Page() {
                   style={{ width: 80 }}
                   disabled
                   suffix={<span className="text-xs italic opacity-70">%</span>}
-                  value={
-                    data.c_adm +
-                    data.c_adm_sumdan +
-                    data.c_provisi_sumdan +
-                    data.c_provisi
-                  }
+                  value={data.c_adm + data.c_adm_sumdan}
                   type={"number"}
                   // hidden={!hasAccess("showpercent")}
                   hidden={true}
@@ -766,12 +754,12 @@ export default function Page() {
                 <Input
                   size="small"
                   disabled
-                  value={IDRFormat(details.administrasi + details.provisi)}
+                  value={IDRFormat(details.administrasi)}
                   style={{ textAlign: "right", color: "black" }}
                 />
               </div>
             </div>
-            <div className="flex gap-2 justify-between items-center my-1 border-b border-dashed">
+            <div className="flex gap-3 justify-between items-center py-2 border-b border-dashed border-slate-200">
               <div className="flex-1">Biaya Asuransi</div>
               <div className="flex gap-2 flex-2">
                 <Input
@@ -797,24 +785,7 @@ export default function Page() {
                 />
               </div>
             </div>
-            <div className="flex gap-2 justify-between items-center my-1 border-b border-dashed">
-              <div className="flex-1">Biaya Buka Rekening</div>
-              <div className="flex gap-2 flex-2">
-                <Input
-                  size="small"
-                  disabled={!hasAccess("update")}
-                  value={IDRFormat(data.c_account_sumdan)}
-                  style={{ textAlign: "right", color: "black" }}
-                  onChange={(e) =>
-                    setData((prev) => ({
-                      ...prev,
-                      c_account_sumdan: IDRToNumber(e.target.value || "0"),
-                    }))
-                  }
-                />
-              </div>
-            </div>
-            <div className="flex gap-2 justify-between items-center my-1 border-b border-dashed">
+            <div className="flex gap-3 justify-between items-center py-2 border-b border-dashed border-slate-200">
               <div className="flex-1">Biaya Tatalaksana</div>
               <div className="flex gap-2 flex-2">
                 <Input
@@ -834,25 +805,25 @@ export default function Page() {
                 />
               </div>
             </div>
-            <div className="flex gap-2 justify-between items-center my-1 border-b border-dashed">
-              <div className="flex-1">Biaya Data Informasi</div>
+            <div className="flex gap-3 justify-between items-center py-2 border-b border-dashed border-slate-200">
+              <div className="flex-1">Biaya Buka Rekening</div>
               <div className="flex gap-2 flex-2">
                 <Input
                   size="small"
                   disabled={!hasAccess("update")}
-                  value={IDRFormat(data.c_infomation || 0)}
+                  value={IDRFormat(data.c_account_sumdan)}
                   style={{ textAlign: "right", color: "black" }}
                   onChange={(e) =>
                     setData((prev) => ({
                       ...prev,
-                      c_infomation: IDRToNumber(e.target.value || "0"),
+                      c_account_sumdan: IDRToNumber(e.target.value || "0"),
                     }))
                   }
                 />
               </div>
             </div>
-            {/* <div
-              className="flex gap-2 justify-between items-center my-1 border-b border-dashed"
+            <div
+              className="flex gap-3 justify-between items-center py-2 border-b border-dashed border-slate-200"
               hidden
             >
               <div className="flex-1">Biaya Metarai</div>
@@ -870,8 +841,46 @@ export default function Page() {
                   }
                 />
               </div>
-            </div> */}
-            <div className="flex gap-2 justify-between items-center my-1 border-b border-dashed">
+            </div>
+            <div className="flex gap-3 justify-between items-center py-2 border-b border-dashed border-slate-200">
+              <div className="flex-1">Biaya Data Informasi</div>
+              <div className="flex gap-2 flex-2">
+                <Input
+                  size="small"
+                  disabled={!hasAccess("update")}
+                  value={IDRFormat(data.c_infomation || 0)}
+                  style={{ textAlign: "right", color: "black" }}
+                  onChange={(e) =>
+                    setData((prev) => ({
+                      ...prev,
+                      c_infomation: IDRToNumber(e.target.value || "0"),
+                    }))
+                  }
+                />
+              </div>
+            </div>
+            <div className="flex gap-3 justify-between items-center py-2 border-b border-dashed border-slate-200">
+              <div className="flex-1">Biaya Provisi</div>
+              <div className="flex gap-2 flex-2">
+                <Input
+                  size="small"
+                  style={{ width: 80 }}
+                  disabled
+                  suffix={<span className="text-xs italic opacity-70">%</span>}
+                  value={data.c_provisi + data.c_provisi_sumdan}
+                  type={"number"}
+                  // hidden={!hasAccess("showpercent")}
+                  hidden={true}
+                />
+                <Input
+                  size="small"
+                  disabled
+                  value={IDRFormat(details.provisi)}
+                  style={{ textAlign: "right", color: "black" }}
+                />
+              </div>
+            </div>
+            <div className="flex gap-3 justify-between items-center py-2 border-b border-dashed border-slate-200">
               <div className="flex-1">Biaya Mutasi</div>
               <div className="flex gap-2 flex-2">
                 <Input
@@ -890,34 +899,14 @@ export default function Page() {
             </div>
           </>
         )}
-        <div className="flex gap-2 justify-between items-center my-1 font-bold text-red-500 border-t mt-2">
+        <div className="flex gap-3 justify-between items-center py-2 font-bold text-red-500 border-t border-slate-200 mt-3">
           <div className="flex-1">Total Biaya</div>
           <div className="text-right">{IDRFormat(details.biaya)}</div>
         </div>
-        <div className="w-full bg-blue-800 text-gray-50 p-2 rounded mb-1">
-          Rincian Pembiayaan
+        <div className="w-full bg-green-700 text-gray-50 p-2 rounded mb-1">
+          Ringkasan Penerimaan
         </div>
-        <div className="flex gap-2 justify-between items-center my-1 font-bold text-blue-500 border-b border-dashed">
-          <div className="flex-1">Terima Kotor</div>
-          <div className="text-right">{IDRFormat(details.tk)}</div>
-        </div>
-        <div className="flex gap-2 justify-between items-center my-1 text-red-500 border-b border-dashed">
-          <div className="flex-1">Nominal Takeover</div>
-          <div className="flex gap-2 flex-2">
-            <Input
-              size="small"
-              value={IDRFormat(data.c_takeover || 0)}
-              style={{ textAlign: "right", color: "black" }}
-              onChange={(e) =>
-                setData((prev) => ({
-                  ...prev,
-                  c_takeover: IDRToNumber(e.target.value || "0"),
-                }))
-              }
-            />
-          </div>
-        </div>
-        <div className="flex gap-2 justify-between items-center my-1 border-b border-dashed">
+        <div className="flex gap-3 justify-between items-center py-2 border-b border-dashed border-slate-200">
           <div className="flex-1">Blokir Angsuran</div>
           <div className="flex gap-2 flex-2">
             <Input
@@ -941,37 +930,29 @@ export default function Page() {
             />
           </div>
         </div>
-        <div className="flex gap-2 justify-between items-center my-1 font-bold text-green-500 border-t mt-2">
+        <div className="flex gap-3 justify-between items-center py-2 font-bold text-blue-500 border-b border-dashed border-slate-200">
+          <div className="flex-1">Terima Kotor</div>
+          <div className="text-right">{IDRFormat(details.tk)}</div>
+        </div>
+        <div className="flex gap-3 justify-between items-center py-2 text-red-500 border-b border-dashed border-slate-200">
+          <div className="flex-1">Nominal Pelunasan</div>
+          <div className="flex gap-2 flex-2">
+            <Input
+              size="small"
+              value={IDRFormat(data.c_takeover || 0)}
+              style={{ textAlign: "right", color: "black" }}
+              onChange={(e) =>
+                setData((prev) => ({
+                  ...prev,
+                  c_takeover: IDRToNumber(e.target.value || "0"),
+                }))
+              }
+            />
+          </div>
+        </div>
+        <div className="flex gap-3 justify-between items-center py-2 font-bold text-green-500 border-t border-slate-200 mt-3">
           <div className="flex-1">Terima Bersih</div>
           <div className="text-right">{IDRFormat(details.tb)}</div>
-        </div>
-        <Divider style={{ marginBottom: 5 }}>Informasi Tambahan</Divider>
-        <div className="italic">
-          <div className="flex justify-between border-b border-dashed">
-            <div>Angsuran</div>
-            <div>{IDRFormat(details.detail.angsuranrounded)}</div>
-          </div>
-          <div className="flex justify-between border-b border-dashed">
-            <div>NED+Fee</div>
-            <div>{IDRFormat(details.detail.fee_banpot + data.c_ned)}</div>
-          </div>
-          <div className="flex justify-between border-b border-dashed">
-            <div>Total angsuran</div>
-            <div>{IDRFormat(details.angsuran)}</div>
-          </div>
-          <div className="flex justify-between border-b border-dashed">
-            <div>Sisa Gaji</div>
-            <div>{IDRFormat(data.salary - details.angsuran)}</div>
-          </div>
-          <div className="flex justify-between border-b border-dashed">
-            <div>DBR (%)</div>
-            <div>
-              {(
-                (details.detail.angsuranrounded / data.salary) * 100 || 0
-              ).toFixed(2)}{" "}
-              % / {data.Sumdan.dsr} %
-            </div>
-          </div>
         </div>
         <div className="mt-5 flex justify-between">
           <Button
@@ -1012,6 +993,12 @@ const ModalDetailPembiayaan = ({
   detail: IOutputDapemDetail;
 }) => {
   const printRef = useRef<HTMLDivElement>(null);
+  const maturityDate = moment(data.created_at).add(data.tenor, "month");
+  const applicantAge = GetFullAge(data.Debitur.birthdate, data.created_at);
+  const maturityAge = GetFullAge(data.Debitur.birthdate, maturityDate.toDate());
+  const monthlyDbr =
+    data.salary > 0 ? (detail.detail.angsuranrounded / data.salary) * 100 : 0;
+  const printMoney = (value: number) => `Rp ${IDRFormat(value || 0)}`;
 
   const handleSave = async () => {
     try {
@@ -1067,193 +1054,236 @@ const ModalDetailPembiayaan = ({
       onCancel={() => setOpen(false)}
       footer={[]}
       width={1100}
-      style={{ top: 10 }}
+      style={{ top: 8, maxWidth: "calc(100vw - 15px)" }}
+      styles={{
+        body: {
+          // maxHeight: "calc(100vh - 58px)",
+          // overflowY: "auto",
+          // padding: 12,
+        },
+      }}
     >
-      <div ref={printRef} style={{ padding: "10px", backgroundColor: "#fff" }}>
-        <p className="font-bold text-lg mb-1">PERHITUNGAN PEMBIAYAAN</p>
-        <div className="flex gap-2 flex-col sm:flex-row justify-between">
-          <div className="flex-1">
-            <Descriptions bordered column={1} size="small">
-              <Descriptions.Item
-                label="Tanggal Simulasi"
-                style={{ padding: 5 }}
+      <div
+        ref={printRef}
+        className="simulasi-print-sheet bg-[#f8fafc] p-3 sm:p-4"
+        style={{
+          color: "#17243b",
+          // fontFamily: "Arial, sans-serif",
+        }}
+      >
+        <div
+          className="simulasi-print-header flex flex-col items-start justify-between sm:flex-row sm:items-center"
+          style={{
+            gap: 12,
+            paddingBottom: 5,
+            borderBottom: "2px solid #e2e8f0",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <div
+              style={{
+                display: "grid",
+                width: 36,
+                height: 36,
+                flexShrink: 0,
+                placeItems: "center",
+                borderRadius: 10,
+                background: "#eaf2ff",
+                color: "#2563eb",
+              }}
+            >
+              {process.env.NEXT_PUBLIC_APP_LOGO ? (
+                <Image
+                  src={process.env.NEXT_PUBLIC_APP_LOGO}
+                  alt="Logo perusahaan"
+                  width={32}
+                  height={32}
+                  unoptimized
+                  crossOrigin="anonymous"
+                  style={{ objectFit: "contain", padding: 4 }}
+                />
+              ) : (
+                <BankOutlined />
+              )}
+            </div>
+            <div>
+              <div
+                style={{
+                  fontSize: 19,
+                  fontWeight: 800,
+                  letterSpacing: "0.02em",
+                }}
               >
-                {moment(data.created_at).format("DD/MM/YYYY")}
-              </Descriptions.Item>
-              <Descriptions.Item label="Nomor Pensiun" style={{ padding: 5 }}>
-                {data.nopen}
-              </Descriptions.Item>
-              <Descriptions.Item label="Nama Lengkap" style={{ padding: 5 }}>
-                {data.Debitur.fullname}
-              </Descriptions.Item>
-              <Descriptions.Item label="Gaji Pensiun" style={{ padding: 5 }}>
-                {IDRFormat(data.salary)}
-              </Descriptions.Item>
-              <Descriptions.Item label="Tanggal Lahir" style={{ padding: 5 }}>
-                {moment(data.Debitur.birthdate).format("DD/MM/YYYY")}
-              </Descriptions.Item>
-              <Descriptions.Item label="Usia Pemohon" style={{ padding: 5 }}>
-                {(() => {
-                  const { year, month, day } = GetFullAge(
-                    data.Debitur.birthdate,
-                    data.created_at,
-                  );
-                  return `${year} Thn ${month} Bln ${day} Hr`;
-                })()}
-              </Descriptions.Item>
-            </Descriptions>
+                ANALISA PERHITUNGAN
+              </div>
+              <div style={{ marginTop: 2, color: "#64748b", fontSize: 12 }}>
+                Ringkasan simulasi dan estimasi pembiayaan
+              </div>
+            </div>
           </div>
-          <div className="flex-1">
-            <Descriptions bordered column={1} size="small">
-              <Descriptions.Item
-                label="Jenis Pembiayaan"
-                style={{ padding: 5 }}
-              >
-                {data.JenisPembiayaan.name}
-              </Descriptions.Item>
-              <Descriptions.Item
-                label="Produk Pembiayaan"
-                style={{ padding: 5 }}
-              >
-                {data.ProdukPembiayaan.name} ({data.Sumdan.code})
-              </Descriptions.Item>
-              {/* <Descriptions.Item label="Margin" style={{ padding: 5 }}>
-                {data.c_margin + data.c_margin_sumdan}%
-              </Descriptions.Item> */}
-              <Descriptions.Item label="Plafond" style={{ padding: 5 }}>
-                {IDRFormat(data.plafond)}
-              </Descriptions.Item>
-              <Descriptions.Item label="Tenor" style={{ padding: 5 }}>
-                {data.tenor}
-              </Descriptions.Item>
-              <Descriptions.Item
-                label="Usia/Tanggal Lunas"
-                style={{ fontSize: 12, padding: 5 }}
-              >
-                {(() => {
-                  const { year, month, day } = GetFullAge(
-                    data.Debitur.birthdate,
-                    moment(data.created_at).add(data.tenor, "month").toDate(),
-                  );
-                  return `${year} Thn ${month} Bln ${day} Hr (${moment(data.created_at).add(data.tenor, "month").format("DD/MM/YYYY")})`;
-                })()}
-              </Descriptions.Item>
-            </Descriptions>
+          <div
+            style={{
+              padding: "6px 9px",
+              borderRadius: 8,
+              background: "#eef2ff",
+              color: "#3730a3",
+              fontSize: 12,
+              fontWeight: 700,
+              whiteSpace: "nowrap",
+            }}
+          >
+            Tanggal simulasi: {moment(data.created_at).format("DD-MM-YYYY")}
           </div>
         </div>
 
-        <div className="flex gap-4 flex-col sm:flex-row my-1 justify-between">
-          <div className="flex-1">
-            <div className="font-bold italic p-2 bg-red-600 text-gray-50 rounded my-2">
-              Rincian Biaya
-            </div>
-            <div className="flex flex-col gap-1">
-              <div className="flex justify-between gap-2 border-b border-dashed">
-                <span>Administrasi</span>
-                <span>
-                  {IDRFormat(
-                    detail.administrasi + detail.detail.provisi_sumdan,
-                  )}
-                </span>
-              </div>
-              <div className="flex justify-between gap-2 border-b border-dashed">
-                <span>Asuransi</span>
-                <span>{IDRFormat(detail.asuransi)}</span>
-              </div>
-              <div className="flex justify-between gap-2 border-b border-dashed">
-                <span>Buka Rekening</span>
-                <span>{IDRFormat(data.c_account_sumdan)}</span>
-              </div>
-              <div className="flex justify-between gap-2 border-b border-dashed">
-                <span>Tatalaksana</span>
-                <span>{IDRFormat(data.c_gov)}</span>
-              </div>
-              <div className="flex justify-between gap-2 border-b border-dashed">
-                <span>Data Informasi</span>
-                <span>{IDRFormat(data.c_infomation)}</span>
-              </div>
-              {/* <div className="flex justify-between gap-2 border-b border-dashed">
-                <span>Materai</span>
-                <span>{IDRFormat(data.c_stamp)}</span>
-              </div> */}
-              <div className="flex justify-between gap-2 border-b border-dashed">
-                <span>Mutasi & Flagging</span>
-                <span>{IDRFormat(data.c_mutasi)}</span>
-              </div>
-              <div className="flex justify-between gap-2 font-bold text-red-500 border-t mt-2">
-                <span>TOTAL BIAYA</span>
-                <span>{IDRFormat(detail.biaya)}</span>
-              </div>
-            </div>
+        <div
+          className="simulasi-print-columns grid grid-cols-1 items-start md:grid-cols-2"
+          style={{
+            gap: 10,
+            marginTop: 10,
+          }}
+        >
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            <PrintPanel title="Data Pembiayaan">
+              <PrintDataRow label="Nomor Pensiun" value={data.nopen || "-"} />
+              <PrintDataRow
+                label="Nama Pemohon"
+                value={data.Debitur.fullname || "-"}
+              />
+              <PrintDataRow
+                label="Gaji Pensiun"
+                value={printMoney(data.salary)}
+                emphasis="positive"
+              />
+              <PrintDataRow
+                label="Tanggal Lahir"
+                value={moment(data.Debitur.birthdate).format("DD-MM-YYYY")}
+              />
+              <PrintDataRow
+                label="Usia Pemohon"
+                value={`${applicantAge.year} Tahun ${applicantAge.month} Bulan`}
+              />
+              <PrintDataRow
+                label="Jenis Pembiayaan"
+                value={data.JenisPembiayaan.name || "-"}
+              />
+              <PrintDataRow
+                label="Produk Pembiayaan"
+                value={`${data.ProdukPembiayaan.name || "-"}${data.Sumdan.code ? ` (${data.Sumdan.code})` : ""}`}
+              />
+              <PrintDataRow label="Tenor" value={`${data.tenor} bulan`} />
+              <PrintDataRow label="Plafond" value={printMoney(data.plafond)} />
+              <PrintDataRow
+                label="Margin"
+                value={`${(data.c_margin + data.c_margin_sumdan).toFixed(2)}%`}
+              />
+              <PrintDataRow
+                label="Angsuran"
+                value={printMoney(detail.angsuran)}
+                emphasis="strong"
+              />
+              <PrintDataRow
+                label="Sisa Gaji"
+                value={printMoney(data.salary - detail.angsuran)}
+                emphasis="positive"
+              />
+              <PrintDataRow
+                label="DBR / Batas"
+                value={`${monthlyDbr.toFixed(2)}% / ${data.Sumdan.dsr || 0}%`}
+                last
+              />
+              <PrintDataRow
+                label="Tanggal Estimasi Lunas"
+                value={maturityDate.format("DD-MM-YYYY")}
+              />
+              <PrintDataRow
+                label="Usia Saat Lunas"
+                value={`${maturityAge.year} Tahun ${maturityAge.month} Bulan`}
+              />
+            </PrintPanel>
           </div>
-          <div className="flex-1">
-            <div className="italic mb-1 border-b rounded p-1">
-              <div className="flex justify-between border-b border-dashed">
-                <div>Angsuran</div>
-                <div>{IDRFormat(detail.detail.angsuranrounded)}</div>
-              </div>
-              <div className="flex justify-between border-b border-dashed">
-                <div>NED+Fee</div>
-                <div>{IDRFormat(detail.detail.fee_banpot + data.c_ned)}</div>
-              </div>
-              <div className="flex justify-between border-b border-dashed">
-                <div>Total Angsuran</div>
-                <div>{IDRFormat(detail.angsuran)}</div>
-              </div>
-              <div className="flex justify-between border-b border-dashed">
-                <div>Sisa Gaji</div>
-                <div>{IDRFormat(data.salary - detail.angsuran)}</div>
-              </div>
-              <div className="flex justify-between">
-                <div>DBR (%)</div>
-                <div>
-                  {(
-                    (detail.detail.angsuranrounded / data.salary) *
-                    100
-                  ).toFixed(2)}
-                  % / {data.Sumdan.dsr}%
-                </div>
-              </div>
-            </div>
-            <Descriptions
-              bordered
-              column={1}
-              size="small"
-              title="Analisa Akhir"
-              styles={{ header: { marginBottom: 2 } }}
-            >
-              <Descriptions.Item label="Terima Kotor" style={{ padding: 5 }}>
-                {IDRFormat(detail.tk)}
-              </Descriptions.Item>
-              <Descriptions.Item
-                label="Nominal Takeover"
-                style={{ padding: 5 }}
-              >
-                {IDRFormat(data.c_takeover)}
-              </Descriptions.Item>
-              <Descriptions.Item
-                label={`Blokir Angsuran ${data.c_blokir}X`}
-                style={{ padding: 5 }}
-              >
-                {IDRFormat(data.c_blokir * detail.angsuran)}
-              </Descriptions.Item>
-              <Descriptions.Item
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            <PrintPanel title="Rincian Pembiayaan">
+              <PrintDataRow
+                label="Biaya Administrasi"
+                value={printMoney(detail.administrasi)}
+              />
+              <PrintDataRow
+                label="Biaya Asuransi"
+                value={printMoney(detail.asuransi)}
+              />
+              <PrintDataRow
+                label="Biaya Tatalaksana"
+                value={printMoney(data.c_gov)}
+              />
+              <PrintDataRow
+                label="Biaya Buka Rekening"
+                value={printMoney(data.c_account_sumdan)}
+              />
+              <PrintDataRow
+                label="Biaya Materai"
+                value={printMoney(data.c_stamp)}
+              />
+              <PrintDataRow
+                label="Biaya Provisi"
+                value={printMoney(detail.provisi)}
+              />
+              <PrintDataRow
+                label="Biaya Data Informasi"
+                value={printMoney(data.c_infomation)}
+              />
+              <PrintDataRow
+                label="Biaya Mutasi"
+                value={printMoney(data.c_mutasi)}
+              />
+              <PrintDataRow
+                label="Biaya BPP"
+                value={printMoney(data.c_fee_bpp)}
+              />
+              <PrintDataRow
+                label="Total Biaya"
+                value={printMoney(detail.biaya)}
+                emphasis="negative"
+                last
+              />
+            </PrintPanel>
+
+            <PrintPanel title="Ringkasan Penerimaan">
+              <PrintDataRow
+                label={`Blokir ${data.c_blokir}x Angsuran`}
+                value={printMoney(data.c_blokir * detail.angsuran)}
+              />
+              <PrintDataRow
+                label="Terima Kotor"
+                value={printMoney(detail.tk)}
+              />
+              <PrintDataRow
+                label="Nominal Pelunasan"
+                value={printMoney(data.c_takeover)}
+              />
+              <PrintDataRow
                 label="Terima Bersih"
-                style={{ fontWeight: "bold", color: "green", padding: 5 }}
-              >
-                {IDRFormat(detail.tb)}
-              </Descriptions.Item>
-              <Descriptions.Item
-                label="Keterangan"
-                style={{ fontWeight: "bold", color: "green", padding: 5 }}
-              >
-                <Input.TextArea />
-              </Descriptions.Item>
-            </Descriptions>
+                value={printMoney(detail.tb)}
+                emphasis="net"
+                last
+              />
+            </PrintPanel>
           </div>
         </div>
       </div>
-      <div className="flex justify-end gap-2">
+      <div
+        className="flex justify-end gap-2"
+        style={{
+          position: "sticky",
+          bottom: -12,
+          zIndex: 1,
+          margin: "0 -12px -12px",
+          padding: "8px 12px",
+          background: "#fff",
+          borderTop: "1px solid #e2e8f0",
+        }}
+      >
         <Button icon={<SaveOutlined />} onClick={() => handleSave()}>
           Simpan
         </Button>
@@ -1266,6 +1296,84 @@ const ModalDetailPembiayaan = ({
         </Button>
       </div>
     </Modal>
+  );
+};
+
+const PrintPanel = ({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) => (
+  <div
+    style={{
+      overflow: "hidden",
+      border: "1px solid #e2e8f0",
+      borderRadius: 8,
+      background: "#fff",
+    }}
+  >
+    <div
+      style={{
+        padding: "6px 10px",
+        background: "#16a765",
+        color: "#fff",
+        fontSize: 12,
+        fontWeight: 800,
+        letterSpacing: "0.08em",
+        textTransform: "uppercase",
+      }}
+    >
+      {title}
+    </div>
+    <div style={{ padding: "2px 10px" }}>{children}</div>
+  </div>
+);
+
+const PrintDataRow = ({
+  label,
+  value,
+  emphasis,
+  last = false,
+}: {
+  label: string;
+  value: React.ReactNode;
+  emphasis?: "positive" | "negative" | "strong" | "net";
+  last?: boolean;
+}) => {
+  const valueColor =
+    emphasis === "positive" || emphasis === "net"
+      ? "#15803d"
+      : emphasis === "negative"
+        ? "#dc2626"
+        : "#334155";
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "flex-start",
+        justifyContent: "space-between",
+        gap: 8,
+        padding: "3px 0",
+        borderBottom: last ? "none" : "1px solid #edf1f5",
+        fontSize: 13,
+        lineHeight: 1.3,
+      }}
+    >
+      <span style={{ color: "#64748b", minWidth: 0 }}>{label}</span>
+      <span
+        style={{
+          color: valueColor,
+          fontWeight: emphasis ? 700 : 500,
+          textAlign: "right",
+          overflowWrap: "anywhere",
+        }}
+      >
+        {value}
+      </span>
+    </div>
   );
 };
 

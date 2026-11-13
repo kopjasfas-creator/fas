@@ -98,7 +98,7 @@ export default function Page() {
         return (
           <>
             <div>{(pageProps.page - 1) * pageProps.limit + index + 1}</div>
-            <div className="text-xs opacity-70">{record.id}</div>
+            <div className="opacity-70">{record.id}</div>
           </>
         );
       },
@@ -112,7 +112,7 @@ export default function Page() {
         return (
           <div>
             <p>{record.name}</p>
-            <p className="text-xs ">@{record.code}</p>
+            <p className="opacity-80">@{record.code}</p>
           </div>
         );
       },
@@ -125,7 +125,7 @@ export default function Page() {
       render(value, record, index) {
         return (
           <div>
-            <div className="text-xs  ">
+            <div className="  ">
               <p>
                 <EnvironmentOutlined /> {record.address}
               </p>
@@ -144,7 +144,7 @@ export default function Page() {
       render(value, record, index) {
         return (
           <div>
-            <div className="text-xs  text-blue-400">
+            <div className="  text-blue-400">
               <p>Rounded : {IDRFormat(record.rounded)}</p>
               <p>DSR : {record.dsr}%</p>
               <p>TBO : {record.tbo} Bulan</p>
@@ -160,9 +160,14 @@ export default function Page() {
       key: "cost_mitra",
       render(value, record, index) {
         return (
-          <div className="text-xs text-blue-400">
+          <div className=" text-blue-400">
             <p>Admin : {record.c_adm_sumdan}%</p>
-            <p>Provisi : {record.c_provisi_sumdan}%</p>
+            <p>
+              Provisi :{" "}
+              {record.c_provisi_sumdan < 100
+                ? `${record.c_provisi_sumdan}%`
+                : IDRFormat(record.c_provisi_sumdan)}
+            </p>
             <p>Rekening : {IDRFormat(record.c_account_sumdan)}</p>
           </div>
         );
@@ -174,26 +179,17 @@ export default function Page() {
       key: "cost",
       render(value, record, index) {
         return (
-          <div className="text-xs text-blue-400">
+          <div className=" text-blue-400">
             <p>Admin : {record.c_adm}%</p>
-            <p>Provisi : {record.c_provisi}%</p>
+            <p>
+              Provisi :{" "}
+              {record.c_provisi < 100
+                ? `${record.c_provisi}%`
+                : IDRFormat(record.c_provisi)}
+            </p>
             <p>Tatalaksana : {IDRFormat(record.c_gov)}</p>
-            {/* <p>Materai : {IDRFormat(record.c_stamps)}</p> */}
-          </div>
-        );
-      },
-    },
-    {
-      title: "Lain-Lain",
-      dataIndex: "lain",
-      key: "lain",
-      render(value, record, index) {
-        return (
-          <div className="text-xs text-blue-400">
-            <p>Tamb Asuransi : {IDRFormat(record.c_flagging)}</p>
+            <p>Materai : {IDRFormat(record.c_stamps)}</p>
             <p>Data Informasi : {IDRFormat(record.c_information)}</p>
-            <p>Banpot : {record.fee_banpot}%</p>
-            <p>NED : {IDRFormat(record.c_ned)}</p>
           </div>
         );
       },
@@ -219,12 +215,10 @@ export default function Page() {
                 ((total / Number(record.limit)) * 100).toFixed(2),
               )}
             />
-            <div className="text-xs opacity-80">
+            <div className="opacity-80">
               {IDRFormat(total)} | {IDRFormat(Number(record.limit))}
             </div>
-            <div className="text-xs opacity-80 text-center">
-              OS {IDRFormat(os)}
-            </div>
+            <div className="opacity-80 text-center">OS {IDRFormat(os)}</div>
           </div>
         );
       },
@@ -404,9 +398,31 @@ function UpsertSumdan({
 }) {
   const [data, setData] = useState(record ? record : defaultSumdan);
   const [loading, setLoading] = useState(false);
+  const [provisiSumdanType, setProvisiSumdanType] = useState<
+    "percentage" | "nominal"
+  >(data.c_provisi_sumdan < 100 ? "percentage" : "nominal");
+  const [provisiType, setProvisiType] = useState<"percentage" | "nominal">(
+    data.c_provisi < 100 ? "percentage" : "nominal",
+  );
   // const [currentStep, setCurrentStep] = useState(0);
 
   const handleSave = async () => {
+    const isProvisionValid = (value: number, type: "percentage" | "nominal") =>
+      Number.isFinite(value) &&
+      (type === "percentage" ? value >= 0 && value < 100 : value >= 100);
+
+    if (
+      !isProvisionValid(data.c_provisi_sumdan, provisiSumdanType) ||
+      !isProvisionValid(data.c_provisi, provisiType)
+    ) {
+      modal.error({
+        title: "Validasi Provisi",
+        content:
+          "Provisi persentase harus kurang dari 100%. Provisi nominal harus minimal Rp100.",
+      });
+      return;
+    }
+
     setLoading(true);
     const { ProdukPembiayaans, ...saved } = data;
 
@@ -640,8 +656,36 @@ function UpsertSumdan({
                       mode: "horizontal",
                       type: "number",
                       value: data.c_adm_sumdan,
-                      onChange: (e: any) =>
+                      onChange: (e: string) =>
                         setData({ ...data, c_adm_sumdan: parseFloat(e) }),
+                    }}
+                  />
+                  <FormInput
+                    data={{
+                      label: "Satuan Provisi",
+                      mode: "horizontal",
+                      type: "select",
+                      value: provisiSumdanType,
+                      options: [
+                        { label: "Persentase (%)", value: "percentage" },
+                        { label: "Nominal (Rp)", value: "nominal" },
+                      ],
+                      onChange: (value: "percentage" | "nominal") =>
+                        setProvisiSumdanType(value),
+                    }}
+                  />
+                  <FormInput
+                    data={{
+                      label: "Provisi",
+                      mode: "horizontal",
+                      type: "number",
+                      value: data.c_provisi_sumdan,
+                      suffix: provisiSumdanType === "percentage" ? "%" : "Rp",
+                      onChange: (e: string) =>
+                        setData({
+                          ...data,
+                          c_provisi_sumdan: parseFloat(e || "0"),
+                        }),
                     }}
                   />
                   <FormInput
@@ -652,19 +696,6 @@ function UpsertSumdan({
                       value: IDRFormat(data.c_account_sumdan || 0),
                       onChange: (e: any) =>
                         setData({ ...data, c_account_sumdan: IDRToNumber(e) }),
-                    }}
-                  />
-                  <FormInput
-                    data={{
-                      label: "Provisi %",
-                      mode: "horizontal",
-                      type: "number",
-                      value: data.c_provisi_sumdan,
-                      onChange: (e: any) =>
-                        setData({
-                          ...data,
-                          c_provisi_sumdan: parseFloat(e || "0"),
-                        }),
                     }}
                   />
                   <FormInput
@@ -725,12 +756,30 @@ function UpsertSumdan({
                   />
                   <FormInput
                     data={{
+                      label: "Satuan Provisi",
+                      mode: "horizontal",
+                      type: "select",
+                      value: provisiType,
+                      options: [
+                        { label: "Persentase (%)", value: "percentage" },
+                        { label: "Nominal (Rp)", value: "nominal" },
+                      ],
+                      onChange: (value: "percentage" | "nominal") =>
+                        setProvisiType(value),
+                    }}
+                  />
+                  <FormInput
+                    data={{
                       label: "Provisi",
                       mode: "horizontal",
                       type: "number",
-                      value: IDRFormat(data.c_provisi),
-                      onChange: (e: any) =>
-                        setData({ ...data, c_provisi: IDRToNumber(e) }),
+                      value: data.c_provisi,
+                      suffix: provisiType === "percentage" ? "%" : "Rp",
+                      onChange: (e: string) =>
+                        setData({
+                          ...data,
+                          c_provisi: parseFloat(e || "0"),
+                        }),
                     }}
                   />
                   <FormInput
@@ -743,7 +792,7 @@ function UpsertSumdan({
                         setData({ ...data, c_gov: IDRToNumber(e) }),
                     }}
                   />
-                  <FormInput
+                  {/* <FormInput
                     data={{
                       label: "Tambahan Asuransi",
                       mode: "horizontal",
@@ -752,10 +801,10 @@ function UpsertSumdan({
                       onChange: (e: any) =>
                         setData({ ...data, c_flagging: IDRToNumber(e) }),
                     }}
-                  />
+                  /> */}
                   <FormInput
                     data={{
-                      label: "Sistem Informasi",
+                      label: "Data Informasi",
                       mode: "horizontal",
                       type: "text",
                       value: IDRFormat(data.c_information),
@@ -763,7 +812,7 @@ function UpsertSumdan({
                         setData({ ...data, c_information: IDRToNumber(e) }),
                     }}
                   />
-                  {/* <FormInput
+                  <FormInput
                     data={{
                       label: "Materai",
                       mode: "horizontal",
@@ -772,8 +821,8 @@ function UpsertSumdan({
                       onChange: (e: any) =>
                         setData({ ...data, c_stamps: IDRToNumber(e) }),
                     }}
-                  /> */}
-                  <FormInput
+                  />
+                  {/* <FormInput
                     data={{
                       label: "Maks Tatalaksana",
                       mode: "horizontal",
@@ -782,8 +831,8 @@ function UpsertSumdan({
                       onChange: (e: any) =>
                         setData({ ...data, max_bpp: IDRToNumber(e || "0") }),
                     }}
-                  />
-                  <FormInput
+                  /> */}
+                  {/* <FormInput
                     data={{
                       label: "Fee Banpot %",
                       mode: "horizontal",
@@ -792,8 +841,8 @@ function UpsertSumdan({
                       onChange: (e: any) =>
                         setData({ ...data, fee_banpot: parseFloat(e) }),
                     }}
-                  />
-                  <FormInput
+                  /> */}
+                  {/* <FormInput
                     data={{
                       label: "NED",
                       mode: "horizontal",
@@ -802,7 +851,7 @@ function UpsertSumdan({
                       onChange: (e: any) =>
                         setData({ ...data, c_ned: IDRToNumber(e || "0") }),
                     }}
-                  />
+                  /> */}
                   <FormInput
                     data={{
                       label: "Pembulatan",
@@ -978,7 +1027,7 @@ function TableProduk({
         return (
           <div>
             <div>{record.name}</div>
-            <div className="text-xs opacity-70">{record.id}</div>
+            <div className="opacity-70">{record.id}</div>
           </div>
         );
       },
@@ -989,7 +1038,7 @@ function TableProduk({
       key: "kriteria",
       render(value, record, index) {
         return (
-          <div className="text-xs ">
+          <div className="">
             <p>
               Usia : {record.min_age} - {record.max_age}
             </p>
@@ -1004,7 +1053,7 @@ function TableProduk({
       key: "kriteria",
       render(value, record, index) {
         return (
-          <div className="text-xs text-blue-400">
+          <div className="text-blue-400">
             <p>Tenor : {record.max_tenor} Bulan</p>
             <p>Plafond : {IDRFormat(record.max_plafond)}</p>
           </div>
@@ -1017,7 +1066,7 @@ function TableProduk({
       key: "biaya",
       render(value, record, index) {
         return (
-          <div className="text-xs text-blue-400">
+          <div className="text-blue-400">
             <div>
               Margin : {record.c_margin}%+{record.c_margin_sumdan} (
               {record.c_margin + record.c_margin_sumdan}

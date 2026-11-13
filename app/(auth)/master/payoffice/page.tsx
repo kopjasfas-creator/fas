@@ -78,7 +78,7 @@ export default function Page() {
         return (
           <>
             <div>{(pageProps.page - 1) * pageProps.limit + index + 1}</div>
-            <div className="text-xs opacity-70">{record.id}</div>
+            <div className=" opacity-70">{record.id}</div>
           </>
         );
       },
@@ -92,7 +92,7 @@ export default function Page() {
         return (
           <div>
             <div>{record.name}</div>
-            <div className="text-xs opacity-70">@{record.code}</div>
+            <div className=" opacity-70">@{record.code}</div>
           </div>
         );
       },

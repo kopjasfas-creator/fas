@@ -7,6 +7,27 @@ import {
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (request: NextRequest) => {
+  const hierarchy = request.nextUrl.searchParams.get("hierarchy");
+  if (hierarchy === "true") {
+    const accounts = await prisma.categoryOfAccount.findMany({
+      where: { parentId: null },
+      orderBy: { id: "asc" },
+      include: {
+        Parent: true,
+        JournalDetails: true,
+        Childrens: {
+          orderBy: { id: "asc" },
+          include: { Parent: true, JournalDetails: true },
+        },
+      },
+    });
+
+    return NextResponse.json(
+      { data: serializeForApi(accounts), total: accounts.length, status: 200 },
+      { status: 200 },
+    );
+  }
+
   const page = request.nextUrl.searchParams.get("page") || "1";
   const limit = request.nextUrl.searchParams.get("limit") || "50";
   const search = request.nextUrl.searchParams.get("search");

@@ -46,21 +46,24 @@ const generate = (record: INeraca, periode?: string) => {
       <style>
         @page landscapePage {
           size: A4 landscape;
-          margin: 10mm;
+          margin: 7mm;
         }
 
         @page portraitPage {
           size: A4 portrait;
-          margin: 10mm;
+          margin: 7mm;
         }
 
         body {
-          font-family: Cambria, Georgia, 'Times New Roman', Times, serif;
-          font-size: 14px;
+          font-family: Arial, Helvetica, sans-serif;
+          font-size: 9px;
+          line-height: 1.3;
+          color: #1f2937;
         }
 
         .page {
           page-break-after: always;
+          padding: 6mm !important;
         }
 
         .landscape {
@@ -75,10 +78,145 @@ const generate = (record: INeraca, periode?: string) => {
           page-break-after: auto;
         }
 
+        .page-header {
+          margin-bottom: 10px !important;
+          padding-bottom: 8px !important;
+          border-color: #cbd5e1 !important;
+        }
+
+        .page-header h2 {
+          margin-bottom: 3px !important;
+          font-size: 15px !important;
+          letter-spacing: 0.06em;
+        }
+
+        .page-header p {
+          font-size: 9px;
+          line-height: 1.35;
+        }
+
+        .page-header img,
+        .page-header .h-16 {
+          height: 34px !important;
+        }
+
+        .report-grid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 12px;
+          align-items: start;
+        }
+
+        .report-column,
+        .report-card,
+        .report-section {
+          min-width: 0;
+        }
+
+        .report-column > .text-lg {
+          margin-bottom: 5px;
+          padding-bottom: 4px;
+          border-bottom: 2px solid #334155;
+          font-size: 11px !important;
+          letter-spacing: 0.05em;
+        }
+
+        .report-card {
+          margin: 0 0 5px !important;
+          padding: 6px 8px !important;
+          border: 1px solid #dbe3ec !important;
+          border-radius: 4px;
+          background: #fff;
+        }
+
+        .report-card-title {
+          margin-bottom: 3px;
+          color: #1e3a5f;
+          font-weight: 700;
+          font-size: 9px;
+        }
+
+        .report-row {
+          display: flex;
+          justify-content: space-between;
+          gap: 8px;
+          padding: 2px 0;
+          border-bottom: 1px solid #edf1f5;
+          break-inside: avoid;
+        }
+
+        .report-row p:first-child {
+          min-width: 0;
+          overflow-wrap: anywhere;
+        }
+
+        .report-row p:last-child,
+        .report-total p:last-child,
+        .report-card-total span:last-child {
+          flex-shrink: 0;
+          text-align: right;
+          font-variant-numeric: tabular-nums;
+        }
+
+        .report-card-total {
+          display: flex;
+          justify-content: space-between;
+          gap: 8px;
+          margin-top: 3px;
+          padding-top: 4px;
+          border-top: 1px solid #cbd5e1;
+          font-weight: 700;
+          break-inside: avoid;
+        }
+
+        .report-total {
+          display: flex;
+          justify-content: space-between;
+          gap: 8px;
+          margin-top: 6px;
+          padding: 7px 8px;
+          border-radius: 4px;
+          background: #eaf1f8;
+          color: #17365d;
+          font-size: 10px !important;
+          font-weight: 700;
+        }
+
+        .report-section {
+          padding: 8px;
+          border: 1px solid #dbe3ec;
+          border-radius: 4px;
+        }
+
+        .report-section-title {
+          margin-bottom: 4px;
+          padding-bottom: 4px;
+          border-bottom: 1px solid #cbd5e1;
+          font-size: 10px;
+          font-weight: 700;
+          letter-spacing: 0.04em;
+        }
+
+        .report-summary {
+          margin-top: 8px;
+          padding: 7px 9px;
+          border: 1px solid #b7d5c2;
+          border-radius: 4px;
+          background: #edf7f0;
+          color: #14532d;
+          font-weight: 700;
+        }
+
+        .report-section .border-b {
+          padding: 2px 0;
+          border-color: #edf1f5 !important;
+        }
+
         @media print {
           .page {
             width: 100%;
-            height: 100%;
+            min-height: 0;
+            height: auto;
           }
         }
       </style>
@@ -99,20 +237,20 @@ const generate = (record: INeraca, periode?: string) => {
         )}
 
         <div class="mt-5">
-          <div class="flex sm:flex-row flex-col gap-8 justify-between">
-            <div class="flex-1 flex flex-col justify-between">
+          <div class="report-grid">
+            <div class="report-column">
               <p class="font-bold text-lg">ASSET</p>
               ${record.asset.map(
                 (d) =>
                   `
-                  <div class="border border-gray-300 border-dashed my-1 p-2">
-                    <p class="font-bold">${d.name}</p>
-                    <div class="ml-4">
+                  <div class="report-card">
+                    <p class="report-card-title">${d.name}</p>
+                    <div>
                       ${d.Childrens.map(
                         (dc) =>
                           `
                           <div key={dc.id}>
-                            <div class="flex justify-between">
+                            <div class="report-row">
                               <p>${dc.name}</p>
                               <p class="text-right">
                                 ${IDRFormat(
@@ -127,7 +265,7 @@ const generate = (record: INeraca, periode?: string) => {
                           </div>`,
                       ).join("")}
                     </div>
-                    <div class="font-bold border-t border-dashed border-gray-300 flex justify-between gap-2">
+                    <div class="report-card-total">
                       <span>Total ${d.name}</span>
                       <span class="text-right">
                         ${IDRFormat(
@@ -141,7 +279,7 @@ const generate = (record: INeraca, periode?: string) => {
                   </div>
                 `,
               )}
-              <div class="font-bold text-lg flex justify-between pr-2">
+              <div class="report-total">
                 <p>JUMLAH ASSET</p>
                 <p class="text-right">
                   ${IDRFormat(
@@ -158,17 +296,17 @@ const generate = (record: INeraca, periode?: string) => {
               </div>
             </div>
 
-            <div class="flex-1 flex flex-col justify-between">
+            <div class="report-column">
               <p class="font-bold text-lg">KEWAJIBAN DAN MODAL</p>
               ${record.kewajiban.map(
                 (d) =>
-                  `<div class="border border-gray-300 border-dashed my-1 p-2">
-                  <p class="font-bold">${d.name}</p>
-                  <div class="ml-4">
+                  `<div class="report-card">
+                  <p class="report-card-title">${d.name}</p>
+                  <div>
                     ${d.Childrens.map(
                       (dc) =>
                         `<div key={dc.id}>
-                        <div class="flex justify-between">
+                        <div class="report-row">
                           <p>${dc.name}</p>
                           <p class="text-right">
                             ${IDRFormat(
@@ -182,7 +320,7 @@ const generate = (record: INeraca, periode?: string) => {
                       </div>`,
                     ).join("")}
                   </div>
-                  <div class="font-bold border-t border-dashed border-gray-300 flex justify-between gap-2">
+                  <div class="report-card-total">
                     <span>Total ${d.name}</span>
                     <span class="text-right">
                       ${IDRFormat(
@@ -198,14 +336,14 @@ const generate = (record: INeraca, periode?: string) => {
               ${record.modal.map(
                 (d) =>
                   `<div
-                  class="border border-gray-300 border-dashed my-1 p-2"
+                  class="report-card"
                 >
-                  <p class="font-bold">${d.name}</p>
-                  <div class="ml-4">
+                  <p class="report-card-title">${d.name}</p>
+                  <div>
                     ${d.Childrens.map(
                       (dc) =>
                         `<div key={dc.id}>
-                        <div class="flex justify-between">
+                        <div class="report-row">
                           <p>${dc.name}</p>
                           <p class="text-right">
                             ${IDRFormat(
@@ -218,25 +356,21 @@ const generate = (record: INeraca, periode?: string) => {
                         </div>
                       </div>`,
                     ).join("")}
-                    <div class="flex justify-between">
-                      <p>Sisa Hasil Usaha</p>
-                      <p class="text-right">${IDRFormat(record.shu)}</p>
-                    </div>
                   </div>
-                  <div class="font-bold border-t border-dashed border-gray-300 flex justify-between gap-2">
+                  <div class="report-card-total">
                     <span>Total ${d.name}</span>
                     <span class="text-right">
                       ${IDRFormat(
                         d.Childrens.flatMap((dc) => dc.JournalDetails).reduce(
                           (acc, curr) => acc + curr.credit - curr.debit,
                           0,
-                        ) + record.shu,
+                        ),
                       )}
                     </span>
                   </div>
                 </div>`,
               )}
-              <div class="font-bold text-lg flex justify-between pr-2">
+              <div class="report-total">
                 <p>JUMLAH KEWAJIBAN DAN MODAL</p>
                 <p class="text-right">
                   ${IDRFormat(
@@ -247,7 +381,7 @@ const generate = (record: INeraca, periode?: string) => {
                       .reduce(
                         (acc, curr) => acc + (curr.credit - curr.debit),
                         0,
-                      ) + record.shu,
+                      ),
                   )}
                 </p>
               </div>
@@ -257,7 +391,7 @@ const generate = (record: INeraca, periode?: string) => {
         </div>
       </div>
 
-      <div class="page portrait p-10">
+      <div class="page landscape p-2">
         ${Header(
           "LAPORAN LABA/RUGI",
           process.env.NEXT_PUBLIC_APP_FULLNAME,
@@ -270,46 +404,44 @@ const generate = (record: INeraca, periode?: string) => {
           process.env.NEXT_PUBLIC_APP_LOGO,
         )}
 
-        <div class="border p-5">
-          <div>
-            <p class="font-bold">PENDAPATAN</p>
-            <div class="ml-4">
+        <div class="report-grid">
+          <div class="report-section">
+            <p class="report-section-title">PENDAPATAN</p>
+            <div>
             ${pend
               .map(
                 (d) =>
-                  `<div class="flex justify-between border-b border-dashed">
+                  `<div class="report-row">
                     <p>${d.CategoryOfAccount.name}</p>
                     <p class="text-right">${IDRFormat(d.value)}</p>
                   </div>`,
               )
               .join("")}
             </div>
-            <div class="flex justify-between font-bold">
+            <div class="report-card-total">
               <p>TOTAL PENDAPATAN</p>
               <p class="text-right">${IDRFormat(pend.reduce((acc, curr) => acc + curr.value, 0))}</p>
             </div>
           </div>
 
-          <div class="my-5"></div>
-
-          <div >
-            <p class="font-bold">BEBAN</p>
-            <div class="ml-4">
+          <div class="report-section">
+            <p class="report-section-title">BEBAN</p>
+            <div>
               ${beb
                 .map(
                   (d) =>
-                    `<div class="flex justify-between border-b border-dashed">
+                    `<div class="report-row">
                     <p>${d.CategoryOfAccount.name}</p>
                     <p class="text-right">${IDRFormat(d.value)}</p>
                   </div>`,
                 )
                 .join("")}
             </div>
-            <div class="flex justify-between font-bold ">
+            <div class="report-card-total">
               <p>TOTAL BEBAN</p>
               <p class="text-right">${IDRFormat(beb.reduce((acc, curr) => acc + curr.value, 0))}</p>
             </div>
-            <div class="flex justify-between font-bold mt-3 border-t">
+            <div class="report-summary flex justify-between gap-2">
               <p>SISA HASIL USAHA (SHU)</p>
               <p class="text-right">${IDRFormat(pend.reduce((acc, curr) => acc + curr.value, 0) - beb.reduce((acc, curr) => acc + curr.value, 0))}</p>
             </div>
@@ -350,5 +482,4 @@ interface INeraca {
   modal: ICategoryOfAccount[];
   pendapatan: IJournalDetail[];
   beban: IJournalDetail[];
-  shu: number;
 }

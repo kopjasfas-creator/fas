@@ -27,7 +27,6 @@ import {
   EditOutlined,
   FileFilled,
   FolderOutlined,
-  LoadingOutlined,
   PayCircleOutlined,
   PlusCircleOutlined,
   PrinterOutlined,
@@ -117,7 +116,7 @@ export default function Page() {
   const [sumdans, setSumdans] = useState<Sumdan[]>([]);
   const [jeniss, setJeniss] = useState<JenisPembiayaan[]>([]);
   const [agents, setAgents] = useState<IAgentFronting[]>([]);
-  const { modal, notification } = App.useApp();
+  const { modal } = App.useApp();
 
   const currentPath =
     typeof window !== "undefined" ? window.location.pathname : "/pendingdata";
@@ -239,21 +238,21 @@ export default function Page() {
     return { angsuran, angsuran_sumdan, plafond };
   }, [pageProps.data]);
 
-  const handlePrintForm = async (record: IDapem) => {
-    notification.open({
-      key: record.id,
-      title: (
-        <>
-          Generating... <LoadingOutlined />
-        </>
-      ),
-    });
-    const res = await fetch("/api/dapem?id=" + record.id, { method: "PATCH" });
-    const result = await res.json();
-    notification.destroy(record.id);
-    const { printForm } = await import("@/components/pdfutils/etc/printForm");
-    printForm(result.data);
-  };
+  // const handlePrintForm = async (record: IDapem) => {
+  //   notification.open({
+  //     key: record.id,
+  //     title: (
+  //       <>
+  //         Generating... <LoadingOutlined />
+  //       </>
+  //     ),
+  //   });
+  //   const res = await fetch("/api/dapem?id=" + record.id, { method: "PATCH" });
+  //   const result = await res.json();
+  //   notification.destroy(record.id);
+  //   const { printForm } = await import("@/components/pdfutils/etc/printForm");
+  //   printForm(result.data);
+  // };
 
   // 4. Bersihkan dependensi `selected` dari useMemo columns agar table tidak re-render radikal saat modal dibuka/ditutup
   const columns: TableProps<IDapem>["columns"] = useMemo(() => {
@@ -265,7 +264,7 @@ export default function Page() {
         render: (_, record, index) => (
           <div>
             <div>{(pageProps.page - 1) * pageProps.limit + index + 1}</div>
-            <div className="opacity-80 text-xs">{record.id}</div>
+            <div className="opacity-80">{record.id}</div>
           </div>
         ),
       },
@@ -281,7 +280,7 @@ export default function Page() {
             >
               {record.Debitur.fullname}
             </p>
-            <div className="text-xs opacity-80">
+            <div className="opacity-80">
               <p>@{record.Debitur.nopen}</p>
             </div>
           </div>
@@ -309,7 +308,7 @@ export default function Page() {
         render: (_, record) => {
           const temp = GetDetailDapem(record);
           return (
-            <div className="text-xs">
+            <div className="">
               <div className="flex gap-2 items-center">
                 <Tag color="blue">
                   <BankOutlined /> {IDRFormat(temp.detail.angsuran_sumdan)}
@@ -335,7 +334,7 @@ export default function Page() {
               {record.ProdukPembiayaan.name}{" "}
               <span>({record.ProdukPembiayaan.Sumdan.code})</span>
             </p>
-            <p className="opacity-80 text-xs">{record.JenisPembiayaan.name}</p>
+            <p className="opacity-80 ">{record.JenisPembiayaan.name}</p>
           </div>
         ),
       },
@@ -348,7 +347,7 @@ export default function Page() {
           return (
             <div>
               <div>{ao?.fullname}</div>
-              <div className="text-xs opacity-80">
+              <div className=" opacity-80">
                 {ao?.Cabang.name} | {ao?.Cabang.Area.name}
               </div>
             </div>
@@ -370,7 +369,7 @@ export default function Page() {
               {temp && (
                 <Paragraph
                   ellipsis={{ rows: 2, expandable: "collapsible" }}
-                  style={{ fontSize: 11 }}
+                  style={{ fontSize: 10 }}
                 >
                   {temp.desc}
                   <p>
@@ -398,7 +397,7 @@ export default function Page() {
               {temp && (
                 <Paragraph
                   ellipsis={{ rows: 2, expandable: "collapsible" }}
-                  style={{ fontSize: 11 }}
+                  style={{ fontSize: 10 }}
                 >
                   {temp.desc}
                   <p>
@@ -426,7 +425,7 @@ export default function Page() {
               {temp && (
                 <Paragraph
                   ellipsis={{ rows: 2, expandable: "collapsible" }}
-                  style={{ fontSize: 11 }}
+                  style={{ fontSize: 10 }}
                 >
                   {temp.desc}
                   <p>
@@ -448,7 +447,7 @@ export default function Page() {
           <div className="flex gap-1">
             {GetDroppingStatusTag(record.dropping_status)}
             {record.Dropping?.process_at && (
-              <div className="text-xs">
+              <div className="">
                 {moment(record.Dropping.process_at).format("DD/MM/YYYY HH:mm")}
               </div>
             )}
@@ -499,7 +498,7 @@ export default function Page() {
           <div>
             {record.no_contract && <div>{record.no_contract}</div>}
             {record.date_contract && (
-              <div className="text-xs opacity-80">
+              <div className="opacity-80">
                 {moment(record.date_contract).format("DD/MM/YYYY")}
               </div>
             )}
@@ -593,7 +592,7 @@ export default function Page() {
         render: (_, record) => (
           <div>
             <div>{record.User.fullname}</div>
-            <div className="opacity-80 text-xs">
+            <div className="opacity-80">
               {moment(record.created_at).format("DD/MM/YYYY")}
             </div>
           </div>
@@ -602,16 +601,16 @@ export default function Page() {
       {
         title: "Aksi",
         key: "action",
-        width: 100,
+        width: 120,
         render: (_, record) => (
           <div className="flex gap-1 flex-wrap justify-center">
-            {hasAccess("write") && (
+            {/* {hasAccess("write") && (
               <Button
                 icon={<PrinterOutlined />}
                 size="small"
                 onClick={() => handlePrintForm(record)}
               />
-            )}
+            )} */}
             {hasAccess("update") && (
               <Link href={`/monitoring/upsert/${record.id}`}>
                 <Button icon={<EditOutlined />} size="small" type="primary" />
@@ -687,7 +686,7 @@ export default function Page() {
   // Callback penangan summary stabil
   const handleTableSummary = useCallback(
     () => (
-      <Table.Summary.Row className="text-xs bg-blue-400">
+      <Table.Summary.Row className=" bg-green-500 text-[10px] text-slate-100">
         <Table.Summary.Cell index={0} colSpan={2} className="text-center">
           <b>SUMMARY</b>
         </Table.Summary.Cell>
@@ -701,7 +700,7 @@ export default function Page() {
               calculatedSummary.angsuran - calculatedSummary.angsuran_sumdan,
             )}
           </div>
-          <div className="border-t border-gray-500">
+          <div className="border-t border-gray-300 border-dashed">
             {IDRFormat(calculatedSummary.angsuran)}
           </div>
         </Table.Summary.Cell>
@@ -1104,7 +1103,7 @@ const SendSubmission = ({
         body: JSON.stringify({
           ...data,
           verif_status: "PENDING",
-          slik_status: "PENDING",
+          // slik_status: "PENDING",
           dropping_status: "PENDING",
         }),
       }).then((r) => r.json());
@@ -1279,10 +1278,10 @@ const PrintContractSubmission = ({
     let noPK = "";
     switch (data.ProdukPembiayaan.Sumdan.code) {
       case "BPR BBTM":
-        noPK = `${data.id.replace("P", "")}/SPK-BBTM/${process.env.NEXT_PUBLIC_APP_CODE_FILE || "SJM"}/${GetRoman(new Date(temp.date_contract || new Date()).getMonth() + 1)}/${moment(temp.date_contract || new Date()).format("YYYY")}`;
+        noPK = `${data.id.replace("P", "")}/SPK-BBTM/${process.env.NEXT_PUBLIC_APP_CODE_FILE || "FAS"}/${GetRoman(new Date(temp.date_contract || new Date()).getMonth() + 1)}/${moment(temp.date_contract || new Date()).format("YYYY")}`;
         break;
       default:
-        noPK = `${data.id.replace("P", "")}/${process.env.NEXT_PUBLIC_APP_CODE_FILE || "SJM"}-${data.ProdukPembiayaan.Sumdan.code.replace(" ", "").replace("BPR", "").replace("BANK", "")}/${moment(temp.date_contract || new Date()).format("MM-YYYY")}`;
+        noPK = `${data.id.replace("P", "")}/${process.env.NEXT_PUBLIC_APP_CODE_FILE || "FAS"}-${data.ProdukPembiayaan.Sumdan.code.replace(" ", "").replace("BPR", "").replace("BANK", "")}/${moment(temp.date_contract || new Date()).format("MM-YYYY")}`;
     }
     setTemp((prev) => ({
       ...prev,

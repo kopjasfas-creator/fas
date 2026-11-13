@@ -7,7 +7,7 @@ import { GetDetailDapem, IDRFormat } from "@/components/utils/PembiayaanUtil";
 export const FormPermohonan = (record?: IDapem) => {
   const ao = record?.AO || record?.AOCabang || record?.AOArea;
   const detail = record ? GetDetailDapem(record) : null;
-  return `<div class="flex justify-between gap-4 items-center p-1" style="background:blue;">
+  return `<div class="flex justify-between gap-4 items-center p-1" style="background:orange;">
       <div class="bg-white p-1 h-16 w-20">
         <img src="${process.env.NEXT_PUBLIC_APP_LOGO || ""}" alt="Logo" class="w-full h-full" />
       </div>
@@ -48,7 +48,7 @@ export const FormPermohonan = (record?: IDapem) => {
     </div>
 
     <div>
-      <div style="background:blue;" class="p-1 text-center font-bold text-white my-1">
+      <div style="background:orange;" class="p-1 text-center font-bold text-white my-1">
         <p>IDENTITAS PEMOHON</p>
       </div>
       <div class="flex gap-5">
@@ -191,7 +191,7 @@ export const FormPermohonan = (record?: IDapem) => {
       </div>
     </div>
 
-    <div style="background:blue;" class="p-1 text-center font-bold text-white my-1">
+    <div style="background:orange;" class="p-1 text-center font-bold text-white my-1">
       <p>DATA PENSIUN</p>
     </div>
     <div class="flex gap-5">
@@ -225,7 +225,7 @@ export const FormPermohonan = (record?: IDapem) => {
       </div>
     </div>
 
-    <div style="background:blue;" class="p-1 text-center font-bold text-white my-1">
+    <div style="background:orange;" class="p-1 text-center font-bold text-white my-1">
       <p>DATA PERMOHONAN PEMBIAYAAN</p>
     </div>
     <div>

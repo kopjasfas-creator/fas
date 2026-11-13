@@ -1,7 +1,11 @@
 import moment from "moment";
 import { IDropping } from "@/libs/IInterfaces";
 import { Header } from "../utils";
-import { GetDetailDapem, IDRFormat } from "@/components/utils/PembiayaanUtil";
+import {
+  GetDetailDapem,
+  GetProvisiAmount,
+  IDRFormat,
+} from "@/components/utils/PembiayaanUtil";
 
 moment.locale("id");
 
@@ -11,7 +15,7 @@ const generateSI = (record: IDropping) => {
   // Pre-calculate data per dapem untuk efisiensi dan konsistensi perhitungan
   const dapemProcessed = record.Dapems.map((curr) => {
     const adm = curr.plafond * (curr.c_adm_sumdan / 100);
-    const provisi = curr.plafond * (curr.c_provisi_sumdan / 100);
+    const provisi = GetProvisiAmount(curr.plafond, curr.c_provisi_sumdan);
     const dropping = curr.plafond - (adm + provisi + curr.c_account_sumdan);
 
     return {
