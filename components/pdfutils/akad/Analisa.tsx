@@ -82,16 +82,6 @@ export const AnalisaPerhitungan = (record: IDapem) => {
           value: `${(record.c_margin + record.c_margin_sumdan).toFixed(2)}% /Tahun`,
         },
         {
-          key: "Angsuran",
-          value: IDRFormat(detail.detail.angsuranrounded),
-          currency: true,
-        },
-        {
-          key: "NED + Fee",
-          value: IDRFormat(record.c_ned + detail.detail.fee_banpot),
-          currency: true,
-        },
-        {
           key: "Jumlah Angsuran Perbulan",
           value: IDRFormat(detail.angsuran),
           currency: true,
@@ -105,7 +95,7 @@ export const AnalisaPerhitungan = (record: IDapem) => {
         },
         {
           key: "DBR (%)",
-          value: `${((detail.detail.angsuranrounded / (record.salary || record.Debitur.salary)) * 100).toFixed(2)}% / ${record.ProdukPembiayaan.Sumdan.dsr.toFixed(2)}%`,
+          value: `${((detail.angsuran / (record.salary || record.Debitur.salary)) * 100).toFixed(2)}% / ${record.ProdukPembiayaan.c_dsr.toFixed(2)}%`,
         },
       ])}
     </div>
@@ -116,8 +106,16 @@ export const AnalisaPerhitungan = (record: IDapem) => {
         value: record.PrevPayOffice.name,
       },
       {
+        key: "Kantor Cabang",
+        value: record.pay_kcp,
+      },
+      {
         key: "Kantor Bayar Tujuan",
         value: record.PayOffice.name,
+      },
+      {
+        key: "Kantor Cabang",
+        value: record.pay_next_kcp,
       },
       {
         key: "Instansi Takeover",
@@ -137,8 +135,16 @@ export const AnalisaPerhitungan = (record: IDapem) => {
   <p class="font-bold text-lg mb-2">Petugas dan Unit Pelayanan</p>
   ${ListNonStyle([
     {
-      key: "AO/SPV",
-      value: `${ao?.fullname} (${ao?.nip})`,
+      key: "MOC",
+      value: `${record.AO?.fullname} (${record.AO?.nip})`,
+    },
+    {
+      key: "SPV",
+      value: `${record.AOCabang?.fullname} (${record.AOCabang?.nip})`,
+    },
+    {
+      key: "Manajer Area",
+      value: `${record.AOArea?.fullname} (${record.AOArea?.nip})`,
     },
     {
       key: "Unit Pelayanan",
@@ -156,14 +162,7 @@ export const AnalisaPerhitungan = (record: IDapem) => {
         ${ListNonStyle([
           {
             key: "Biaya Administrasi",
-            value: IDRFormat(
-              detail.administrasi + detail.detail.provisi_sumdan,
-            ),
-            currency: true,
-          },
-          {
-            key: "Biaya Buka Rekening",
-            value: IDRFormat(record.c_account_sumdan),
+            value: IDRFormat(detail.administrasi),
             currency: true,
           },
           {
@@ -171,16 +170,14 @@ export const AnalisaPerhitungan = (record: IDapem) => {
             value: IDRFormat(detail.asuransi),
             currency: true,
           },
-          // {
-          //   key: "Biaya Provisi",
-          //   value: IDRFormat(
-          //     detail.detail.provisi_sumdan + detail.detail.adm_sumdan,
-          //   ),
-          //   currency: true,
-          // },
           {
             key: "Biaya Tatalaksana",
             value: IDRFormat(record.c_gov),
+            currency: true,
+          },
+          {
+            key: "Biaya Buka Rekening",
+            value: IDRFormat(record.c_account_sumdan),
             currency: true,
           },
           // {
@@ -189,17 +186,22 @@ export const AnalisaPerhitungan = (record: IDapem) => {
           //   currency: true,
           // },
           {
+            key: "Biaya Materai",
+            value: IDRFormat(record.c_stamp),
+            currency: true,
+          },
+          {
             key: "Biaya Data Informasi",
             value: IDRFormat(record.c_infomation),
             currency: true,
           },
-          // {
-          //   key: "Biaya Materai",
-          //   value: IDRFormat(record.c_stamp),
-          //   currency: true,
-          // },
           {
-            key: "Biaya Mutasi & Flagging",
+            key: `Biaya ${record.ProdukPembiayaan.Sumdan.provisi_name ? record.ProdukPembiayaan.Sumdan.provisi_name : "Provisi"}}`,
+            value: IDRFormat(detail.provisi),
+            currency: true,
+          },
+          {
+            key: "Biaya Mutasi",
             value: IDRFormat(record.c_mutasi),
             currency: true,
           },
@@ -220,18 +222,18 @@ export const AnalisaPerhitungan = (record: IDapem) => {
       <div class="flex-1 ">
       ${ListNonStyle([
         {
+          key: `Blokir Angsuran (${record.c_blokir}x)`,
+          value: IDRFormat(record.c_blokir * detail.angsuran),
+          currency: true,
+        },
+        {
           key: "Terima Kotor",
           value: IDRFormat(detail.tk),
           currency: true,
         },
         {
-          key: "Nominal Takeover",
+          key: "Nominal Pelunasan",
           value: IDRFormat(record.c_takeover),
-          currency: true,
-        },
-        {
-          key: `Blokir Angsuran (${record.c_blokir}x)`,
-          value: IDRFormat(record.c_blokir * detail.angsuran),
           currency: true,
         },
         {
@@ -248,8 +250,8 @@ export const AnalisaPerhitungan = (record: IDapem) => {
   <div class="my-6">
     <p class="font-bold">Keterangan</p>
       <ul class="list-inside list-decimal">
-        <li>Memberikan Kuasa kepada KREDITUR untuk mentransfer dana realisasi pembiayaan ke rekening Nasabah</li>
-        <li>Menyatakan telah menerima fasilitas Pembiayaan KREDITUR sebesar Pokok Pembiayaan tersebut di atas dengan cara pembayaran: Transfer ke Rekening / Tunai.</li>
+        <li>Memberikan Kuasa kepada BANK untuk mentransfer dana realisasi pembiayaan ke rekening ${process.env.NEXT_PUBLIC_APP_COMPANY_NAME}</li>
+        <li>Menyatakan telah menerima fasilitas Pembiayaan melalui ${process.env.NEXT_PUBLIC_APP_COMPANY_NAME} selaku kuasa BANK sebesar Pokok Pembiayaan tersebut di atas dengan cara pembayaran: Transfer ke Rekening / Tunai.</li>
       </ul>
   </div>
 
@@ -262,7 +264,7 @@ export const AnalisaPerhitungan = (record: IDapem) => {
       <p>Penerima Pembiayaan</p>
     </div>
     <div class="flex-1 text-center">
-      <p>AO/SPV</p>
+      <p>MOC/SPV/Manajer Area</p>
       <div class="h-28"></div>
       <p class="border-b font-bold">${ao?.fullname}</p>
       <p>AO/SPV</p>

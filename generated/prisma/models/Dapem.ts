@@ -207,6 +207,8 @@ export type DapemMinAggregateOutputType = {
   file_mutasi: string | null
   file_flagging: string | null
   file_skep: string | null
+  pay_kcp: string | null
+  pay_next_kcp: string | null
   status: boolean | null
   created_at: Date | null
   updated_at: Date | null
@@ -348,6 +350,8 @@ export type DapemMaxAggregateOutputType = {
   file_mutasi: string | null
   file_flagging: string | null
   file_skep: string | null
+  pay_kcp: string | null
+  pay_next_kcp: string | null
   status: boolean | null
   created_at: Date | null
   updated_at: Date | null
@@ -489,6 +493,8 @@ export type DapemCountAggregateOutputType = {
   file_mutasi: number
   file_flagging: number
   file_skep: number
+  pay_kcp: number
+  pay_next_kcp: number
   status: number
   created_at: number
   updated_at: number
@@ -692,6 +698,8 @@ export type DapemMinAggregateInputType = {
   file_mutasi?: true
   file_flagging?: true
   file_skep?: true
+  pay_kcp?: true
+  pay_next_kcp?: true
   status?: true
   created_at?: true
   updated_at?: true
@@ -833,6 +841,8 @@ export type DapemMaxAggregateInputType = {
   file_mutasi?: true
   file_flagging?: true
   file_skep?: true
+  pay_kcp?: true
+  pay_next_kcp?: true
   status?: true
   created_at?: true
   updated_at?: true
@@ -974,6 +984,8 @@ export type DapemCountAggregateInputType = {
   file_mutasi?: true
   file_flagging?: true
   file_skep?: true
+  pay_kcp?: true
+  pay_next_kcp?: true
   status?: true
   created_at?: true
   updated_at?: true
@@ -1202,6 +1214,8 @@ export type DapemGroupByOutputType = {
   file_mutasi: string | null
   file_flagging: string | null
   file_skep: string | null
+  pay_kcp: string | null
+  pay_next_kcp: string | null
   status: boolean
   created_at: Date
   updated_at: Date
@@ -1366,6 +1380,8 @@ export type DapemWhereInput = {
   file_mutasi?: Prisma.StringNullableFilter<"Dapem"> | string | null
   file_flagging?: Prisma.StringNullableFilter<"Dapem"> | string | null
   file_skep?: Prisma.StringNullableFilter<"Dapem"> | string | null
+  pay_kcp?: Prisma.StringNullableFilter<"Dapem"> | string | null
+  pay_next_kcp?: Prisma.StringNullableFilter<"Dapem"> | string | null
   status?: Prisma.BoolFilter<"Dapem"> | boolean
   created_at?: Prisma.DateTimeFilter<"Dapem"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Dapem"> | Date | string
@@ -1525,6 +1541,8 @@ export type DapemOrderByWithRelationInput = {
   file_mutasi?: Prisma.SortOrderInput | Prisma.SortOrder
   file_flagging?: Prisma.SortOrderInput | Prisma.SortOrder
   file_skep?: Prisma.SortOrderInput | Prisma.SortOrder
+  pay_kcp?: Prisma.SortOrderInput | Prisma.SortOrder
+  pay_next_kcp?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -1688,6 +1706,8 @@ export type DapemWhereUniqueInput = Prisma.AtLeast<{
   file_mutasi?: Prisma.StringNullableFilter<"Dapem"> | string | null
   file_flagging?: Prisma.StringNullableFilter<"Dapem"> | string | null
   file_skep?: Prisma.StringNullableFilter<"Dapem"> | string | null
+  pay_kcp?: Prisma.StringNullableFilter<"Dapem"> | string | null
+  pay_next_kcp?: Prisma.StringNullableFilter<"Dapem"> | string | null
   status?: Prisma.BoolFilter<"Dapem"> | boolean
   created_at?: Prisma.DateTimeFilter<"Dapem"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Dapem"> | Date | string
@@ -1847,6 +1867,8 @@ export type DapemOrderByWithAggregationInput = {
   file_mutasi?: Prisma.SortOrderInput | Prisma.SortOrder
   file_flagging?: Prisma.SortOrderInput | Prisma.SortOrder
   file_skep?: Prisma.SortOrderInput | Prisma.SortOrder
+  pay_kcp?: Prisma.SortOrderInput | Prisma.SortOrder
+  pay_next_kcp?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -1996,6 +2018,8 @@ export type DapemScalarWhereWithAggregatesInput = {
   file_mutasi?: Prisma.StringNullableWithAggregatesFilter<"Dapem"> | string | null
   file_flagging?: Prisma.StringNullableWithAggregatesFilter<"Dapem"> | string | null
   file_skep?: Prisma.StringNullableWithAggregatesFilter<"Dapem"> | string | null
+  pay_kcp?: Prisma.StringNullableWithAggregatesFilter<"Dapem"> | string | null
+  pay_next_kcp?: Prisma.StringNullableWithAggregatesFilter<"Dapem"> | string | null
   status?: Prisma.BoolWithAggregatesFilter<"Dapem"> | boolean
   created_at?: Prisma.DateTimeWithAggregatesFilter<"Dapem"> | Date | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"Dapem"> | Date | string
@@ -2137,6 +2161,8 @@ export type DapemCreateInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -2281,6 +2307,8 @@ export type DapemUncheckedCreateInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -2425,6 +2453,8 @@ export type DapemUpdateInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2569,6 +2599,8 @@ export type DapemUncheckedUpdateInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2713,6 +2745,8 @@ export type DapemCreateManyInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -2854,6 +2888,8 @@ export type DapemUpdateManyMutationInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2980,6 +3016,8 @@ export type DapemUncheckedUpdateManyInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3137,6 +3175,8 @@ export type DapemCountOrderByAggregateInput = {
   file_mutasi?: Prisma.SortOrder
   file_flagging?: Prisma.SortOrder
   file_skep?: Prisma.SortOrder
+  pay_kcp?: Prisma.SortOrder
+  pay_next_kcp?: Prisma.SortOrder
   status?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -3308,6 +3348,8 @@ export type DapemMaxOrderByAggregateInput = {
   file_mutasi?: Prisma.SortOrder
   file_flagging?: Prisma.SortOrder
   file_skep?: Prisma.SortOrder
+  pay_kcp?: Prisma.SortOrder
+  pay_next_kcp?: Prisma.SortOrder
   status?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -3449,6 +3491,8 @@ export type DapemMinOrderByAggregateInput = {
   file_mutasi?: Prisma.SortOrder
   file_flagging?: Prisma.SortOrder
   file_skep?: Prisma.SortOrder
+  pay_kcp?: Prisma.SortOrder
+  pay_next_kcp?: Prisma.SortOrder
   status?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -4313,6 +4357,8 @@ export type DapemCreateWithoutAOInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -4456,6 +4502,8 @@ export type DapemUncheckedCreateWithoutAOInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -4609,6 +4657,8 @@ export type DapemCreateWithoutAOCabangInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -4752,6 +4802,8 @@ export type DapemUncheckedCreateWithoutAOCabangInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -4905,6 +4957,8 @@ export type DapemCreateWithoutAOAreaInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -5048,6 +5102,8 @@ export type DapemUncheckedCreateWithoutAOAreaInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -5201,6 +5257,8 @@ export type DapemCreateWithoutUserInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -5344,6 +5402,8 @@ export type DapemUncheckedCreateWithoutUserInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -5516,6 +5576,8 @@ export type DapemScalarWhereInput = {
   file_mutasi?: Prisma.StringNullableFilter<"Dapem"> | string | null
   file_flagging?: Prisma.StringNullableFilter<"Dapem"> | string | null
   file_skep?: Prisma.StringNullableFilter<"Dapem"> | string | null
+  pay_kcp?: Prisma.StringNullableFilter<"Dapem"> | string | null
+  pay_next_kcp?: Prisma.StringNullableFilter<"Dapem"> | string | null
   status?: Prisma.BoolFilter<"Dapem"> | boolean
   created_at?: Prisma.DateTimeFilter<"Dapem"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Dapem"> | Date | string
@@ -5705,6 +5767,8 @@ export type DapemCreateWithoutProdukPembiayaanInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -5848,6 +5912,8 @@ export type DapemUncheckedCreateWithoutProdukPembiayaanInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -6017,6 +6083,8 @@ export type DapemCreateWithoutJenisPembiayaanInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -6160,6 +6228,8 @@ export type DapemUncheckedCreateWithoutJenisPembiayaanInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -6329,6 +6399,8 @@ export type DapemCreateWithoutDebiturInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -6472,6 +6544,8 @@ export type DapemUncheckedCreateWithoutDebiturInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -6641,6 +6715,8 @@ export type DapemCreateWithoutAianalysesInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -6784,6 +6860,8 @@ export type DapemUncheckedCreateWithoutAianalysesInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -6943,6 +7021,8 @@ export type DapemUpdateWithoutAianalysesInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -7086,6 +7166,8 @@ export type DapemUncheckedUpdateWithoutAianalysesInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -7229,6 +7311,8 @@ export type DapemCreateWithoutPayOfficeInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -7372,6 +7456,8 @@ export type DapemUncheckedCreateWithoutPayOfficeInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -7525,6 +7611,8 @@ export type DapemCreateWithoutPrevPayOfficeInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -7668,6 +7756,8 @@ export type DapemUncheckedCreateWithoutPrevPayOfficeInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -7853,6 +7943,8 @@ export type DapemCreateWithoutInsuranceInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -7996,6 +8088,8 @@ export type DapemUncheckedCreateWithoutInsuranceInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -8165,6 +8259,8 @@ export type DapemCreateWithoutDroppingInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -8308,6 +8404,8 @@ export type DapemUncheckedCreateWithoutDroppingInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -8477,6 +8575,8 @@ export type DapemCreateWithoutBerkasInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -8620,6 +8720,8 @@ export type DapemUncheckedCreateWithoutBerkasInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -8789,6 +8891,8 @@ export type DapemCreateWithoutJaminanInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -8932,6 +9036,8 @@ export type DapemUncheckedCreateWithoutJaminanInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -9101,6 +9207,8 @@ export type DapemCreateWithoutPelunasanInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -9244,6 +9352,8 @@ export type DapemUncheckedCreateWithoutPelunasanInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -9403,6 +9513,8 @@ export type DapemUpdateWithoutPelunasanInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -9546,6 +9658,8 @@ export type DapemUncheckedUpdateWithoutPelunasanInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -9689,6 +9803,8 @@ export type DapemCreateWithoutAngsuransInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -9832,6 +9948,8 @@ export type DapemUncheckedCreateWithoutAngsuransInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -9991,6 +10109,8 @@ export type DapemUpdateWithoutAngsuransInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -10134,6 +10254,8 @@ export type DapemUncheckedUpdateWithoutAngsuransInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -10277,6 +10399,8 @@ export type DapemCreateWithoutAgentFrontingInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -10420,6 +10544,8 @@ export type DapemUncheckedCreateWithoutAgentFrontingInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -10589,6 +10715,8 @@ export type DapemCreateWithoutDPKStatusInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -10732,6 +10860,8 @@ export type DapemUncheckedCreateWithoutDPKStatusInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -10901,6 +11031,8 @@ export type DapemCreateManyAOInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -11041,6 +11173,8 @@ export type DapemCreateManyAOCabangInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -11181,6 +11315,8 @@ export type DapemCreateManyAOAreaInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -11321,6 +11457,8 @@ export type DapemCreateManyUserInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -11461,6 +11599,8 @@ export type DapemUpdateWithoutAOInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -11604,6 +11744,8 @@ export type DapemUncheckedUpdateWithoutAOInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -11747,6 +11889,8 @@ export type DapemUncheckedUpdateManyWithoutAOInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -11887,6 +12031,8 @@ export type DapemUpdateWithoutAOCabangInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -12030,6 +12176,8 @@ export type DapemUncheckedUpdateWithoutAOCabangInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -12173,6 +12321,8 @@ export type DapemUncheckedUpdateManyWithoutAOCabangInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -12313,6 +12463,8 @@ export type DapemUpdateWithoutAOAreaInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -12456,6 +12608,8 @@ export type DapemUncheckedUpdateWithoutAOAreaInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -12599,6 +12753,8 @@ export type DapemUncheckedUpdateManyWithoutAOAreaInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -12739,6 +12895,8 @@ export type DapemUpdateWithoutUserInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -12882,6 +13040,8 @@ export type DapemUncheckedUpdateWithoutUserInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -13025,6 +13185,8 @@ export type DapemUncheckedUpdateManyWithoutUserInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -13165,6 +13327,8 @@ export type DapemCreateManyProdukPembiayaanInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -13305,6 +13469,8 @@ export type DapemUpdateWithoutProdukPembiayaanInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -13448,6 +13614,8 @@ export type DapemUncheckedUpdateWithoutProdukPembiayaanInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -13591,6 +13759,8 @@ export type DapemUncheckedUpdateManyWithoutProdukPembiayaanInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -13731,6 +13901,8 @@ export type DapemCreateManyJenisPembiayaanInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -13871,6 +14043,8 @@ export type DapemUpdateWithoutJenisPembiayaanInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -14014,6 +14188,8 @@ export type DapemUncheckedUpdateWithoutJenisPembiayaanInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -14157,6 +14333,8 @@ export type DapemUncheckedUpdateManyWithoutJenisPembiayaanInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -14297,6 +14475,8 @@ export type DapemCreateManyDebiturInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -14437,6 +14617,8 @@ export type DapemUpdateWithoutDebiturInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -14580,6 +14762,8 @@ export type DapemUncheckedUpdateWithoutDebiturInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -14723,6 +14907,8 @@ export type DapemUncheckedUpdateManyWithoutDebiturInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -14863,6 +15049,8 @@ export type DapemCreateManyPayOfficeInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -15003,6 +15191,8 @@ export type DapemCreateManyPrevPayOfficeInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -15143,6 +15333,8 @@ export type DapemUpdateWithoutPayOfficeInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -15286,6 +15478,8 @@ export type DapemUncheckedUpdateWithoutPayOfficeInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -15429,6 +15623,8 @@ export type DapemUncheckedUpdateManyWithoutPayOfficeInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -15569,6 +15765,8 @@ export type DapemUpdateWithoutPrevPayOfficeInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -15712,6 +15910,8 @@ export type DapemUncheckedUpdateWithoutPrevPayOfficeInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -15855,6 +16055,8 @@ export type DapemUncheckedUpdateManyWithoutPrevPayOfficeInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -15995,6 +16197,8 @@ export type DapemCreateManyInsuranceInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -16135,6 +16339,8 @@ export type DapemUpdateWithoutInsuranceInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -16278,6 +16484,8 @@ export type DapemUncheckedUpdateWithoutInsuranceInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -16421,6 +16629,8 @@ export type DapemUncheckedUpdateManyWithoutInsuranceInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -16561,6 +16771,8 @@ export type DapemCreateManyDroppingInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -16701,6 +16913,8 @@ export type DapemUpdateWithoutDroppingInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -16844,6 +17058,8 @@ export type DapemUncheckedUpdateWithoutDroppingInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -16987,6 +17203,8 @@ export type DapemUncheckedUpdateManyWithoutDroppingInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -17127,6 +17345,8 @@ export type DapemCreateManyBerkasInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -17267,6 +17487,8 @@ export type DapemUpdateWithoutBerkasInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -17410,6 +17632,8 @@ export type DapemUncheckedUpdateWithoutBerkasInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -17553,6 +17777,8 @@ export type DapemUncheckedUpdateManyWithoutBerkasInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -17693,6 +17919,8 @@ export type DapemCreateManyJaminanInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -17833,6 +18061,8 @@ export type DapemUpdateWithoutJaminanInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -17976,6 +18206,8 @@ export type DapemUncheckedUpdateWithoutJaminanInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -18119,6 +18351,8 @@ export type DapemUncheckedUpdateManyWithoutJaminanInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -18259,6 +18493,8 @@ export type DapemCreateManyAgentFrontingInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -18399,6 +18635,8 @@ export type DapemUpdateWithoutAgentFrontingInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -18542,6 +18780,8 @@ export type DapemUncheckedUpdateWithoutAgentFrontingInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -18685,6 +18925,8 @@ export type DapemUncheckedUpdateManyWithoutAgentFrontingInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -18825,6 +19067,8 @@ export type DapemCreateManyDPKStatusInput = {
   file_mutasi?: string | null
   file_flagging?: string | null
   file_skep?: string | null
+  pay_kcp?: string | null
+  pay_next_kcp?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -18965,6 +19209,8 @@ export type DapemUpdateWithoutDPKStatusInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -19108,6 +19354,8 @@ export type DapemUncheckedUpdateWithoutDPKStatusInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -19251,6 +19499,8 @@ export type DapemUncheckedUpdateManyWithoutDPKStatusInput = {
   file_mutasi?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_flagging?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_skep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pay_next_kcp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -19431,6 +19681,8 @@ export type DapemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   file_mutasi?: boolean
   file_flagging?: boolean
   file_skep?: boolean
+  pay_kcp?: boolean
+  pay_next_kcp?: boolean
   status?: boolean
   created_at?: boolean
   updated_at?: boolean
@@ -19593,6 +19845,8 @@ export type DapemSelectScalar = {
   file_mutasi?: boolean
   file_flagging?: boolean
   file_skep?: boolean
+  pay_kcp?: boolean
+  pay_next_kcp?: boolean
   status?: boolean
   created_at?: boolean
   updated_at?: boolean
@@ -19613,7 +19867,7 @@ export type DapemSelectScalar = {
   dPKStatusId?: boolean
 }
 
-export type DapemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenor" | "plafond" | "salary" | "c_margin_sumdan" | "c_account_sumdan" | "c_adm_sumdan" | "c_provisi_sumdan" | "c_margin" | "c_adm" | "c_insurance" | "c_provisi" | "c_gov" | "c_stamp" | "c_flagging" | "c_infomation" | "c_mutasi" | "c_blokir" | "c_fee_bpp" | "c_fee_fronting" | "c_ned" | "fee_banpot" | "c_takeover" | "tbo" | "rounded" | "margin_type" | "cost_month" | "max_tenor" | "max_plafond" | "takeover_from" | "takeover_date" | "dom_status" | "address" | "ward" | "district" | "city" | "province" | "pos_code" | "geolocation" | "house_status" | "house_year" | "job" | "job_address" | "business" | "marriage_status" | "aw_name" | "aw_nik" | "aw_birthdate" | "aw_birthplace" | "aw_job" | "aw_address" | "aw_relate" | "aw_phone" | "aw_rt" | "aw_rw" | "aw_ward" | "aw_district" | "aw_city" | "aw_province" | "aw_pos_code" | "aw_education" | "f_name" | "f_relate" | "f_phone" | "f_address" | "f_rt" | "f_rw" | "f_ward" | "f_district" | "f_city" | "f_province" | "f_pos_code" | "dropping_status" | "verif_status" | "verif_desc" | "slik_status" | "slik_desc" | "approv_status" | "approv_desc" | "takeover_status" | "takeover_desc" | "takeover_date_exc" | "mutasi_status" | "mutasi_desc" | "mutasi_date_exc" | "flagging_status" | "flagging_desc" | "flagging_date_exc" | "cash_status" | "cash_desc" | "document_status" | "document_desc" | "guarantee_status" | "guarantee_desc" | "ao_fee_status" | "ao_fee_desc" | "dev_status" | "deviasi_note" | "note" | "audit_status" | "audit_desc" | "audit_name" | "audit_date" | "kc_pay_office" | "used_for" | "no_contract" | "date_contract" | "date_end" | "tbo_date" | "file_slik" | "file_proses" | "file_submission" | "video_interview" | "video_insurance" | "video_contract" | "file_contract" | "file_takeover" | "file_mutasi" | "file_flagging" | "file_skep" | "status" | "created_at" | "updated_at" | "prevPayOfficeId" | "nopen" | "produkPembiayaanId" | "jenisPembiayaanId" | "aoId" | "aoCabangId" | "aoAreaId" | "droppingId" | "berkasId" | "jaminanId" | "agentFrontingId" | "payOfficeId" | "insuranceId" | "userId" | "dPKStatusId", ExtArgs["result"]["dapem"]>
+export type DapemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenor" | "plafond" | "salary" | "c_margin_sumdan" | "c_account_sumdan" | "c_adm_sumdan" | "c_provisi_sumdan" | "c_margin" | "c_adm" | "c_insurance" | "c_provisi" | "c_gov" | "c_stamp" | "c_flagging" | "c_infomation" | "c_mutasi" | "c_blokir" | "c_fee_bpp" | "c_fee_fronting" | "c_ned" | "fee_banpot" | "c_takeover" | "tbo" | "rounded" | "margin_type" | "cost_month" | "max_tenor" | "max_plafond" | "takeover_from" | "takeover_date" | "dom_status" | "address" | "ward" | "district" | "city" | "province" | "pos_code" | "geolocation" | "house_status" | "house_year" | "job" | "job_address" | "business" | "marriage_status" | "aw_name" | "aw_nik" | "aw_birthdate" | "aw_birthplace" | "aw_job" | "aw_address" | "aw_relate" | "aw_phone" | "aw_rt" | "aw_rw" | "aw_ward" | "aw_district" | "aw_city" | "aw_province" | "aw_pos_code" | "aw_education" | "f_name" | "f_relate" | "f_phone" | "f_address" | "f_rt" | "f_rw" | "f_ward" | "f_district" | "f_city" | "f_province" | "f_pos_code" | "dropping_status" | "verif_status" | "verif_desc" | "slik_status" | "slik_desc" | "approv_status" | "approv_desc" | "takeover_status" | "takeover_desc" | "takeover_date_exc" | "mutasi_status" | "mutasi_desc" | "mutasi_date_exc" | "flagging_status" | "flagging_desc" | "flagging_date_exc" | "cash_status" | "cash_desc" | "document_status" | "document_desc" | "guarantee_status" | "guarantee_desc" | "ao_fee_status" | "ao_fee_desc" | "dev_status" | "deviasi_note" | "note" | "audit_status" | "audit_desc" | "audit_name" | "audit_date" | "kc_pay_office" | "used_for" | "no_contract" | "date_contract" | "date_end" | "tbo_date" | "file_slik" | "file_proses" | "file_submission" | "video_interview" | "video_insurance" | "video_contract" | "file_contract" | "file_takeover" | "file_mutasi" | "file_flagging" | "file_skep" | "pay_kcp" | "pay_next_kcp" | "status" | "created_at" | "updated_at" | "prevPayOfficeId" | "nopen" | "produkPembiayaanId" | "jenisPembiayaanId" | "aoId" | "aoCabangId" | "aoAreaId" | "droppingId" | "berkasId" | "jaminanId" | "agentFrontingId" | "payOfficeId" | "insuranceId" | "userId" | "dPKStatusId", ExtArgs["result"]["dapem"]>
 export type DapemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   Debitur?: boolean | Prisma.DebiturDefaultArgs<ExtArgs>
   ProdukPembiayaan?: boolean | Prisma.ProdukPembiayaanDefaultArgs<ExtArgs>
@@ -19779,6 +20033,8 @@ export type $DapemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     file_mutasi: string | null
     file_flagging: string | null
     file_skep: string | null
+    pay_kcp: string | null
+    pay_next_kcp: string | null
     status: boolean
     created_at: Date
     updated_at: Date
@@ -20304,6 +20560,8 @@ export interface DapemFieldRefs {
   readonly file_mutasi: Prisma.FieldRef<"Dapem", 'String'>
   readonly file_flagging: Prisma.FieldRef<"Dapem", 'String'>
   readonly file_skep: Prisma.FieldRef<"Dapem", 'String'>
+  readonly pay_kcp: Prisma.FieldRef<"Dapem", 'String'>
+  readonly pay_next_kcp: Prisma.FieldRef<"Dapem", 'String'>
   readonly status: Prisma.FieldRef<"Dapem", 'Boolean'>
   readonly created_at: Prisma.FieldRef<"Dapem", 'DateTime'>
   readonly updated_at: Prisma.FieldRef<"Dapem", 'DateTime'>

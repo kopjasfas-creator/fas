@@ -17,8 +17,13 @@ export const IDRToNumber = (str: string) => {
   return parseInt(str.replace(/\D/g, ""));
 };
 
+export const IsProvisiPercentage = (provisi: number) => provisi <= 100;
+
+export const FormatProvisi = (provisi: number) =>
+  IsProvisiPercentage(provisi) ? `${provisi}%` : `Rp ${IDRFormat(provisi)}`;
+
 export const GetProvisiAmount = (plafond: number, provisi: number) =>
-  provisi < 100 ? plafond * (provisi / 100) : provisi;
+  IsProvisiPercentage(provisi) ? plafond * (provisi / 100) : provisi;
 
 export function GetFullAge(startDate: Date, endDate: Date) {
   const momentBirthdate = moment(startDate);
@@ -47,7 +52,14 @@ export function GetMaxPlafond(
   mg_bunga: number,
   tenor: number,
   max_angsuran: number,
+  type: EMarginType = "ANUITAS",
 ) {
+  if (tenor <= 0) return 0;
+  if (type === "ANUITAS") {
+    const monthlyRate = mg_bunga / 100 / 12;
+    return max_angsuran / (1 / tenor + monthlyRate);
+  }
+
   const maxPlafond =
     Number(PV(mg_bunga / 100 / 12, tenor, max_angsuran, 0, 0)) * -1;
   return maxPlafond;
@@ -79,13 +91,14 @@ export const GetAngsuran = (
       ned: ned || 0,
       angsuran: angsuran + (ned || 0),
     };
-  } else if (type === "ANUITAS") {
+  } else if (type === "EFEKTIF") {
     const r = bunga / 12 / 100;
-
     const angs =
-      (plafond * (r * Math.pow(1 + r, tenor))) / (Math.pow(1 + r, tenor) - 1);
-    const pokok = plafond / tenor;
-    const margin = angs - pokok;
+      r === 0
+        ? plafond / tenor
+        : (plafond * r) / (1 - Math.pow(1 + r, -tenor));
+    const margin = plafond * r;
+    const pokok = angs - margin;
     const angsuran = round
       ? angs
         ? Math.round(angs / rounded) * rounded
@@ -93,6 +106,22 @@ export const GetAngsuran = (
       : angs
         ? Math.ceil(angs / rounded) * rounded
         : 0;
+    return {
+      angsuran: angsuran + (ned || 0),
+      pokok,
+      ned: ned || 0,
+      margin,
+    };
+  } else if (type === "ANUITAS") {
+    const r = bunga / 100 / 12;
+    const pokok = plafond / tenor;
+    const margin = plafond * r;
+    const angs = pokok + margin;
+    // Hitung angsuran setelah pembulatan
+    const angsuran = round
+      ? Math.round(angs / rounded) * rounded
+      : Math.ceil(angs / rounded) * rounded;
+
     return {
       angsuran: angsuran + (ned || 0),
       pokok,
@@ -197,23 +226,27 @@ export const GetDetailDapem = (dapem: IDapem): IOutputDapemDetail => {
 };
 
 const ValidateAngsuran = (dapem: IDapem, sumdan?: boolean) => {
+  if (dapem.margin_type === "EFEKTIF") return AngsuranEfektif(dapem, sumdan);
   if (dapem.margin_type === "ANUITAS") return AngsuranAnuitas(dapem, sumdan);
   if (dapem.margin_type === "FLAT") return AngsuranFlat(dapem, sumdan);
-  return AngsuranAnuitas(dapem);
+  return AngsuranEfektif(dapem);
 };
 
-const AngsuranAnuitas = (dapem: IDapem, sumdan?: boolean) => {
+const AngsuranEfektif = (dapem: IDapem, sumdan?: boolean) => {
   const rate = sumdan
     ? dapem.c_margin_sumdan
     : dapem.c_margin + dapem.c_margin_sumdan;
   const r = rate / 12 / 100;
-
-  const angs =
-    (dapem.plafond * (r * Math.pow(1 + r, dapem.tenor))) /
-    (Math.pow(1 + r, dapem.tenor) - 1);
-  // const rounded = sumdan ? dapem.rounded_sumdan : dapem.rounded;
-  // return Math.ceil(angs / rounded) * rounded;
-  return angs;
+  return r === 0
+    ? dapem.plafond / dapem.tenor
+    : (dapem.plafond * r) / (1 - Math.pow(1 + r, -dapem.tenor));
+};
+const AngsuranAnuitas = (dapem: IDapem, sumdan?: boolean) => {
+  const rate = sumdan
+    ? dapem.c_margin_sumdan
+    : dapem.c_margin + dapem.c_margin_sumdan;
+  const r = rate / 100 / 12;
+  return dapem.plafond / dapem.tenor + dapem.plafond * r;
 };
 
 const AngsuranFlat = (dapem: IDapem, sumdan?: boolean) => {

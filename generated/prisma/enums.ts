@@ -43,7 +43,8 @@ export type ESubmissionStatus = (typeof ESubmissionStatus)[keyof typeof ESubmiss
 
 export const EMarginType = {
   FLAT: 'FLAT',
-  ANUITAS: 'ANUITAS'
+  ANUITAS: 'ANUITAS',
+  EFEKTIF: 'EFEKTIF'
 } as const
 
 export type EMarginType = (typeof EMarginType)[keyof typeof EMarginType]

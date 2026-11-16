@@ -9,6 +9,7 @@ import {
   GetMaxTenor,
   IDRFormat,
   IDRToNumber,
+  IsProvisiPercentage,
 } from "@/components/utils/PembiayaanUtil";
 import {
   IDapem,
@@ -68,6 +69,7 @@ export default function Page() {
       );
       return { ...s, ProdukPembiayaans: prod };
     });
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setSumdanAv(newAv);
     if (
       data.produkPembiayaanId &&
@@ -99,20 +101,17 @@ export default function Page() {
         ProdukPembiayaan: find,
         Sumdan: findSumdan,
         c_margin_sumdan: find.c_margin_sumdan,
-        c_adm_sumdan: findSumdan.c_adm_sumdan,
-        c_provisi_sumdan: findSumdan.c_provisi_sumdan,
-        c_account_sumdan: findSumdan.c_account_sumdan,
+        c_adm_sumdan: find.c_adm_sumdan,
+        c_provisi_sumdan: find.c_provisi_sumdan,
+        c_account_sumdan: find.c_account,
         c_margin: find.c_margin,
-        c_adm: findSumdan.c_adm,
-        c_provisi: findSumdan.c_provisi,
+        c_adm: find.c_adm,
+        c_provisi: find.c_provisi,
         c_insurance: find.c_insurance,
-        c_gov: findSumdan.c_gov,
-        c_stamp: findSumdan.c_stamps,
-        c_flagging: findSumdan.c_flagging,
-        c_infomation: findSumdan.c_information,
-        rounded: findSumdan.rounded,
-        fee_banpot: findSumdan.fee_banpot,
-        c_ned: findSumdan.c_ned,
+        c_gov: find.c_gov,
+        c_stamp: find.c_stamp,
+        c_infomation: find.c_information,
+        rounded: find.c_rounded,
       }));
     }
     const maxTenn = GetMaxTenor(data.ProdukPembiayaan.max_paid, year, month);
@@ -125,7 +124,8 @@ export default function Page() {
         GetMaxPlafond(
           data.c_margin + data.c_margin_sumdan,
           data.tenor,
-          ((data.salary - 100000) * data.Sumdan.dsr) / 100,
+          ((data.salary - 100000) * data.ProdukPembiayaan.c_dsr) / 100,
+          data.margin_type,
         ),
       ),
     );
@@ -139,8 +139,8 @@ export default function Page() {
     setDetails(detailDapem);
 
     if (
-      detailDapem.detail.angsuranrounded >
-      data.salary * (data.Sumdan.dsr / 100)
+      detailDapem.angsuran >
+      data.salary * (data.ProdukPembiayaan.c_dsr / 100)
     ) {
       message.error(
         "Angsuran lebih dari 95%, mohon sesuaikan kembali pembiayaan!",
@@ -185,6 +185,7 @@ export default function Page() {
 
   useEffect(() => {
     if (data.Debitur.birthdate) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTglLahirStr(moment(data.Debitur.birthdate).format("DD/MM/YYYY"));
     }
   }, [data.Debitur.birthdate]);
@@ -407,19 +408,17 @@ export default function Page() {
                       produkPembiayaanId: find.id,
                       c_margin_sumdan: find.c_margin_sumdan,
                       c_margin: find.c_margin,
-                      c_adm_sumdan: findSumdan.c_adm_sumdan,
-                      c_adm: findSumdan.c_adm,
-                      c_provisi_sumdan: findSumdan.c_provisi_sumdan,
-                      c_account_sumdan: findSumdan.c_account_sumdan,
-                      c_gov: findSumdan.c_gov,
-                      c_provisi: findSumdan.c_provisi,
-                      c_stamp: findSumdan.c_stamps,
-                      c_flagging: findSumdan.c_flagging,
-                      c_infomation: findSumdan.c_information,
+                      c_adm_sumdan: find.c_adm_sumdan,
+                      c_adm: find.c_adm,
+                      c_provisi_sumdan: find.c_provisi_sumdan,
+                      c_account_sumdan: find.c_account,
+                      c_gov: find.c_gov,
+                      c_provisi: find.c_provisi,
+                      c_stamp: find.c_stamp,
+                      c_infomation: find.c_information,
                       c_insurance: find.c_insurance,
-                      rounded: findSumdan.rounded,
-                      c_ned: findSumdan.c_ned,
-                      fee_banpot: findSumdan.fee_banpot,
+                      rounded: find.c_rounded,
+                      margin_type: find.margin_type,
                     });
                   }
                 }
@@ -517,15 +516,14 @@ export default function Page() {
           <div className="flex-1 flex gap-2">
             <div className="flex-1">
               <div>Angsuran</div>
-              <Input
-                value={IDRFormat(details.detail.angsuranrounded || 0)}
-                disabled
-              />
+              <Input value={IDRFormat(details.angsuran || 0)} disabled />
             </div>
             <div className="flex-1">
               <div>Max Angsuran</div>
               <Input
-                value={IDRFormat((data.salary * data.Sumdan.dsr) / 100 || 0)}
+                value={IDRFormat(
+                  (data.salary * data.ProdukPembiayaan.c_dsr) / 100 || 0,
+                )}
                 disabled
               />
             </div>
@@ -617,10 +615,7 @@ export default function Page() {
                   onChange={(e) =>
                     setData((prev) => ({
                       ...prev,
-                      c_gov:
-                        IDRToNumber(e.target.value || "0") > data.Sumdan.max_bpp
-                          ? data.Sumdan.max_bpp
-                          : IDRToNumber(e.target.value || "0"),
+                      c_gov: IDRToNumber(e.target.value || "0"),
                     }))
                   }
                 />
@@ -681,15 +676,15 @@ export default function Page() {
                   <Input
                     size="small"
                     style={{ flex: 1, minWidth: 50 }}
-                    value={IDRFormat(data.c_provisi_sumdan || 0)}
+                    value={data.c_provisi_sumdan || 0}
                     type={"number"}
+                    suffix={
+                      IsProvisiPercentage(data.c_provisi_sumdan) ? "%" : "Rp"
+                    }
                     onChange={(e) =>
                       setData((prev) => ({
                         ...prev,
-                        c_provisi_sumdan:
-                          Number(e.target.value) > 100
-                            ? IDRToNumber(e.target.value || "0")
-                            : parseFloat(e.target.value || "0"),
+                        c_provisi_sumdan: Number(e.target.value || 0),
                       }))
                     }
                   />
@@ -698,15 +693,13 @@ export default function Page() {
                   <Input
                     size="small"
                     style={{ flex: 1, minWidth: 50 }}
-                    value={IDRFormat(data.c_provisi || 0)}
+                    value={data.c_provisi || 0}
                     type={"number"}
+                    suffix={IsProvisiPercentage(data.c_provisi) ? "%" : "Rp"}
                     onChange={(e) =>
                       setData((prev) => ({
                         ...prev,
-                        c_provisi:
-                          Number(e.target.value) > 100
-                            ? IDRToNumber(e.target.value || "0")
-                            : parseFloat(e.target.value || "0"),
+                        c_provisi: Number(e.target.value || 0),
                       }))
                     }
                   />
@@ -796,10 +789,7 @@ export default function Page() {
                   onChange={(e) =>
                     setData((prev) => ({
                       ...prev,
-                      c_gov:
-                        IDRToNumber(e.target.value || "0") > data.Sumdan.max_bpp
-                          ? data.Sumdan.max_bpp
-                          : IDRToNumber(e.target.value || "0"),
+                      c_gov: IDRToNumber(e.target.value || "0"),
                     }))
                   }
                 />
@@ -1189,7 +1179,7 @@ const ModalDetailPembiayaan = ({
               />
               <PrintDataRow
                 label="DBR / Batas"
-                value={`${monthlyDbr.toFixed(2)}% / ${data.Sumdan.dsr || 0}%`}
+                value={`${monthlyDbr.toFixed(2)}% / ${data.ProdukPembiayaan.c_dsr || 0}%`}
                 last
               />
               <PrintDataRow
@@ -1226,7 +1216,7 @@ const ModalDetailPembiayaan = ({
                 value={printMoney(data.c_stamp)}
               />
               <PrintDataRow
-                label="Biaya Provisi"
+                label={`Biaya ${data.Sumdan.provisi_name ? data.Sumdan.provisi_name : "Provisi"}`}
                 value={printMoney(detail.provisi)}
               />
               <PrintDataRow
@@ -1385,7 +1375,7 @@ interface IDapemSimulasi extends IDapem {
 }
 const defaultData: IDapemSimulasi = {
   nopen: "",
-  Sumdan: { max_bpp: 3000000 } as Sumdan,
+  Sumdan: {} as Sumdan,
   Debitur: { birthdate: new Date(), salary: 0 } as Debitur,
   ProdukPembiayaan: {} as ProdukPembiayaan,
   JenisPembiayaan: {} as JenisPembiayaan,
@@ -1410,6 +1400,6 @@ const defaultData: IDapemSimulasi = {
   c_ned: 0,
   salary: 0,
   fee_banpot: 0,
-  margin_type: "ANUITAS",
+  margin_type: "EFEKTIF",
   created_at: new Date(),
 } as unknown as IDapemSimulasi;

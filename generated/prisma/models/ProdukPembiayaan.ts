@@ -29,7 +29,17 @@ export type AggregateProdukPembiayaan = {
 export type ProdukPembiayaanAvgAggregateOutputType = {
   c_margin: number | null
   c_margin_sumdan: number | null
+  c_adm: number | null
+  c_adm_sumdan: number | null
+  c_provisi: number | null
+  c_provisi_sumdan: number | null
   c_insurance: number | null
+  c_gov: number | null
+  c_account: number | null
+  c_information: number | null
+  c_stamp: number | null
+  c_rounded: number | null
+  c_dsr: number | null
   max_tenor: number | null
   max_plafond: number | null
   min_age: number | null
@@ -40,7 +50,17 @@ export type ProdukPembiayaanAvgAggregateOutputType = {
 export type ProdukPembiayaanSumAggregateOutputType = {
   c_margin: number | null
   c_margin_sumdan: number | null
+  c_adm: number | null
+  c_adm_sumdan: number | null
+  c_provisi: number | null
+  c_provisi_sumdan: number | null
   c_insurance: number | null
+  c_gov: number | null
+  c_account: number | null
+  c_information: number | null
+  c_stamp: number | null
+  c_rounded: number | null
+  c_dsr: number | null
   max_tenor: number | null
   max_plafond: number | null
   min_age: number | null
@@ -53,7 +73,17 @@ export type ProdukPembiayaanMinAggregateOutputType = {
   name: string | null
   c_margin: number | null
   c_margin_sumdan: number | null
+  c_adm: number | null
+  c_adm_sumdan: number | null
+  c_provisi: number | null
+  c_provisi_sumdan: number | null
   c_insurance: number | null
+  c_gov: number | null
+  c_account: number | null
+  c_information: number | null
+  c_stamp: number | null
+  c_rounded: number | null
+  c_dsr: number | null
   max_tenor: number | null
   max_plafond: number | null
   min_age: number | null
@@ -71,7 +101,17 @@ export type ProdukPembiayaanMaxAggregateOutputType = {
   name: string | null
   c_margin: number | null
   c_margin_sumdan: number | null
+  c_adm: number | null
+  c_adm_sumdan: number | null
+  c_provisi: number | null
+  c_provisi_sumdan: number | null
   c_insurance: number | null
+  c_gov: number | null
+  c_account: number | null
+  c_information: number | null
+  c_stamp: number | null
+  c_rounded: number | null
+  c_dsr: number | null
   max_tenor: number | null
   max_plafond: number | null
   min_age: number | null
@@ -89,7 +129,17 @@ export type ProdukPembiayaanCountAggregateOutputType = {
   name: number
   c_margin: number
   c_margin_sumdan: number
+  c_adm: number
+  c_adm_sumdan: number
+  c_provisi: number
+  c_provisi_sumdan: number
   c_insurance: number
+  c_gov: number
+  c_account: number
+  c_information: number
+  c_stamp: number
+  c_rounded: number
+  c_dsr: number
   max_tenor: number
   max_plafond: number
   min_age: number
@@ -107,7 +157,17 @@ export type ProdukPembiayaanCountAggregateOutputType = {
 export type ProdukPembiayaanAvgAggregateInputType = {
   c_margin?: true
   c_margin_sumdan?: true
+  c_adm?: true
+  c_adm_sumdan?: true
+  c_provisi?: true
+  c_provisi_sumdan?: true
   c_insurance?: true
+  c_gov?: true
+  c_account?: true
+  c_information?: true
+  c_stamp?: true
+  c_rounded?: true
+  c_dsr?: true
   max_tenor?: true
   max_plafond?: true
   min_age?: true
@@ -118,7 +178,17 @@ export type ProdukPembiayaanAvgAggregateInputType = {
 export type ProdukPembiayaanSumAggregateInputType = {
   c_margin?: true
   c_margin_sumdan?: true
+  c_adm?: true
+  c_adm_sumdan?: true
+  c_provisi?: true
+  c_provisi_sumdan?: true
   c_insurance?: true
+  c_gov?: true
+  c_account?: true
+  c_information?: true
+  c_stamp?: true
+  c_rounded?: true
+  c_dsr?: true
   max_tenor?: true
   max_plafond?: true
   min_age?: true
@@ -131,7 +201,17 @@ export type ProdukPembiayaanMinAggregateInputType = {
   name?: true
   c_margin?: true
   c_margin_sumdan?: true
+  c_adm?: true
+  c_adm_sumdan?: true
+  c_provisi?: true
+  c_provisi_sumdan?: true
   c_insurance?: true
+  c_gov?: true
+  c_account?: true
+  c_information?: true
+  c_stamp?: true
+  c_rounded?: true
+  c_dsr?: true
   max_tenor?: true
   max_plafond?: true
   min_age?: true
@@ -149,7 +229,17 @@ export type ProdukPembiayaanMaxAggregateInputType = {
   name?: true
   c_margin?: true
   c_margin_sumdan?: true
+  c_adm?: true
+  c_adm_sumdan?: true
+  c_provisi?: true
+  c_provisi_sumdan?: true
   c_insurance?: true
+  c_gov?: true
+  c_account?: true
+  c_information?: true
+  c_stamp?: true
+  c_rounded?: true
+  c_dsr?: true
   max_tenor?: true
   max_plafond?: true
   min_age?: true
@@ -167,7 +257,17 @@ export type ProdukPembiayaanCountAggregateInputType = {
   name?: true
   c_margin?: true
   c_margin_sumdan?: true
+  c_adm?: true
+  c_adm_sumdan?: true
+  c_provisi?: true
+  c_provisi_sumdan?: true
   c_insurance?: true
+  c_gov?: true
+  c_account?: true
+  c_information?: true
+  c_stamp?: true
+  c_rounded?: true
+  c_dsr?: true
   max_tenor?: true
   max_plafond?: true
   min_age?: true
@@ -272,7 +372,17 @@ export type ProdukPembiayaanGroupByOutputType = {
   name: string
   c_margin: number
   c_margin_sumdan: number
+  c_adm: number
+  c_adm_sumdan: number
+  c_provisi: number
+  c_provisi_sumdan: number
   c_insurance: number
+  c_gov: number
+  c_account: number
+  c_information: number
+  c_stamp: number
+  c_rounded: number
+  c_dsr: number
   max_tenor: number
   max_plafond: number
   min_age: number
@@ -313,7 +423,17 @@ export type ProdukPembiayaanWhereInput = {
   name?: Prisma.StringFilter<"ProdukPembiayaan"> | string
   c_margin?: Prisma.FloatFilter<"ProdukPembiayaan"> | number
   c_margin_sumdan?: Prisma.FloatFilter<"ProdukPembiayaan"> | number
+  c_adm?: Prisma.FloatFilter<"ProdukPembiayaan"> | number
+  c_adm_sumdan?: Prisma.FloatFilter<"ProdukPembiayaan"> | number
+  c_provisi?: Prisma.FloatFilter<"ProdukPembiayaan"> | number
+  c_provisi_sumdan?: Prisma.FloatFilter<"ProdukPembiayaan"> | number
   c_insurance?: Prisma.FloatFilter<"ProdukPembiayaan"> | number
+  c_gov?: Prisma.IntFilter<"ProdukPembiayaan"> | number
+  c_account?: Prisma.IntFilter<"ProdukPembiayaan"> | number
+  c_information?: Prisma.IntFilter<"ProdukPembiayaan"> | number
+  c_stamp?: Prisma.IntFilter<"ProdukPembiayaan"> | number
+  c_rounded?: Prisma.IntFilter<"ProdukPembiayaan"> | number
+  c_dsr?: Prisma.FloatFilter<"ProdukPembiayaan"> | number
   max_tenor?: Prisma.IntFilter<"ProdukPembiayaan"> | number
   max_plafond?: Prisma.IntFilter<"ProdukPembiayaan"> | number
   min_age?: Prisma.IntFilter<"ProdukPembiayaan"> | number
@@ -334,7 +454,17 @@ export type ProdukPembiayaanOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   c_margin?: Prisma.SortOrder
   c_margin_sumdan?: Prisma.SortOrder
+  c_adm?: Prisma.SortOrder
+  c_adm_sumdan?: Prisma.SortOrder
+  c_provisi?: Prisma.SortOrder
+  c_provisi_sumdan?: Prisma.SortOrder
   c_insurance?: Prisma.SortOrder
+  c_gov?: Prisma.SortOrder
+  c_account?: Prisma.SortOrder
+  c_information?: Prisma.SortOrder
+  c_stamp?: Prisma.SortOrder
+  c_rounded?: Prisma.SortOrder
+  c_dsr?: Prisma.SortOrder
   max_tenor?: Prisma.SortOrder
   max_plafond?: Prisma.SortOrder
   min_age?: Prisma.SortOrder
@@ -359,7 +489,17 @@ export type ProdukPembiayaanWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"ProdukPembiayaan"> | string
   c_margin?: Prisma.FloatFilter<"ProdukPembiayaan"> | number
   c_margin_sumdan?: Prisma.FloatFilter<"ProdukPembiayaan"> | number
+  c_adm?: Prisma.FloatFilter<"ProdukPembiayaan"> | number
+  c_adm_sumdan?: Prisma.FloatFilter<"ProdukPembiayaan"> | number
+  c_provisi?: Prisma.FloatFilter<"ProdukPembiayaan"> | number
+  c_provisi_sumdan?: Prisma.FloatFilter<"ProdukPembiayaan"> | number
   c_insurance?: Prisma.FloatFilter<"ProdukPembiayaan"> | number
+  c_gov?: Prisma.IntFilter<"ProdukPembiayaan"> | number
+  c_account?: Prisma.IntFilter<"ProdukPembiayaan"> | number
+  c_information?: Prisma.IntFilter<"ProdukPembiayaan"> | number
+  c_stamp?: Prisma.IntFilter<"ProdukPembiayaan"> | number
+  c_rounded?: Prisma.IntFilter<"ProdukPembiayaan"> | number
+  c_dsr?: Prisma.FloatFilter<"ProdukPembiayaan"> | number
   max_tenor?: Prisma.IntFilter<"ProdukPembiayaan"> | number
   max_plafond?: Prisma.IntFilter<"ProdukPembiayaan"> | number
   min_age?: Prisma.IntFilter<"ProdukPembiayaan"> | number
@@ -380,7 +520,17 @@ export type ProdukPembiayaanOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   c_margin?: Prisma.SortOrder
   c_margin_sumdan?: Prisma.SortOrder
+  c_adm?: Prisma.SortOrder
+  c_adm_sumdan?: Prisma.SortOrder
+  c_provisi?: Prisma.SortOrder
+  c_provisi_sumdan?: Prisma.SortOrder
   c_insurance?: Prisma.SortOrder
+  c_gov?: Prisma.SortOrder
+  c_account?: Prisma.SortOrder
+  c_information?: Prisma.SortOrder
+  c_stamp?: Prisma.SortOrder
+  c_rounded?: Prisma.SortOrder
+  c_dsr?: Prisma.SortOrder
   max_tenor?: Prisma.SortOrder
   max_plafond?: Prisma.SortOrder
   min_age?: Prisma.SortOrder
@@ -406,7 +556,17 @@ export type ProdukPembiayaanScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"ProdukPembiayaan"> | string
   c_margin?: Prisma.FloatWithAggregatesFilter<"ProdukPembiayaan"> | number
   c_margin_sumdan?: Prisma.FloatWithAggregatesFilter<"ProdukPembiayaan"> | number
+  c_adm?: Prisma.FloatWithAggregatesFilter<"ProdukPembiayaan"> | number
+  c_adm_sumdan?: Prisma.FloatWithAggregatesFilter<"ProdukPembiayaan"> | number
+  c_provisi?: Prisma.FloatWithAggregatesFilter<"ProdukPembiayaan"> | number
+  c_provisi_sumdan?: Prisma.FloatWithAggregatesFilter<"ProdukPembiayaan"> | number
   c_insurance?: Prisma.FloatWithAggregatesFilter<"ProdukPembiayaan"> | number
+  c_gov?: Prisma.IntWithAggregatesFilter<"ProdukPembiayaan"> | number
+  c_account?: Prisma.IntWithAggregatesFilter<"ProdukPembiayaan"> | number
+  c_information?: Prisma.IntWithAggregatesFilter<"ProdukPembiayaan"> | number
+  c_stamp?: Prisma.IntWithAggregatesFilter<"ProdukPembiayaan"> | number
+  c_rounded?: Prisma.IntWithAggregatesFilter<"ProdukPembiayaan"> | number
+  c_dsr?: Prisma.FloatWithAggregatesFilter<"ProdukPembiayaan"> | number
   max_tenor?: Prisma.IntWithAggregatesFilter<"ProdukPembiayaan"> | number
   max_plafond?: Prisma.IntWithAggregatesFilter<"ProdukPembiayaan"> | number
   min_age?: Prisma.IntWithAggregatesFilter<"ProdukPembiayaan"> | number
@@ -424,7 +584,17 @@ export type ProdukPembiayaanCreateInput = {
   name: string
   c_margin: number
   c_margin_sumdan?: number
-  c_insurance: number
+  c_adm?: number
+  c_adm_sumdan?: number
+  c_provisi?: number
+  c_provisi_sumdan?: number
+  c_insurance?: number
+  c_gov?: number
+  c_account?: number
+  c_information?: number
+  c_stamp?: number
+  c_rounded?: number
+  c_dsr?: number
   max_tenor: number
   max_plafond: number
   min_age: number
@@ -444,7 +614,17 @@ export type ProdukPembiayaanUncheckedCreateInput = {
   name: string
   c_margin: number
   c_margin_sumdan?: number
-  c_insurance: number
+  c_adm?: number
+  c_adm_sumdan?: number
+  c_provisi?: number
+  c_provisi_sumdan?: number
+  c_insurance?: number
+  c_gov?: number
+  c_account?: number
+  c_information?: number
+  c_stamp?: number
+  c_rounded?: number
+  c_dsr?: number
   max_tenor: number
   max_plafond: number
   min_age: number
@@ -464,7 +644,17 @@ export type ProdukPembiayaanUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   c_margin?: Prisma.FloatFieldUpdateOperationsInput | number
   c_margin_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_adm?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_adm_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_provisi?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_provisi_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
   c_insurance?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_gov?: Prisma.IntFieldUpdateOperationsInput | number
+  c_account?: Prisma.IntFieldUpdateOperationsInput | number
+  c_information?: Prisma.IntFieldUpdateOperationsInput | number
+  c_stamp?: Prisma.IntFieldUpdateOperationsInput | number
+  c_rounded?: Prisma.IntFieldUpdateOperationsInput | number
+  c_dsr?: Prisma.FloatFieldUpdateOperationsInput | number
   max_tenor?: Prisma.IntFieldUpdateOperationsInput | number
   max_plafond?: Prisma.IntFieldUpdateOperationsInput | number
   min_age?: Prisma.IntFieldUpdateOperationsInput | number
@@ -484,7 +674,17 @@ export type ProdukPembiayaanUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   c_margin?: Prisma.FloatFieldUpdateOperationsInput | number
   c_margin_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_adm?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_adm_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_provisi?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_provisi_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
   c_insurance?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_gov?: Prisma.IntFieldUpdateOperationsInput | number
+  c_account?: Prisma.IntFieldUpdateOperationsInput | number
+  c_information?: Prisma.IntFieldUpdateOperationsInput | number
+  c_stamp?: Prisma.IntFieldUpdateOperationsInput | number
+  c_rounded?: Prisma.IntFieldUpdateOperationsInput | number
+  c_dsr?: Prisma.FloatFieldUpdateOperationsInput | number
   max_tenor?: Prisma.IntFieldUpdateOperationsInput | number
   max_plafond?: Prisma.IntFieldUpdateOperationsInput | number
   min_age?: Prisma.IntFieldUpdateOperationsInput | number
@@ -504,7 +704,17 @@ export type ProdukPembiayaanCreateManyInput = {
   name: string
   c_margin: number
   c_margin_sumdan?: number
-  c_insurance: number
+  c_adm?: number
+  c_adm_sumdan?: number
+  c_provisi?: number
+  c_provisi_sumdan?: number
+  c_insurance?: number
+  c_gov?: number
+  c_account?: number
+  c_information?: number
+  c_stamp?: number
+  c_rounded?: number
+  c_dsr?: number
   max_tenor: number
   max_plafond: number
   min_age: number
@@ -522,7 +732,17 @@ export type ProdukPembiayaanUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   c_margin?: Prisma.FloatFieldUpdateOperationsInput | number
   c_margin_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_adm?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_adm_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_provisi?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_provisi_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
   c_insurance?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_gov?: Prisma.IntFieldUpdateOperationsInput | number
+  c_account?: Prisma.IntFieldUpdateOperationsInput | number
+  c_information?: Prisma.IntFieldUpdateOperationsInput | number
+  c_stamp?: Prisma.IntFieldUpdateOperationsInput | number
+  c_rounded?: Prisma.IntFieldUpdateOperationsInput | number
+  c_dsr?: Prisma.FloatFieldUpdateOperationsInput | number
   max_tenor?: Prisma.IntFieldUpdateOperationsInput | number
   max_plafond?: Prisma.IntFieldUpdateOperationsInput | number
   min_age?: Prisma.IntFieldUpdateOperationsInput | number
@@ -539,7 +759,17 @@ export type ProdukPembiayaanUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   c_margin?: Prisma.FloatFieldUpdateOperationsInput | number
   c_margin_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_adm?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_adm_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_provisi?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_provisi_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
   c_insurance?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_gov?: Prisma.IntFieldUpdateOperationsInput | number
+  c_account?: Prisma.IntFieldUpdateOperationsInput | number
+  c_information?: Prisma.IntFieldUpdateOperationsInput | number
+  c_stamp?: Prisma.IntFieldUpdateOperationsInput | number
+  c_rounded?: Prisma.IntFieldUpdateOperationsInput | number
+  c_dsr?: Prisma.FloatFieldUpdateOperationsInput | number
   max_tenor?: Prisma.IntFieldUpdateOperationsInput | number
   max_plafond?: Prisma.IntFieldUpdateOperationsInput | number
   min_age?: Prisma.IntFieldUpdateOperationsInput | number
@@ -573,7 +803,17 @@ export type ProdukPembiayaanCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   c_margin?: Prisma.SortOrder
   c_margin_sumdan?: Prisma.SortOrder
+  c_adm?: Prisma.SortOrder
+  c_adm_sumdan?: Prisma.SortOrder
+  c_provisi?: Prisma.SortOrder
+  c_provisi_sumdan?: Prisma.SortOrder
   c_insurance?: Prisma.SortOrder
+  c_gov?: Prisma.SortOrder
+  c_account?: Prisma.SortOrder
+  c_information?: Prisma.SortOrder
+  c_stamp?: Prisma.SortOrder
+  c_rounded?: Prisma.SortOrder
+  c_dsr?: Prisma.SortOrder
   max_tenor?: Prisma.SortOrder
   max_plafond?: Prisma.SortOrder
   min_age?: Prisma.SortOrder
@@ -589,7 +829,17 @@ export type ProdukPembiayaanCountOrderByAggregateInput = {
 export type ProdukPembiayaanAvgOrderByAggregateInput = {
   c_margin?: Prisma.SortOrder
   c_margin_sumdan?: Prisma.SortOrder
+  c_adm?: Prisma.SortOrder
+  c_adm_sumdan?: Prisma.SortOrder
+  c_provisi?: Prisma.SortOrder
+  c_provisi_sumdan?: Prisma.SortOrder
   c_insurance?: Prisma.SortOrder
+  c_gov?: Prisma.SortOrder
+  c_account?: Prisma.SortOrder
+  c_information?: Prisma.SortOrder
+  c_stamp?: Prisma.SortOrder
+  c_rounded?: Prisma.SortOrder
+  c_dsr?: Prisma.SortOrder
   max_tenor?: Prisma.SortOrder
   max_plafond?: Prisma.SortOrder
   min_age?: Prisma.SortOrder
@@ -602,7 +852,17 @@ export type ProdukPembiayaanMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   c_margin?: Prisma.SortOrder
   c_margin_sumdan?: Prisma.SortOrder
+  c_adm?: Prisma.SortOrder
+  c_adm_sumdan?: Prisma.SortOrder
+  c_provisi?: Prisma.SortOrder
+  c_provisi_sumdan?: Prisma.SortOrder
   c_insurance?: Prisma.SortOrder
+  c_gov?: Prisma.SortOrder
+  c_account?: Prisma.SortOrder
+  c_information?: Prisma.SortOrder
+  c_stamp?: Prisma.SortOrder
+  c_rounded?: Prisma.SortOrder
+  c_dsr?: Prisma.SortOrder
   max_tenor?: Prisma.SortOrder
   max_plafond?: Prisma.SortOrder
   min_age?: Prisma.SortOrder
@@ -620,7 +880,17 @@ export type ProdukPembiayaanMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   c_margin?: Prisma.SortOrder
   c_margin_sumdan?: Prisma.SortOrder
+  c_adm?: Prisma.SortOrder
+  c_adm_sumdan?: Prisma.SortOrder
+  c_provisi?: Prisma.SortOrder
+  c_provisi_sumdan?: Prisma.SortOrder
   c_insurance?: Prisma.SortOrder
+  c_gov?: Prisma.SortOrder
+  c_account?: Prisma.SortOrder
+  c_information?: Prisma.SortOrder
+  c_stamp?: Prisma.SortOrder
+  c_rounded?: Prisma.SortOrder
+  c_dsr?: Prisma.SortOrder
   max_tenor?: Prisma.SortOrder
   max_plafond?: Prisma.SortOrder
   min_age?: Prisma.SortOrder
@@ -636,7 +906,17 @@ export type ProdukPembiayaanMinOrderByAggregateInput = {
 export type ProdukPembiayaanSumOrderByAggregateInput = {
   c_margin?: Prisma.SortOrder
   c_margin_sumdan?: Prisma.SortOrder
+  c_adm?: Prisma.SortOrder
+  c_adm_sumdan?: Prisma.SortOrder
+  c_provisi?: Prisma.SortOrder
+  c_provisi_sumdan?: Prisma.SortOrder
   c_insurance?: Prisma.SortOrder
+  c_gov?: Prisma.SortOrder
+  c_account?: Prisma.SortOrder
+  c_information?: Prisma.SortOrder
+  c_stamp?: Prisma.SortOrder
+  c_rounded?: Prisma.SortOrder
+  c_dsr?: Prisma.SortOrder
   max_tenor?: Prisma.SortOrder
   max_plafond?: Prisma.SortOrder
   min_age?: Prisma.SortOrder
@@ -691,6 +971,14 @@ export type ProdukPembiayaanUncheckedUpdateManyWithoutSumdanNestedInput = {
   deleteMany?: Prisma.ProdukPembiayaanScalarWhereInput | Prisma.ProdukPembiayaanScalarWhereInput[]
 }
 
+export type FloatFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type EnumEMarginTypeFieldUpdateOperationsInput = {
   set?: $Enums.EMarginType
 }
@@ -728,7 +1016,17 @@ export type ProdukPembiayaanCreateWithoutSumdanInput = {
   name: string
   c_margin: number
   c_margin_sumdan?: number
-  c_insurance: number
+  c_adm?: number
+  c_adm_sumdan?: number
+  c_provisi?: number
+  c_provisi_sumdan?: number
+  c_insurance?: number
+  c_gov?: number
+  c_account?: number
+  c_information?: number
+  c_stamp?: number
+  c_rounded?: number
+  c_dsr?: number
   max_tenor: number
   max_plafond: number
   min_age: number
@@ -747,7 +1045,17 @@ export type ProdukPembiayaanUncheckedCreateWithoutSumdanInput = {
   name: string
   c_margin: number
   c_margin_sumdan?: number
-  c_insurance: number
+  c_adm?: number
+  c_adm_sumdan?: number
+  c_provisi?: number
+  c_provisi_sumdan?: number
+  c_insurance?: number
+  c_gov?: number
+  c_account?: number
+  c_information?: number
+  c_stamp?: number
+  c_rounded?: number
+  c_dsr?: number
   max_tenor: number
   max_plafond: number
   min_age: number
@@ -795,7 +1103,17 @@ export type ProdukPembiayaanScalarWhereInput = {
   name?: Prisma.StringFilter<"ProdukPembiayaan"> | string
   c_margin?: Prisma.FloatFilter<"ProdukPembiayaan"> | number
   c_margin_sumdan?: Prisma.FloatFilter<"ProdukPembiayaan"> | number
+  c_adm?: Prisma.FloatFilter<"ProdukPembiayaan"> | number
+  c_adm_sumdan?: Prisma.FloatFilter<"ProdukPembiayaan"> | number
+  c_provisi?: Prisma.FloatFilter<"ProdukPembiayaan"> | number
+  c_provisi_sumdan?: Prisma.FloatFilter<"ProdukPembiayaan"> | number
   c_insurance?: Prisma.FloatFilter<"ProdukPembiayaan"> | number
+  c_gov?: Prisma.IntFilter<"ProdukPembiayaan"> | number
+  c_account?: Prisma.IntFilter<"ProdukPembiayaan"> | number
+  c_information?: Prisma.IntFilter<"ProdukPembiayaan"> | number
+  c_stamp?: Prisma.IntFilter<"ProdukPembiayaan"> | number
+  c_rounded?: Prisma.IntFilter<"ProdukPembiayaan"> | number
+  c_dsr?: Prisma.FloatFilter<"ProdukPembiayaan"> | number
   max_tenor?: Prisma.IntFilter<"ProdukPembiayaan"> | number
   max_plafond?: Prisma.IntFilter<"ProdukPembiayaan"> | number
   min_age?: Prisma.IntFilter<"ProdukPembiayaan"> | number
@@ -813,7 +1131,17 @@ export type ProdukPembiayaanCreateWithoutDapemsInput = {
   name: string
   c_margin: number
   c_margin_sumdan?: number
-  c_insurance: number
+  c_adm?: number
+  c_adm_sumdan?: number
+  c_provisi?: number
+  c_provisi_sumdan?: number
+  c_insurance?: number
+  c_gov?: number
+  c_account?: number
+  c_information?: number
+  c_stamp?: number
+  c_rounded?: number
+  c_dsr?: number
   max_tenor: number
   max_plafond: number
   min_age: number
@@ -832,7 +1160,17 @@ export type ProdukPembiayaanUncheckedCreateWithoutDapemsInput = {
   name: string
   c_margin: number
   c_margin_sumdan?: number
-  c_insurance: number
+  c_adm?: number
+  c_adm_sumdan?: number
+  c_provisi?: number
+  c_provisi_sumdan?: number
+  c_insurance?: number
+  c_gov?: number
+  c_account?: number
+  c_information?: number
+  c_stamp?: number
+  c_rounded?: number
+  c_dsr?: number
   max_tenor: number
   max_plafond: number
   min_age: number
@@ -867,7 +1205,17 @@ export type ProdukPembiayaanUpdateWithoutDapemsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   c_margin?: Prisma.FloatFieldUpdateOperationsInput | number
   c_margin_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_adm?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_adm_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_provisi?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_provisi_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
   c_insurance?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_gov?: Prisma.IntFieldUpdateOperationsInput | number
+  c_account?: Prisma.IntFieldUpdateOperationsInput | number
+  c_information?: Prisma.IntFieldUpdateOperationsInput | number
+  c_stamp?: Prisma.IntFieldUpdateOperationsInput | number
+  c_rounded?: Prisma.IntFieldUpdateOperationsInput | number
+  c_dsr?: Prisma.FloatFieldUpdateOperationsInput | number
   max_tenor?: Prisma.IntFieldUpdateOperationsInput | number
   max_plafond?: Prisma.IntFieldUpdateOperationsInput | number
   min_age?: Prisma.IntFieldUpdateOperationsInput | number
@@ -886,7 +1234,17 @@ export type ProdukPembiayaanUncheckedUpdateWithoutDapemsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   c_margin?: Prisma.FloatFieldUpdateOperationsInput | number
   c_margin_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_adm?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_adm_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_provisi?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_provisi_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
   c_insurance?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_gov?: Prisma.IntFieldUpdateOperationsInput | number
+  c_account?: Prisma.IntFieldUpdateOperationsInput | number
+  c_information?: Prisma.IntFieldUpdateOperationsInput | number
+  c_stamp?: Prisma.IntFieldUpdateOperationsInput | number
+  c_rounded?: Prisma.IntFieldUpdateOperationsInput | number
+  c_dsr?: Prisma.FloatFieldUpdateOperationsInput | number
   max_tenor?: Prisma.IntFieldUpdateOperationsInput | number
   max_plafond?: Prisma.IntFieldUpdateOperationsInput | number
   min_age?: Prisma.IntFieldUpdateOperationsInput | number
@@ -905,7 +1263,17 @@ export type ProdukPembiayaanCreateWithoutDataSimulasisInput = {
   name: string
   c_margin: number
   c_margin_sumdan?: number
-  c_insurance: number
+  c_adm?: number
+  c_adm_sumdan?: number
+  c_provisi?: number
+  c_provisi_sumdan?: number
+  c_insurance?: number
+  c_gov?: number
+  c_account?: number
+  c_information?: number
+  c_stamp?: number
+  c_rounded?: number
+  c_dsr?: number
   max_tenor: number
   max_plafond: number
   min_age: number
@@ -924,7 +1292,17 @@ export type ProdukPembiayaanUncheckedCreateWithoutDataSimulasisInput = {
   name: string
   c_margin: number
   c_margin_sumdan?: number
-  c_insurance: number
+  c_adm?: number
+  c_adm_sumdan?: number
+  c_provisi?: number
+  c_provisi_sumdan?: number
+  c_insurance?: number
+  c_gov?: number
+  c_account?: number
+  c_information?: number
+  c_stamp?: number
+  c_rounded?: number
+  c_dsr?: number
   max_tenor: number
   max_plafond: number
   min_age: number
@@ -959,7 +1337,17 @@ export type ProdukPembiayaanUpdateWithoutDataSimulasisInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   c_margin?: Prisma.FloatFieldUpdateOperationsInput | number
   c_margin_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_adm?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_adm_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_provisi?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_provisi_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
   c_insurance?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_gov?: Prisma.IntFieldUpdateOperationsInput | number
+  c_account?: Prisma.IntFieldUpdateOperationsInput | number
+  c_information?: Prisma.IntFieldUpdateOperationsInput | number
+  c_stamp?: Prisma.IntFieldUpdateOperationsInput | number
+  c_rounded?: Prisma.IntFieldUpdateOperationsInput | number
+  c_dsr?: Prisma.FloatFieldUpdateOperationsInput | number
   max_tenor?: Prisma.IntFieldUpdateOperationsInput | number
   max_plafond?: Prisma.IntFieldUpdateOperationsInput | number
   min_age?: Prisma.IntFieldUpdateOperationsInput | number
@@ -978,7 +1366,17 @@ export type ProdukPembiayaanUncheckedUpdateWithoutDataSimulasisInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   c_margin?: Prisma.FloatFieldUpdateOperationsInput | number
   c_margin_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_adm?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_adm_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_provisi?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_provisi_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
   c_insurance?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_gov?: Prisma.IntFieldUpdateOperationsInput | number
+  c_account?: Prisma.IntFieldUpdateOperationsInput | number
+  c_information?: Prisma.IntFieldUpdateOperationsInput | number
+  c_stamp?: Prisma.IntFieldUpdateOperationsInput | number
+  c_rounded?: Prisma.IntFieldUpdateOperationsInput | number
+  c_dsr?: Prisma.FloatFieldUpdateOperationsInput | number
   max_tenor?: Prisma.IntFieldUpdateOperationsInput | number
   max_plafond?: Prisma.IntFieldUpdateOperationsInput | number
   min_age?: Prisma.IntFieldUpdateOperationsInput | number
@@ -997,7 +1395,17 @@ export type ProdukPembiayaanCreateManySumdanInput = {
   name: string
   c_margin: number
   c_margin_sumdan?: number
-  c_insurance: number
+  c_adm?: number
+  c_adm_sumdan?: number
+  c_provisi?: number
+  c_provisi_sumdan?: number
+  c_insurance?: number
+  c_gov?: number
+  c_account?: number
+  c_information?: number
+  c_stamp?: number
+  c_rounded?: number
+  c_dsr?: number
   max_tenor: number
   max_plafond: number
   min_age: number
@@ -1014,7 +1422,17 @@ export type ProdukPembiayaanUpdateWithoutSumdanInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   c_margin?: Prisma.FloatFieldUpdateOperationsInput | number
   c_margin_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_adm?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_adm_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_provisi?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_provisi_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
   c_insurance?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_gov?: Prisma.IntFieldUpdateOperationsInput | number
+  c_account?: Prisma.IntFieldUpdateOperationsInput | number
+  c_information?: Prisma.IntFieldUpdateOperationsInput | number
+  c_stamp?: Prisma.IntFieldUpdateOperationsInput | number
+  c_rounded?: Prisma.IntFieldUpdateOperationsInput | number
+  c_dsr?: Prisma.FloatFieldUpdateOperationsInput | number
   max_tenor?: Prisma.IntFieldUpdateOperationsInput | number
   max_plafond?: Prisma.IntFieldUpdateOperationsInput | number
   min_age?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1033,7 +1451,17 @@ export type ProdukPembiayaanUncheckedUpdateWithoutSumdanInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   c_margin?: Prisma.FloatFieldUpdateOperationsInput | number
   c_margin_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_adm?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_adm_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_provisi?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_provisi_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
   c_insurance?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_gov?: Prisma.IntFieldUpdateOperationsInput | number
+  c_account?: Prisma.IntFieldUpdateOperationsInput | number
+  c_information?: Prisma.IntFieldUpdateOperationsInput | number
+  c_stamp?: Prisma.IntFieldUpdateOperationsInput | number
+  c_rounded?: Prisma.IntFieldUpdateOperationsInput | number
+  c_dsr?: Prisma.FloatFieldUpdateOperationsInput | number
   max_tenor?: Prisma.IntFieldUpdateOperationsInput | number
   max_plafond?: Prisma.IntFieldUpdateOperationsInput | number
   min_age?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1052,7 +1480,17 @@ export type ProdukPembiayaanUncheckedUpdateManyWithoutSumdanInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   c_margin?: Prisma.FloatFieldUpdateOperationsInput | number
   c_margin_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_adm?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_adm_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_provisi?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_provisi_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
   c_insurance?: Prisma.FloatFieldUpdateOperationsInput | number
+  c_gov?: Prisma.IntFieldUpdateOperationsInput | number
+  c_account?: Prisma.IntFieldUpdateOperationsInput | number
+  c_information?: Prisma.IntFieldUpdateOperationsInput | number
+  c_stamp?: Prisma.IntFieldUpdateOperationsInput | number
+  c_rounded?: Prisma.IntFieldUpdateOperationsInput | number
+  c_dsr?: Prisma.FloatFieldUpdateOperationsInput | number
   max_tenor?: Prisma.IntFieldUpdateOperationsInput | number
   max_plafond?: Prisma.IntFieldUpdateOperationsInput | number
   min_age?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1109,7 +1547,17 @@ export type ProdukPembiayaanSelect<ExtArgs extends runtime.Types.Extensions.Inte
   name?: boolean
   c_margin?: boolean
   c_margin_sumdan?: boolean
+  c_adm?: boolean
+  c_adm_sumdan?: boolean
+  c_provisi?: boolean
+  c_provisi_sumdan?: boolean
   c_insurance?: boolean
+  c_gov?: boolean
+  c_account?: boolean
+  c_information?: boolean
+  c_stamp?: boolean
+  c_rounded?: boolean
+  c_dsr?: boolean
   max_tenor?: boolean
   max_plafond?: boolean
   min_age?: boolean
@@ -1133,7 +1581,17 @@ export type ProdukPembiayaanSelectScalar = {
   name?: boolean
   c_margin?: boolean
   c_margin_sumdan?: boolean
+  c_adm?: boolean
+  c_adm_sumdan?: boolean
+  c_provisi?: boolean
+  c_provisi_sumdan?: boolean
   c_insurance?: boolean
+  c_gov?: boolean
+  c_account?: boolean
+  c_information?: boolean
+  c_stamp?: boolean
+  c_rounded?: boolean
+  c_dsr?: boolean
   max_tenor?: boolean
   max_plafond?: boolean
   min_age?: boolean
@@ -1146,7 +1604,7 @@ export type ProdukPembiayaanSelectScalar = {
   sumdanId?: boolean
 }
 
-export type ProdukPembiayaanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "c_margin" | "c_margin_sumdan" | "c_insurance" | "max_tenor" | "max_plafond" | "min_age" | "max_age" | "max_paid" | "margin_type" | "status" | "created_at" | "updated_at" | "sumdanId", ExtArgs["result"]["produkPembiayaan"]>
+export type ProdukPembiayaanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "c_margin" | "c_margin_sumdan" | "c_adm" | "c_adm_sumdan" | "c_provisi" | "c_provisi_sumdan" | "c_insurance" | "c_gov" | "c_account" | "c_information" | "c_stamp" | "c_rounded" | "c_dsr" | "max_tenor" | "max_plafond" | "min_age" | "max_age" | "max_paid" | "margin_type" | "status" | "created_at" | "updated_at" | "sumdanId", ExtArgs["result"]["produkPembiayaan"]>
 export type ProdukPembiayaanInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   Sumdan?: boolean | Prisma.SumdanDefaultArgs<ExtArgs>
   Dapems?: boolean | Prisma.ProdukPembiayaan$DapemsArgs<ExtArgs>
@@ -1166,7 +1624,17 @@ export type $ProdukPembiayaanPayload<ExtArgs extends runtime.Types.Extensions.In
     name: string
     c_margin: number
     c_margin_sumdan: number
+    c_adm: number
+    c_adm_sumdan: number
+    c_provisi: number
+    c_provisi_sumdan: number
     c_insurance: number
+    c_gov: number
+    c_account: number
+    c_information: number
+    c_stamp: number
+    c_rounded: number
+    c_dsr: number
     max_tenor: number
     max_plafond: number
     min_age: number
@@ -1553,7 +2021,17 @@ export interface ProdukPembiayaanFieldRefs {
   readonly name: Prisma.FieldRef<"ProdukPembiayaan", 'String'>
   readonly c_margin: Prisma.FieldRef<"ProdukPembiayaan", 'Float'>
   readonly c_margin_sumdan: Prisma.FieldRef<"ProdukPembiayaan", 'Float'>
+  readonly c_adm: Prisma.FieldRef<"ProdukPembiayaan", 'Float'>
+  readonly c_adm_sumdan: Prisma.FieldRef<"ProdukPembiayaan", 'Float'>
+  readonly c_provisi: Prisma.FieldRef<"ProdukPembiayaan", 'Float'>
+  readonly c_provisi_sumdan: Prisma.FieldRef<"ProdukPembiayaan", 'Float'>
   readonly c_insurance: Prisma.FieldRef<"ProdukPembiayaan", 'Float'>
+  readonly c_gov: Prisma.FieldRef<"ProdukPembiayaan", 'Int'>
+  readonly c_account: Prisma.FieldRef<"ProdukPembiayaan", 'Int'>
+  readonly c_information: Prisma.FieldRef<"ProdukPembiayaan", 'Int'>
+  readonly c_stamp: Prisma.FieldRef<"ProdukPembiayaan", 'Int'>
+  readonly c_rounded: Prisma.FieldRef<"ProdukPembiayaan", 'Int'>
+  readonly c_dsr: Prisma.FieldRef<"ProdukPembiayaan", 'Float'>
   readonly max_tenor: Prisma.FieldRef<"ProdukPembiayaan", 'Int'>
   readonly max_plafond: Prisma.FieldRef<"ProdukPembiayaan", 'Int'>
   readonly min_age: Prisma.FieldRef<"ProdukPembiayaan", 'Int'>

@@ -57,8 +57,17 @@ export const GetStatusTag = (status: ESubmissionStatus | undefined | null) => {
 
 export const GetStatusTagAudit = (status: EDapemStatus) => {
   return (
-    <Tag color={status === "DISETUJUI" ? "green" : status === "PENDING"? "orange":"red"} variant="solid">
-      {status=== "DISETUJUI" ? "AUDITED" : status }
+    <Tag
+      color={
+        status === "DISETUJUI"
+          ? "green"
+          : status === "PENDING"
+            ? "orange"
+            : "red"
+      }
+      variant="solid"
+    >
+      {status === "DISETUJUI" ? "AUDITED" : status}
     </Tag>
   );
 };
@@ -376,14 +385,13 @@ export const MappingToExcelDapem = (data: IDapem[]) => {
       "": "",
       B_ADM_SUMDAN: d.plafond * (d.c_adm_sumdan / 100),
       B_ADM_KOPERASI: d.plafond * (d.c_adm / 100),
-      B_ASURANSI: d.plafond * (d.c_insurance / 100),
       B_PROV_SUMDAN: GetProvisiAmount(d.plafond, d.c_provisi_sumdan),
-      B_FEE_BPP: d.plafond * (d.c_fee_bpp / 100),
+      B_PROV: GetProvisiAmount(d.plafond, d.c_provisi),
+      B_ASURANSI: d.plafond * (d.c_insurance / 100),
       B_REKENING_SUMDAN: d.c_account_sumdan,
       B_TATALAKSANA: d.c_gov,
       B_MATERAI: d.c_stamp,
-      B_FLAGGING: d.c_flagging,
-      B_SISTEM_INFORMASI: d.c_infomation,
+      B_DATA_INFORMASI: d.c_infomation,
       B_MUTASI: d.c_mutasi,
       BLOKIR_ANGSURAN: d.c_blokir,
       NOMINAL_TAKEOVER: d.c_takeover,
@@ -391,7 +399,7 @@ export const MappingToExcelDapem = (data: IDapem[]) => {
       B_BLOKIR_ANGSURAN: angs * d.c_blokir,
       NOMINAL_ANGSURAN: angs,
       ANGSURAN_SUMDAN: angsSumdan,
-      ANGSURAN_KOPERASI: angs - angsSumdan,
+      SELISIH_MARGIN: angs - angsSumdan,
     };
   });
 };
@@ -445,10 +453,10 @@ export const MappingToTagihan = (data: IDapem[], periode?: string) => {
       NED: find?.c_ned,
       FEE_BANPOT: detail.detail.fee_banpot,
       STATUS: find?.date_paid ? "DIBAYAR" : "BELUMBAYAR",
-      "AWAL KREDIT": moment(d.date_contract).format("YYYYMM"),
+      "AWAL KREDIT": moment(d.date_contract).format("DD/MM/YYYY"),
       "AKHIR KREDIT": moment(d.date_contract)
         .add(d.tenor, "month")
-        .format("YYYYMM"),
+        .format("DD/MM/YYYY"),
     };
   });
 };

@@ -183,11 +183,6 @@ export const MAUKStandar = ({ data }: { data: IDapem }) => {
                         value: data.takeover_from || "-",
                       },
                       {
-                        key: "Nominal Takeover",
-                        value: IDRFormat(data.c_takeover),
-                        currency: true,
-                      },
-                      {
                         key: "Rencana Tgl Takeover",
                         value: data.takeover_date
                           ? moment(data.takeover_date).format("DD-MM-YYYY")
@@ -270,11 +265,6 @@ export const MAUKStandar = ({ data }: { data: IDapem }) => {
                         currency: true,
                       },
                       {
-                        key: "NED + Fee",
-                        value: `${IDRFormat(detail.detail.fee_banpot + data.c_ned)}`,
-                        currency: true,
-                      },
-                      {
                         key: "Total Angsuran",
                         value: `${IDRFormat(detail.angsuran)}`,
                         currency: true,
@@ -286,7 +276,7 @@ export const MAUKStandar = ({ data }: { data: IDapem }) => {
                       },
                       {
                         key: "DBR/DSR",
-                        value: `${((detail.detail.angsuranrounded / (data.salary || data.Debitur.salary)) * 100).toFixed(2)}%`,
+                        value: `${((detail.angsuran / (data.salary || data.Debitur.salary)) * 100).toFixed(2)}%`,
                       },
                       {
                         key: "Pembulatan",
@@ -317,10 +307,13 @@ export const MAUKStandar = ({ data }: { data: IDapem }) => {
                     rightvalue
                     data={[
                       {
-                        key: "Biaya Administrasi",
-                        value: IDRFormat(
-                          detail.administrasi + detail.detail.provisi_sumdan,
-                        ),
+                        key: `Biaya Adm Mitra <span class="text-xs opacity-70">(${data.c_adm_sumdan}%)</span>`,
+                        value: IDRFormat(detail.detail.adm_sumdan),
+                        currency: true,
+                      },
+                      {
+                        key: `Biaya Adm Koperasi <span class="text-xs opacity-70">(${data.c_adm}%)</span>`,
+                        value: IDRFormat(detail.detail.adm),
                         currency: true,
                       },
                       {
@@ -329,13 +322,28 @@ export const MAUKStandar = ({ data }: { data: IDapem }) => {
                         currency: true,
                       },
                       {
+                        key: "Biaya Tatalaksana",
+                        value: IDRFormat(data.c_gov),
+                        currency: true,
+                      },
+                      {
                         key: "Biaya Buka Rekening",
                         value: IDRFormat(data.c_account_sumdan),
                         currency: true,
                       },
                       {
-                        key: "Biaya Tatalaksana",
-                        value: IDRFormat(data.c_gov),
+                        key: "Biaya Materai",
+                        value: IDRFormat(data.c_stamp),
+                        currency: true,
+                      },
+                      {
+                        key: `Biaya ${data.ProdukPembiayaan.Sumdan.provisi_name ? data.ProdukPembiayaan.Sumdan.provisi_name : "Provisi"} Mitra ${data.c_provisi_sumdan < 100 ? `(${data.c_provisi_sumdan}%)` : ""}`,
+                        value: IDRFormat(detail.detail.provisi_sumdan),
+                        currency: true,
+                      },
+                      {
+                        key: `Biaya Provisi Koperasi ${data.c_provisi < 100 ? `(${data.c_provisi}%)` : ""}`,
+                        value: IDRFormat(detail.detail.provisi),
                         currency: true,
                       },
                       {
@@ -344,7 +352,7 @@ export const MAUKStandar = ({ data }: { data: IDapem }) => {
                         currency: true,
                       },
                       {
-                        key: "Biaya Mutasi & Flagging",
+                        key: "Biaya Mutasi",
                         value: IDRFormat(data.c_mutasi),
                         currency: true,
                       },
@@ -366,6 +374,15 @@ export const MAUKStandar = ({ data }: { data: IDapem }) => {
                     rightvalue
                     data={[
                       {
+                        key: `Blokir Angsuran (${data.c_blokir}x)`,
+                        value: IDRFormat(data.c_blokir * detail.angsuran),
+                        currency: true,
+                        style: {
+                          borderBottom: "1px solid #aaa",
+                          borderStyle: "dashed",
+                        },
+                      },
+                      {
                         key: "Terima Kotor",
                         value: `${IDRFormat(detail.tk)}`,
                         currency: true,
@@ -375,18 +392,9 @@ export const MAUKStandar = ({ data }: { data: IDapem }) => {
                         },
                       },
                       {
-                        key: "Nominal Takeover",
+                        key: "Nominal Pelunasan",
                         value: `${IDRFormat(data.c_takeover)}`,
                         currency: true,
-                      },
-                      {
-                        key: `Blokir Angsuran (${data.c_blokir}x)`,
-                        value: IDRFormat(data.c_blokir * detail.angsuran),
-                        currency: true,
-                        style: {
-                          borderBottom: "1px solid #aaa",
-                          borderStyle: "dashed",
-                        },
                       },
                       {
                         key: "TERIMA BERSIH",

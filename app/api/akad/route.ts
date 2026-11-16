@@ -203,12 +203,12 @@ export const PATCH = async (req: NextRequest) => {
 function GenerateTableAngsuran(dapem: Dapem) {
   if (dapem.margin_type === "FLAT") {
     return GenerateFlat(dapem);
-  } else {
-    return GenerateAnuitas(dapem);
   }
+  if (dapem.margin_type === "ANUITAS") return GeneratePokokTetap(dapem);
+  return GenerateCicilanTetap(dapem);
 }
 
-function GenerateAnuitas(dapem: Dapem): Angsuran[] {
+function GenerateCicilanTetap(dapem: Dapem): Angsuran[] {
   const prefix = `${dapem.id}TX`;
   const padLength = 3;
 
@@ -242,6 +242,45 @@ function GenerateAnuitas(dapem: Dapem): Angsuran[] {
       remaining: sisa,
       dapemId: dapem.id,
       inst_sumdan: detail.detail.angsuran_sumdan,
+      c_ned: dapem.c_ned,
+      fee_banpot: detail.detail.fee_banpot,
+      note: "",
+    });
+  }
+  return angsurans;
+}
+
+function GeneratePokokTetap(dapem: Dapem): Angsuran[] {
+  const prefix = `${dapem.id}TX`;
+  const padLength = 3;
+  const angsurans: Angsuran[] = [];
+  const detail = GetDetailDapem(dapem as IDapem);
+  const principalPerMonth = Math.round(dapem.plafond / dapem.tenor);
+  const monthlyRate = (dapem.c_margin + dapem.c_margin_sumdan) / 100 / 12;
+  const monthlySumdanRate = dapem.c_margin_sumdan / 100 / 12;
+  let sisa = dapem.plafond;
+
+  for (let i = 1; i <= dapem.tenor; i++) {
+    const newId = `${prefix}${String(i).padStart(padLength, "0")}`;
+    const principal = Math.min(
+      sisa,
+      i === dapem.tenor ? sisa : principalPerMonth,
+    );
+    const balance = sisa;
+    const margin = Math.round(balance * monthlyRate);
+    sisa = Math.max(0, balance - principal);
+
+    angsurans.push({
+      id: newId,
+      counter: i,
+      date_paid:
+        i <= dapem.c_blokir ? moment(dapem.date_contract).toDate() : null,
+      date_pay: moment(dapem.date_contract).add(i, "month").toDate(),
+      principal,
+      margin,
+      remaining: sisa,
+      dapemId: dapem.id,
+      inst_sumdan: Math.round(principal + balance * monthlySumdanRate),
       c_ned: dapem.c_ned,
       fee_banpot: detail.detail.fee_banpot,
       note: "",

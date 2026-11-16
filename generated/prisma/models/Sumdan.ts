@@ -29,41 +29,11 @@ export type AggregateSumdan = {
 export type SumdanAvgAggregateOutputType = {
   tbo: number | null
   limit: number | null
-  c_margin: number | null
-  c_adm_sumdan: number | null
-  c_account_sumdan: number | null
-  c_provisi_sumdan: number | null
-  c_adm: number | null
-  c_provisi: number | null
-  c_gov: number | null
-  c_stamps: number | null
-  c_flagging: number | null
-  c_information: number | null
-  c_ned: number | null
-  fee_banpot: number | null
-  max_bpp: number | null
-  rounded: number | null
-  dsr: number | null
 }
 
 export type SumdanSumAggregateOutputType = {
   tbo: number | null
   limit: bigint | null
-  c_margin: number | null
-  c_adm_sumdan: number | null
-  c_account_sumdan: number | null
-  c_provisi_sumdan: number | null
-  c_adm: number | null
-  c_provisi: number | null
-  c_gov: number | null
-  c_stamps: number | null
-  c_flagging: number | null
-  c_information: number | null
-  c_ned: number | null
-  fee_banpot: number | null
-  max_bpp: number | null
-  rounded: number | null
-  dsr: number | null
 }
 
 export type SumdanMinAggregateOutputType = {
@@ -77,21 +47,6 @@ export type SumdanMinAggregateOutputType = {
   email: string | null
   tbo: number | null
   limit: bigint | null
-  c_margin: number | null
-  c_adm_sumdan: number | null
-  c_account_sumdan: number | null
-  c_provisi_sumdan: number | null
-  c_adm: number | null
-  c_provisi: number | null
-  c_gov: number | null
-  c_stamps: number | null
-  c_flagging: number | null
-  c_information: number | null
-  c_ned: number | null
-  fee_banpot: number | null
-  max_bpp: number | null
-  rounded: number | null
-  dsr: number | null
   contract_no: string | null
   contract_no2: string | null
   contract_date: Date | null
@@ -101,6 +56,9 @@ export type SumdanMinAggregateOutputType = {
   file: string | null
   sk_akad: string | null
   fronting: boolean | null
+  include_blokir: boolean | null
+  blokir_mitra: boolean | null
+  provisi_name: string | null
   status: boolean | null
   created_at: Date | null
   updated_at: Date | null
@@ -117,21 +75,6 @@ export type SumdanMaxAggregateOutputType = {
   email: string | null
   tbo: number | null
   limit: bigint | null
-  c_margin: number | null
-  c_adm_sumdan: number | null
-  c_account_sumdan: number | null
-  c_provisi_sumdan: number | null
-  c_adm: number | null
-  c_provisi: number | null
-  c_gov: number | null
-  c_stamps: number | null
-  c_flagging: number | null
-  c_information: number | null
-  c_ned: number | null
-  fee_banpot: number | null
-  max_bpp: number | null
-  rounded: number | null
-  dsr: number | null
   contract_no: string | null
   contract_no2: string | null
   contract_date: Date | null
@@ -141,6 +84,9 @@ export type SumdanMaxAggregateOutputType = {
   file: string | null
   sk_akad: string | null
   fronting: boolean | null
+  include_blokir: boolean | null
+  blokir_mitra: boolean | null
+  provisi_name: string | null
   status: boolean | null
   created_at: Date | null
   updated_at: Date | null
@@ -157,21 +103,6 @@ export type SumdanCountAggregateOutputType = {
   email: number
   tbo: number
   limit: number
-  c_margin: number
-  c_adm_sumdan: number
-  c_account_sumdan: number
-  c_provisi_sumdan: number
-  c_adm: number
-  c_provisi: number
-  c_gov: number
-  c_stamps: number
-  c_flagging: number
-  c_information: number
-  c_ned: number
-  fee_banpot: number
-  max_bpp: number
-  rounded: number
-  dsr: number
   contract_no: number
   contract_no2: number
   contract_date: number
@@ -181,6 +112,9 @@ export type SumdanCountAggregateOutputType = {
   file: number
   sk_akad: number
   fronting: number
+  include_blokir: number
+  blokir_mitra: number
+  provisi_name: number
   status: number
   created_at: number
   updated_at: number
@@ -191,41 +125,11 @@ export type SumdanCountAggregateOutputType = {
 export type SumdanAvgAggregateInputType = {
   tbo?: true
   limit?: true
-  c_margin?: true
-  c_adm_sumdan?: true
-  c_account_sumdan?: true
-  c_provisi_sumdan?: true
-  c_adm?: true
-  c_provisi?: true
-  c_gov?: true
-  c_stamps?: true
-  c_flagging?: true
-  c_information?: true
-  c_ned?: true
-  fee_banpot?: true
-  max_bpp?: true
-  rounded?: true
-  dsr?: true
 }
 
 export type SumdanSumAggregateInputType = {
   tbo?: true
   limit?: true
-  c_margin?: true
-  c_adm_sumdan?: true
-  c_account_sumdan?: true
-  c_provisi_sumdan?: true
-  c_adm?: true
-  c_provisi?: true
-  c_gov?: true
-  c_stamps?: true
-  c_flagging?: true
-  c_information?: true
-  c_ned?: true
-  fee_banpot?: true
-  max_bpp?: true
-  rounded?: true
-  dsr?: true
 }
 
 export type SumdanMinAggregateInputType = {
@@ -239,21 +143,6 @@ export type SumdanMinAggregateInputType = {
   email?: true
   tbo?: true
   limit?: true
-  c_margin?: true
-  c_adm_sumdan?: true
-  c_account_sumdan?: true
-  c_provisi_sumdan?: true
-  c_adm?: true
-  c_provisi?: true
-  c_gov?: true
-  c_stamps?: true
-  c_flagging?: true
-  c_information?: true
-  c_ned?: true
-  fee_banpot?: true
-  max_bpp?: true
-  rounded?: true
-  dsr?: true
   contract_no?: true
   contract_no2?: true
   contract_date?: true
@@ -263,6 +152,9 @@ export type SumdanMinAggregateInputType = {
   file?: true
   sk_akad?: true
   fronting?: true
+  include_blokir?: true
+  blokir_mitra?: true
+  provisi_name?: true
   status?: true
   created_at?: true
   updated_at?: true
@@ -279,21 +171,6 @@ export type SumdanMaxAggregateInputType = {
   email?: true
   tbo?: true
   limit?: true
-  c_margin?: true
-  c_adm_sumdan?: true
-  c_account_sumdan?: true
-  c_provisi_sumdan?: true
-  c_adm?: true
-  c_provisi?: true
-  c_gov?: true
-  c_stamps?: true
-  c_flagging?: true
-  c_information?: true
-  c_ned?: true
-  fee_banpot?: true
-  max_bpp?: true
-  rounded?: true
-  dsr?: true
   contract_no?: true
   contract_no2?: true
   contract_date?: true
@@ -303,6 +180,9 @@ export type SumdanMaxAggregateInputType = {
   file?: true
   sk_akad?: true
   fronting?: true
+  include_blokir?: true
+  blokir_mitra?: true
+  provisi_name?: true
   status?: true
   created_at?: true
   updated_at?: true
@@ -319,21 +199,6 @@ export type SumdanCountAggregateInputType = {
   email?: true
   tbo?: true
   limit?: true
-  c_margin?: true
-  c_adm_sumdan?: true
-  c_account_sumdan?: true
-  c_provisi_sumdan?: true
-  c_adm?: true
-  c_provisi?: true
-  c_gov?: true
-  c_stamps?: true
-  c_flagging?: true
-  c_information?: true
-  c_ned?: true
-  fee_banpot?: true
-  max_bpp?: true
-  rounded?: true
-  dsr?: true
   contract_no?: true
   contract_no2?: true
   contract_date?: true
@@ -343,6 +208,9 @@ export type SumdanCountAggregateInputType = {
   file?: true
   sk_akad?: true
   fronting?: true
+  include_blokir?: true
+  blokir_mitra?: true
+  provisi_name?: true
   status?: true
   created_at?: true
   updated_at?: true
@@ -446,21 +314,6 @@ export type SumdanGroupByOutputType = {
   email: string | null
   tbo: number
   limit: bigint
-  c_margin: number
-  c_adm_sumdan: number
-  c_account_sumdan: number
-  c_provisi_sumdan: number
-  c_adm: number
-  c_provisi: number
-  c_gov: number
-  c_stamps: number
-  c_flagging: number
-  c_information: number
-  c_ned: number
-  fee_banpot: number
-  max_bpp: number
-  rounded: number
-  dsr: number
   contract_no: string | null
   contract_no2: string | null
   contract_date: Date | null
@@ -470,6 +323,9 @@ export type SumdanGroupByOutputType = {
   file: string | null
   sk_akad: string | null
   fronting: boolean
+  include_blokir: boolean
+  blokir_mitra: boolean
+  provisi_name: string | null
   status: boolean
   created_at: Date
   updated_at: Date
@@ -509,21 +365,6 @@ export type SumdanWhereInput = {
   email?: Prisma.StringNullableFilter<"Sumdan"> | string | null
   tbo?: Prisma.IntFilter<"Sumdan"> | number
   limit?: Prisma.BigIntFilter<"Sumdan"> | bigint | number
-  c_margin?: Prisma.FloatFilter<"Sumdan"> | number
-  c_adm_sumdan?: Prisma.FloatFilter<"Sumdan"> | number
-  c_account_sumdan?: Prisma.IntFilter<"Sumdan"> | number
-  c_provisi_sumdan?: Prisma.FloatFilter<"Sumdan"> | number
-  c_adm?: Prisma.FloatFilter<"Sumdan"> | number
-  c_provisi?: Prisma.FloatFilter<"Sumdan"> | number
-  c_gov?: Prisma.IntFilter<"Sumdan"> | number
-  c_stamps?: Prisma.IntFilter<"Sumdan"> | number
-  c_flagging?: Prisma.IntFilter<"Sumdan"> | number
-  c_information?: Prisma.IntFilter<"Sumdan"> | number
-  c_ned?: Prisma.IntFilter<"Sumdan"> | number
-  fee_banpot?: Prisma.FloatFilter<"Sumdan"> | number
-  max_bpp?: Prisma.IntFilter<"Sumdan"> | number
-  rounded?: Prisma.IntFilter<"Sumdan"> | number
-  dsr?: Prisma.FloatFilter<"Sumdan"> | number
   contract_no?: Prisma.StringNullableFilter<"Sumdan"> | string | null
   contract_no2?: Prisma.StringNullableFilter<"Sumdan"> | string | null
   contract_date?: Prisma.DateTimeNullableFilter<"Sumdan"> | Date | string | null
@@ -533,6 +374,9 @@ export type SumdanWhereInput = {
   file?: Prisma.StringNullableFilter<"Sumdan"> | string | null
   sk_akad?: Prisma.StringNullableFilter<"Sumdan"> | string | null
   fronting?: Prisma.BoolFilter<"Sumdan"> | boolean
+  include_blokir?: Prisma.BoolFilter<"Sumdan"> | boolean
+  blokir_mitra?: Prisma.BoolFilter<"Sumdan"> | boolean
+  provisi_name?: Prisma.StringNullableFilter<"Sumdan"> | string | null
   status?: Prisma.BoolFilter<"Sumdan"> | boolean
   created_at?: Prisma.DateTimeFilter<"Sumdan"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Sumdan"> | Date | string
@@ -555,21 +399,6 @@ export type SumdanOrderByWithRelationInput = {
   email?: Prisma.SortOrderInput | Prisma.SortOrder
   tbo?: Prisma.SortOrder
   limit?: Prisma.SortOrder
-  c_margin?: Prisma.SortOrder
-  c_adm_sumdan?: Prisma.SortOrder
-  c_account_sumdan?: Prisma.SortOrder
-  c_provisi_sumdan?: Prisma.SortOrder
-  c_adm?: Prisma.SortOrder
-  c_provisi?: Prisma.SortOrder
-  c_gov?: Prisma.SortOrder
-  c_stamps?: Prisma.SortOrder
-  c_flagging?: Prisma.SortOrder
-  c_information?: Prisma.SortOrder
-  c_ned?: Prisma.SortOrder
-  fee_banpot?: Prisma.SortOrder
-  max_bpp?: Prisma.SortOrder
-  rounded?: Prisma.SortOrder
-  dsr?: Prisma.SortOrder
   contract_no?: Prisma.SortOrderInput | Prisma.SortOrder
   contract_no2?: Prisma.SortOrderInput | Prisma.SortOrder
   contract_date?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -579,6 +408,9 @@ export type SumdanOrderByWithRelationInput = {
   file?: Prisma.SortOrderInput | Prisma.SortOrder
   sk_akad?: Prisma.SortOrderInput | Prisma.SortOrder
   fronting?: Prisma.SortOrder
+  include_blokir?: Prisma.SortOrder
+  blokir_mitra?: Prisma.SortOrder
+  provisi_name?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -605,21 +437,6 @@ export type SumdanWhereUniqueInput = Prisma.AtLeast<{
   email?: Prisma.StringNullableFilter<"Sumdan"> | string | null
   tbo?: Prisma.IntFilter<"Sumdan"> | number
   limit?: Prisma.BigIntFilter<"Sumdan"> | bigint | number
-  c_margin?: Prisma.FloatFilter<"Sumdan"> | number
-  c_adm_sumdan?: Prisma.FloatFilter<"Sumdan"> | number
-  c_account_sumdan?: Prisma.IntFilter<"Sumdan"> | number
-  c_provisi_sumdan?: Prisma.FloatFilter<"Sumdan"> | number
-  c_adm?: Prisma.FloatFilter<"Sumdan"> | number
-  c_provisi?: Prisma.FloatFilter<"Sumdan"> | number
-  c_gov?: Prisma.IntFilter<"Sumdan"> | number
-  c_stamps?: Prisma.IntFilter<"Sumdan"> | number
-  c_flagging?: Prisma.IntFilter<"Sumdan"> | number
-  c_information?: Prisma.IntFilter<"Sumdan"> | number
-  c_ned?: Prisma.IntFilter<"Sumdan"> | number
-  fee_banpot?: Prisma.FloatFilter<"Sumdan"> | number
-  max_bpp?: Prisma.IntFilter<"Sumdan"> | number
-  rounded?: Prisma.IntFilter<"Sumdan"> | number
-  dsr?: Prisma.FloatFilter<"Sumdan"> | number
   contract_no?: Prisma.StringNullableFilter<"Sumdan"> | string | null
   contract_no2?: Prisma.StringNullableFilter<"Sumdan"> | string | null
   contract_date?: Prisma.DateTimeNullableFilter<"Sumdan"> | Date | string | null
@@ -629,6 +446,9 @@ export type SumdanWhereUniqueInput = Prisma.AtLeast<{
   file?: Prisma.StringNullableFilter<"Sumdan"> | string | null
   sk_akad?: Prisma.StringNullableFilter<"Sumdan"> | string | null
   fronting?: Prisma.BoolFilter<"Sumdan"> | boolean
+  include_blokir?: Prisma.BoolFilter<"Sumdan"> | boolean
+  blokir_mitra?: Prisma.BoolFilter<"Sumdan"> | boolean
+  provisi_name?: Prisma.StringNullableFilter<"Sumdan"> | string | null
   status?: Prisma.BoolFilter<"Sumdan"> | boolean
   created_at?: Prisma.DateTimeFilter<"Sumdan"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Sumdan"> | Date | string
@@ -651,21 +471,6 @@ export type SumdanOrderByWithAggregationInput = {
   email?: Prisma.SortOrderInput | Prisma.SortOrder
   tbo?: Prisma.SortOrder
   limit?: Prisma.SortOrder
-  c_margin?: Prisma.SortOrder
-  c_adm_sumdan?: Prisma.SortOrder
-  c_account_sumdan?: Prisma.SortOrder
-  c_provisi_sumdan?: Prisma.SortOrder
-  c_adm?: Prisma.SortOrder
-  c_provisi?: Prisma.SortOrder
-  c_gov?: Prisma.SortOrder
-  c_stamps?: Prisma.SortOrder
-  c_flagging?: Prisma.SortOrder
-  c_information?: Prisma.SortOrder
-  c_ned?: Prisma.SortOrder
-  fee_banpot?: Prisma.SortOrder
-  max_bpp?: Prisma.SortOrder
-  rounded?: Prisma.SortOrder
-  dsr?: Prisma.SortOrder
   contract_no?: Prisma.SortOrderInput | Prisma.SortOrder
   contract_no2?: Prisma.SortOrderInput | Prisma.SortOrder
   contract_date?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -675,6 +480,9 @@ export type SumdanOrderByWithAggregationInput = {
   file?: Prisma.SortOrderInput | Prisma.SortOrder
   sk_akad?: Prisma.SortOrderInput | Prisma.SortOrder
   fronting?: Prisma.SortOrder
+  include_blokir?: Prisma.SortOrder
+  blokir_mitra?: Prisma.SortOrder
+  provisi_name?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -699,21 +507,6 @@ export type SumdanScalarWhereWithAggregatesInput = {
   email?: Prisma.StringNullableWithAggregatesFilter<"Sumdan"> | string | null
   tbo?: Prisma.IntWithAggregatesFilter<"Sumdan"> | number
   limit?: Prisma.BigIntWithAggregatesFilter<"Sumdan"> | bigint | number
-  c_margin?: Prisma.FloatWithAggregatesFilter<"Sumdan"> | number
-  c_adm_sumdan?: Prisma.FloatWithAggregatesFilter<"Sumdan"> | number
-  c_account_sumdan?: Prisma.IntWithAggregatesFilter<"Sumdan"> | number
-  c_provisi_sumdan?: Prisma.FloatWithAggregatesFilter<"Sumdan"> | number
-  c_adm?: Prisma.FloatWithAggregatesFilter<"Sumdan"> | number
-  c_provisi?: Prisma.FloatWithAggregatesFilter<"Sumdan"> | number
-  c_gov?: Prisma.IntWithAggregatesFilter<"Sumdan"> | number
-  c_stamps?: Prisma.IntWithAggregatesFilter<"Sumdan"> | number
-  c_flagging?: Prisma.IntWithAggregatesFilter<"Sumdan"> | number
-  c_information?: Prisma.IntWithAggregatesFilter<"Sumdan"> | number
-  c_ned?: Prisma.IntWithAggregatesFilter<"Sumdan"> | number
-  fee_banpot?: Prisma.FloatWithAggregatesFilter<"Sumdan"> | number
-  max_bpp?: Prisma.IntWithAggregatesFilter<"Sumdan"> | number
-  rounded?: Prisma.IntWithAggregatesFilter<"Sumdan"> | number
-  dsr?: Prisma.FloatWithAggregatesFilter<"Sumdan"> | number
   contract_no?: Prisma.StringNullableWithAggregatesFilter<"Sumdan"> | string | null
   contract_no2?: Prisma.StringNullableWithAggregatesFilter<"Sumdan"> | string | null
   contract_date?: Prisma.DateTimeNullableWithAggregatesFilter<"Sumdan"> | Date | string | null
@@ -723,6 +516,9 @@ export type SumdanScalarWhereWithAggregatesInput = {
   file?: Prisma.StringNullableWithAggregatesFilter<"Sumdan"> | string | null
   sk_akad?: Prisma.StringNullableWithAggregatesFilter<"Sumdan"> | string | null
   fronting?: Prisma.BoolWithAggregatesFilter<"Sumdan"> | boolean
+  include_blokir?: Prisma.BoolWithAggregatesFilter<"Sumdan"> | boolean
+  blokir_mitra?: Prisma.BoolWithAggregatesFilter<"Sumdan"> | boolean
+  provisi_name?: Prisma.StringNullableWithAggregatesFilter<"Sumdan"> | string | null
   status?: Prisma.BoolWithAggregatesFilter<"Sumdan"> | boolean
   created_at?: Prisma.DateTimeWithAggregatesFilter<"Sumdan"> | Date | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"Sumdan"> | Date | string
@@ -739,21 +535,6 @@ export type SumdanCreateInput = {
   email?: string | null
   tbo?: number
   limit?: bigint | number
-  c_margin: number
-  c_adm_sumdan: number
-  c_account_sumdan: number
-  c_provisi_sumdan?: number
-  c_adm: number
-  c_provisi?: number
-  c_gov: number
-  c_stamps: number
-  c_flagging: number
-  c_information: number
-  c_ned?: number
-  fee_banpot?: number
-  max_bpp: number
-  rounded?: number
-  dsr: number
   contract_no?: string | null
   contract_no2?: string | null
   contract_date?: Date | string | null
@@ -763,6 +544,9 @@ export type SumdanCreateInput = {
   file?: string | null
   sk_akad?: string | null
   fronting?: boolean
+  include_blokir?: boolean
+  blokir_mitra?: boolean
+  provisi_name?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -785,21 +569,6 @@ export type SumdanUncheckedCreateInput = {
   email?: string | null
   tbo?: number
   limit?: bigint | number
-  c_margin: number
-  c_adm_sumdan: number
-  c_account_sumdan: number
-  c_provisi_sumdan?: number
-  c_adm: number
-  c_provisi?: number
-  c_gov: number
-  c_stamps: number
-  c_flagging: number
-  c_information: number
-  c_ned?: number
-  fee_banpot?: number
-  max_bpp: number
-  rounded?: number
-  dsr: number
   contract_no?: string | null
   contract_no2?: string | null
   contract_date?: Date | string | null
@@ -809,6 +578,9 @@ export type SumdanUncheckedCreateInput = {
   file?: string | null
   sk_akad?: string | null
   fronting?: boolean
+  include_blokir?: boolean
+  blokir_mitra?: boolean
+  provisi_name?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -831,21 +603,6 @@ export type SumdanUpdateInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tbo?: Prisma.IntFieldUpdateOperationsInput | number
   limit?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  c_margin?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_account_sumdan?: Prisma.IntFieldUpdateOperationsInput | number
-  c_provisi_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_provisi?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_gov?: Prisma.IntFieldUpdateOperationsInput | number
-  c_stamps?: Prisma.IntFieldUpdateOperationsInput | number
-  c_flagging?: Prisma.IntFieldUpdateOperationsInput | number
-  c_information?: Prisma.IntFieldUpdateOperationsInput | number
-  c_ned?: Prisma.IntFieldUpdateOperationsInput | number
-  fee_banpot?: Prisma.FloatFieldUpdateOperationsInput | number
-  max_bpp?: Prisma.IntFieldUpdateOperationsInput | number
-  rounded?: Prisma.IntFieldUpdateOperationsInput | number
-  dsr?: Prisma.FloatFieldUpdateOperationsInput | number
   contract_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_no2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -855,6 +612,9 @@ export type SumdanUpdateInput = {
   file?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sk_akad?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fronting?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  include_blokir?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blokir_mitra?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  provisi_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -877,21 +637,6 @@ export type SumdanUncheckedUpdateInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tbo?: Prisma.IntFieldUpdateOperationsInput | number
   limit?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  c_margin?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_account_sumdan?: Prisma.IntFieldUpdateOperationsInput | number
-  c_provisi_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_provisi?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_gov?: Prisma.IntFieldUpdateOperationsInput | number
-  c_stamps?: Prisma.IntFieldUpdateOperationsInput | number
-  c_flagging?: Prisma.IntFieldUpdateOperationsInput | number
-  c_information?: Prisma.IntFieldUpdateOperationsInput | number
-  c_ned?: Prisma.IntFieldUpdateOperationsInput | number
-  fee_banpot?: Prisma.FloatFieldUpdateOperationsInput | number
-  max_bpp?: Prisma.IntFieldUpdateOperationsInput | number
-  rounded?: Prisma.IntFieldUpdateOperationsInput | number
-  dsr?: Prisma.FloatFieldUpdateOperationsInput | number
   contract_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_no2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -901,6 +646,9 @@ export type SumdanUncheckedUpdateInput = {
   file?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sk_akad?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fronting?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  include_blokir?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blokir_mitra?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  provisi_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -923,21 +671,6 @@ export type SumdanCreateManyInput = {
   email?: string | null
   tbo?: number
   limit?: bigint | number
-  c_margin: number
-  c_adm_sumdan: number
-  c_account_sumdan: number
-  c_provisi_sumdan?: number
-  c_adm: number
-  c_provisi?: number
-  c_gov: number
-  c_stamps: number
-  c_flagging: number
-  c_information: number
-  c_ned?: number
-  fee_banpot?: number
-  max_bpp: number
-  rounded?: number
-  dsr: number
   contract_no?: string | null
   contract_no2?: string | null
   contract_date?: Date | string | null
@@ -947,6 +680,9 @@ export type SumdanCreateManyInput = {
   file?: string | null
   sk_akad?: string | null
   fronting?: boolean
+  include_blokir?: boolean
+  blokir_mitra?: boolean
+  provisi_name?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -963,21 +699,6 @@ export type SumdanUpdateManyMutationInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tbo?: Prisma.IntFieldUpdateOperationsInput | number
   limit?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  c_margin?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_account_sumdan?: Prisma.IntFieldUpdateOperationsInput | number
-  c_provisi_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_provisi?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_gov?: Prisma.IntFieldUpdateOperationsInput | number
-  c_stamps?: Prisma.IntFieldUpdateOperationsInput | number
-  c_flagging?: Prisma.IntFieldUpdateOperationsInput | number
-  c_information?: Prisma.IntFieldUpdateOperationsInput | number
-  c_ned?: Prisma.IntFieldUpdateOperationsInput | number
-  fee_banpot?: Prisma.FloatFieldUpdateOperationsInput | number
-  max_bpp?: Prisma.IntFieldUpdateOperationsInput | number
-  rounded?: Prisma.IntFieldUpdateOperationsInput | number
-  dsr?: Prisma.FloatFieldUpdateOperationsInput | number
   contract_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_no2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -987,6 +708,9 @@ export type SumdanUpdateManyMutationInput = {
   file?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sk_akad?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fronting?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  include_blokir?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blokir_mitra?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  provisi_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1003,21 +727,6 @@ export type SumdanUncheckedUpdateManyInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tbo?: Prisma.IntFieldUpdateOperationsInput | number
   limit?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  c_margin?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_account_sumdan?: Prisma.IntFieldUpdateOperationsInput | number
-  c_provisi_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_provisi?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_gov?: Prisma.IntFieldUpdateOperationsInput | number
-  c_stamps?: Prisma.IntFieldUpdateOperationsInput | number
-  c_flagging?: Prisma.IntFieldUpdateOperationsInput | number
-  c_information?: Prisma.IntFieldUpdateOperationsInput | number
-  c_ned?: Prisma.IntFieldUpdateOperationsInput | number
-  fee_banpot?: Prisma.FloatFieldUpdateOperationsInput | number
-  max_bpp?: Prisma.IntFieldUpdateOperationsInput | number
-  rounded?: Prisma.IntFieldUpdateOperationsInput | number
-  dsr?: Prisma.FloatFieldUpdateOperationsInput | number
   contract_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_no2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1027,6 +736,9 @@ export type SumdanUncheckedUpdateManyInput = {
   file?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sk_akad?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fronting?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  include_blokir?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blokir_mitra?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  provisi_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1049,21 +761,6 @@ export type SumdanCountOrderByAggregateInput = {
   email?: Prisma.SortOrder
   tbo?: Prisma.SortOrder
   limit?: Prisma.SortOrder
-  c_margin?: Prisma.SortOrder
-  c_adm_sumdan?: Prisma.SortOrder
-  c_account_sumdan?: Prisma.SortOrder
-  c_provisi_sumdan?: Prisma.SortOrder
-  c_adm?: Prisma.SortOrder
-  c_provisi?: Prisma.SortOrder
-  c_gov?: Prisma.SortOrder
-  c_stamps?: Prisma.SortOrder
-  c_flagging?: Prisma.SortOrder
-  c_information?: Prisma.SortOrder
-  c_ned?: Prisma.SortOrder
-  fee_banpot?: Prisma.SortOrder
-  max_bpp?: Prisma.SortOrder
-  rounded?: Prisma.SortOrder
-  dsr?: Prisma.SortOrder
   contract_no?: Prisma.SortOrder
   contract_no2?: Prisma.SortOrder
   contract_date?: Prisma.SortOrder
@@ -1073,6 +770,9 @@ export type SumdanCountOrderByAggregateInput = {
   file?: Prisma.SortOrder
   sk_akad?: Prisma.SortOrder
   fronting?: Prisma.SortOrder
+  include_blokir?: Prisma.SortOrder
+  blokir_mitra?: Prisma.SortOrder
+  provisi_name?: Prisma.SortOrder
   status?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -1081,21 +781,6 @@ export type SumdanCountOrderByAggregateInput = {
 export type SumdanAvgOrderByAggregateInput = {
   tbo?: Prisma.SortOrder
   limit?: Prisma.SortOrder
-  c_margin?: Prisma.SortOrder
-  c_adm_sumdan?: Prisma.SortOrder
-  c_account_sumdan?: Prisma.SortOrder
-  c_provisi_sumdan?: Prisma.SortOrder
-  c_adm?: Prisma.SortOrder
-  c_provisi?: Prisma.SortOrder
-  c_gov?: Prisma.SortOrder
-  c_stamps?: Prisma.SortOrder
-  c_flagging?: Prisma.SortOrder
-  c_information?: Prisma.SortOrder
-  c_ned?: Prisma.SortOrder
-  fee_banpot?: Prisma.SortOrder
-  max_bpp?: Prisma.SortOrder
-  rounded?: Prisma.SortOrder
-  dsr?: Prisma.SortOrder
 }
 
 export type SumdanMaxOrderByAggregateInput = {
@@ -1109,21 +794,6 @@ export type SumdanMaxOrderByAggregateInput = {
   email?: Prisma.SortOrder
   tbo?: Prisma.SortOrder
   limit?: Prisma.SortOrder
-  c_margin?: Prisma.SortOrder
-  c_adm_sumdan?: Prisma.SortOrder
-  c_account_sumdan?: Prisma.SortOrder
-  c_provisi_sumdan?: Prisma.SortOrder
-  c_adm?: Prisma.SortOrder
-  c_provisi?: Prisma.SortOrder
-  c_gov?: Prisma.SortOrder
-  c_stamps?: Prisma.SortOrder
-  c_flagging?: Prisma.SortOrder
-  c_information?: Prisma.SortOrder
-  c_ned?: Prisma.SortOrder
-  fee_banpot?: Prisma.SortOrder
-  max_bpp?: Prisma.SortOrder
-  rounded?: Prisma.SortOrder
-  dsr?: Prisma.SortOrder
   contract_no?: Prisma.SortOrder
   contract_no2?: Prisma.SortOrder
   contract_date?: Prisma.SortOrder
@@ -1133,6 +803,9 @@ export type SumdanMaxOrderByAggregateInput = {
   file?: Prisma.SortOrder
   sk_akad?: Prisma.SortOrder
   fronting?: Prisma.SortOrder
+  include_blokir?: Prisma.SortOrder
+  blokir_mitra?: Prisma.SortOrder
+  provisi_name?: Prisma.SortOrder
   status?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -1149,21 +822,6 @@ export type SumdanMinOrderByAggregateInput = {
   email?: Prisma.SortOrder
   tbo?: Prisma.SortOrder
   limit?: Prisma.SortOrder
-  c_margin?: Prisma.SortOrder
-  c_adm_sumdan?: Prisma.SortOrder
-  c_account_sumdan?: Prisma.SortOrder
-  c_provisi_sumdan?: Prisma.SortOrder
-  c_adm?: Prisma.SortOrder
-  c_provisi?: Prisma.SortOrder
-  c_gov?: Prisma.SortOrder
-  c_stamps?: Prisma.SortOrder
-  c_flagging?: Prisma.SortOrder
-  c_information?: Prisma.SortOrder
-  c_ned?: Prisma.SortOrder
-  fee_banpot?: Prisma.SortOrder
-  max_bpp?: Prisma.SortOrder
-  rounded?: Prisma.SortOrder
-  dsr?: Prisma.SortOrder
   contract_no?: Prisma.SortOrder
   contract_no2?: Prisma.SortOrder
   contract_date?: Prisma.SortOrder
@@ -1173,6 +831,9 @@ export type SumdanMinOrderByAggregateInput = {
   file?: Prisma.SortOrder
   sk_akad?: Prisma.SortOrder
   fronting?: Prisma.SortOrder
+  include_blokir?: Prisma.SortOrder
+  blokir_mitra?: Prisma.SortOrder
+  provisi_name?: Prisma.SortOrder
   status?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -1181,21 +842,6 @@ export type SumdanMinOrderByAggregateInput = {
 export type SumdanSumOrderByAggregateInput = {
   tbo?: Prisma.SortOrder
   limit?: Prisma.SortOrder
-  c_margin?: Prisma.SortOrder
-  c_adm_sumdan?: Prisma.SortOrder
-  c_account_sumdan?: Prisma.SortOrder
-  c_provisi_sumdan?: Prisma.SortOrder
-  c_adm?: Prisma.SortOrder
-  c_provisi?: Prisma.SortOrder
-  c_gov?: Prisma.SortOrder
-  c_stamps?: Prisma.SortOrder
-  c_flagging?: Prisma.SortOrder
-  c_information?: Prisma.SortOrder
-  c_ned?: Prisma.SortOrder
-  fee_banpot?: Prisma.SortOrder
-  max_bpp?: Prisma.SortOrder
-  rounded?: Prisma.SortOrder
-  dsr?: Prisma.SortOrder
 }
 
 export type SumdanNullableScalarRelationFilter = {
@@ -1226,14 +872,6 @@ export type BigIntFieldUpdateOperationsInput = {
   decrement?: bigint | number
   multiply?: bigint | number
   divide?: bigint | number
-}
-
-export type FloatFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
 }
 
 export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -1337,21 +975,6 @@ export type SumdanCreateWithoutUsersInput = {
   email?: string | null
   tbo?: number
   limit?: bigint | number
-  c_margin: number
-  c_adm_sumdan: number
-  c_account_sumdan: number
-  c_provisi_sumdan?: number
-  c_adm: number
-  c_provisi?: number
-  c_gov: number
-  c_stamps: number
-  c_flagging: number
-  c_information: number
-  c_ned?: number
-  fee_banpot?: number
-  max_bpp: number
-  rounded?: number
-  dsr: number
   contract_no?: string | null
   contract_no2?: string | null
   contract_date?: Date | string | null
@@ -1361,6 +984,9 @@ export type SumdanCreateWithoutUsersInput = {
   file?: string | null
   sk_akad?: string | null
   fronting?: boolean
+  include_blokir?: boolean
+  blokir_mitra?: boolean
+  provisi_name?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -1382,21 +1008,6 @@ export type SumdanUncheckedCreateWithoutUsersInput = {
   email?: string | null
   tbo?: number
   limit?: bigint | number
-  c_margin: number
-  c_adm_sumdan: number
-  c_account_sumdan: number
-  c_provisi_sumdan?: number
-  c_adm: number
-  c_provisi?: number
-  c_gov: number
-  c_stamps: number
-  c_flagging: number
-  c_information: number
-  c_ned?: number
-  fee_banpot?: number
-  max_bpp: number
-  rounded?: number
-  dsr: number
   contract_no?: string | null
   contract_no2?: string | null
   contract_date?: Date | string | null
@@ -1406,6 +1017,9 @@ export type SumdanUncheckedCreateWithoutUsersInput = {
   file?: string | null
   sk_akad?: string | null
   fronting?: boolean
+  include_blokir?: boolean
+  blokir_mitra?: boolean
+  provisi_name?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -1443,21 +1057,6 @@ export type SumdanUpdateWithoutUsersInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tbo?: Prisma.IntFieldUpdateOperationsInput | number
   limit?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  c_margin?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_account_sumdan?: Prisma.IntFieldUpdateOperationsInput | number
-  c_provisi_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_provisi?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_gov?: Prisma.IntFieldUpdateOperationsInput | number
-  c_stamps?: Prisma.IntFieldUpdateOperationsInput | number
-  c_flagging?: Prisma.IntFieldUpdateOperationsInput | number
-  c_information?: Prisma.IntFieldUpdateOperationsInput | number
-  c_ned?: Prisma.IntFieldUpdateOperationsInput | number
-  fee_banpot?: Prisma.FloatFieldUpdateOperationsInput | number
-  max_bpp?: Prisma.IntFieldUpdateOperationsInput | number
-  rounded?: Prisma.IntFieldUpdateOperationsInput | number
-  dsr?: Prisma.FloatFieldUpdateOperationsInput | number
   contract_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_no2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1467,6 +1066,9 @@ export type SumdanUpdateWithoutUsersInput = {
   file?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sk_akad?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fronting?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  include_blokir?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blokir_mitra?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  provisi_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1488,21 +1090,6 @@ export type SumdanUncheckedUpdateWithoutUsersInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tbo?: Prisma.IntFieldUpdateOperationsInput | number
   limit?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  c_margin?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_account_sumdan?: Prisma.IntFieldUpdateOperationsInput | number
-  c_provisi_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_provisi?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_gov?: Prisma.IntFieldUpdateOperationsInput | number
-  c_stamps?: Prisma.IntFieldUpdateOperationsInput | number
-  c_flagging?: Prisma.IntFieldUpdateOperationsInput | number
-  c_information?: Prisma.IntFieldUpdateOperationsInput | number
-  c_ned?: Prisma.IntFieldUpdateOperationsInput | number
-  fee_banpot?: Prisma.FloatFieldUpdateOperationsInput | number
-  max_bpp?: Prisma.IntFieldUpdateOperationsInput | number
-  rounded?: Prisma.IntFieldUpdateOperationsInput | number
-  dsr?: Prisma.FloatFieldUpdateOperationsInput | number
   contract_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_no2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1512,6 +1099,9 @@ export type SumdanUncheckedUpdateWithoutUsersInput = {
   file?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sk_akad?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fronting?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  include_blokir?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blokir_mitra?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  provisi_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1533,21 +1123,6 @@ export type SumdanCreateWithoutProdukPembiayaansInput = {
   email?: string | null
   tbo?: number
   limit?: bigint | number
-  c_margin: number
-  c_adm_sumdan: number
-  c_account_sumdan: number
-  c_provisi_sumdan?: number
-  c_adm: number
-  c_provisi?: number
-  c_gov: number
-  c_stamps: number
-  c_flagging: number
-  c_information: number
-  c_ned?: number
-  fee_banpot?: number
-  max_bpp: number
-  rounded?: number
-  dsr: number
   contract_no?: string | null
   contract_no2?: string | null
   contract_date?: Date | string | null
@@ -1557,6 +1132,9 @@ export type SumdanCreateWithoutProdukPembiayaansInput = {
   file?: string | null
   sk_akad?: string | null
   fronting?: boolean
+  include_blokir?: boolean
+  blokir_mitra?: boolean
+  provisi_name?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -1578,21 +1156,6 @@ export type SumdanUncheckedCreateWithoutProdukPembiayaansInput = {
   email?: string | null
   tbo?: number
   limit?: bigint | number
-  c_margin: number
-  c_adm_sumdan: number
-  c_account_sumdan: number
-  c_provisi_sumdan?: number
-  c_adm: number
-  c_provisi?: number
-  c_gov: number
-  c_stamps: number
-  c_flagging: number
-  c_information: number
-  c_ned?: number
-  fee_banpot?: number
-  max_bpp: number
-  rounded?: number
-  dsr: number
   contract_no?: string | null
   contract_no2?: string | null
   contract_date?: Date | string | null
@@ -1602,6 +1165,9 @@ export type SumdanUncheckedCreateWithoutProdukPembiayaansInput = {
   file?: string | null
   sk_akad?: string | null
   fronting?: boolean
+  include_blokir?: boolean
+  blokir_mitra?: boolean
+  provisi_name?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -1639,21 +1205,6 @@ export type SumdanUpdateWithoutProdukPembiayaansInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tbo?: Prisma.IntFieldUpdateOperationsInput | number
   limit?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  c_margin?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_account_sumdan?: Prisma.IntFieldUpdateOperationsInput | number
-  c_provisi_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_provisi?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_gov?: Prisma.IntFieldUpdateOperationsInput | number
-  c_stamps?: Prisma.IntFieldUpdateOperationsInput | number
-  c_flagging?: Prisma.IntFieldUpdateOperationsInput | number
-  c_information?: Prisma.IntFieldUpdateOperationsInput | number
-  c_ned?: Prisma.IntFieldUpdateOperationsInput | number
-  fee_banpot?: Prisma.FloatFieldUpdateOperationsInput | number
-  max_bpp?: Prisma.IntFieldUpdateOperationsInput | number
-  rounded?: Prisma.IntFieldUpdateOperationsInput | number
-  dsr?: Prisma.FloatFieldUpdateOperationsInput | number
   contract_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_no2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1663,6 +1214,9 @@ export type SumdanUpdateWithoutProdukPembiayaansInput = {
   file?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sk_akad?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fronting?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  include_blokir?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blokir_mitra?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  provisi_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1684,21 +1238,6 @@ export type SumdanUncheckedUpdateWithoutProdukPembiayaansInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tbo?: Prisma.IntFieldUpdateOperationsInput | number
   limit?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  c_margin?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_account_sumdan?: Prisma.IntFieldUpdateOperationsInput | number
-  c_provisi_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_provisi?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_gov?: Prisma.IntFieldUpdateOperationsInput | number
-  c_stamps?: Prisma.IntFieldUpdateOperationsInput | number
-  c_flagging?: Prisma.IntFieldUpdateOperationsInput | number
-  c_information?: Prisma.IntFieldUpdateOperationsInput | number
-  c_ned?: Prisma.IntFieldUpdateOperationsInput | number
-  fee_banpot?: Prisma.FloatFieldUpdateOperationsInput | number
-  max_bpp?: Prisma.IntFieldUpdateOperationsInput | number
-  rounded?: Prisma.IntFieldUpdateOperationsInput | number
-  dsr?: Prisma.FloatFieldUpdateOperationsInput | number
   contract_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_no2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1708,6 +1247,9 @@ export type SumdanUncheckedUpdateWithoutProdukPembiayaansInput = {
   file?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sk_akad?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fronting?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  include_blokir?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blokir_mitra?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  provisi_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1729,21 +1271,6 @@ export type SumdanCreateWithoutDroppingsInput = {
   email?: string | null
   tbo?: number
   limit?: bigint | number
-  c_margin: number
-  c_adm_sumdan: number
-  c_account_sumdan: number
-  c_provisi_sumdan?: number
-  c_adm: number
-  c_provisi?: number
-  c_gov: number
-  c_stamps: number
-  c_flagging: number
-  c_information: number
-  c_ned?: number
-  fee_banpot?: number
-  max_bpp: number
-  rounded?: number
-  dsr: number
   contract_no?: string | null
   contract_no2?: string | null
   contract_date?: Date | string | null
@@ -1753,6 +1280,9 @@ export type SumdanCreateWithoutDroppingsInput = {
   file?: string | null
   sk_akad?: string | null
   fronting?: boolean
+  include_blokir?: boolean
+  blokir_mitra?: boolean
+  provisi_name?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -1774,21 +1304,6 @@ export type SumdanUncheckedCreateWithoutDroppingsInput = {
   email?: string | null
   tbo?: number
   limit?: bigint | number
-  c_margin: number
-  c_adm_sumdan: number
-  c_account_sumdan: number
-  c_provisi_sumdan?: number
-  c_adm: number
-  c_provisi?: number
-  c_gov: number
-  c_stamps: number
-  c_flagging: number
-  c_information: number
-  c_ned?: number
-  fee_banpot?: number
-  max_bpp: number
-  rounded?: number
-  dsr: number
   contract_no?: string | null
   contract_no2?: string | null
   contract_date?: Date | string | null
@@ -1798,6 +1313,9 @@ export type SumdanUncheckedCreateWithoutDroppingsInput = {
   file?: string | null
   sk_akad?: string | null
   fronting?: boolean
+  include_blokir?: boolean
+  blokir_mitra?: boolean
+  provisi_name?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -1835,21 +1353,6 @@ export type SumdanUpdateWithoutDroppingsInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tbo?: Prisma.IntFieldUpdateOperationsInput | number
   limit?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  c_margin?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_account_sumdan?: Prisma.IntFieldUpdateOperationsInput | number
-  c_provisi_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_provisi?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_gov?: Prisma.IntFieldUpdateOperationsInput | number
-  c_stamps?: Prisma.IntFieldUpdateOperationsInput | number
-  c_flagging?: Prisma.IntFieldUpdateOperationsInput | number
-  c_information?: Prisma.IntFieldUpdateOperationsInput | number
-  c_ned?: Prisma.IntFieldUpdateOperationsInput | number
-  fee_banpot?: Prisma.FloatFieldUpdateOperationsInput | number
-  max_bpp?: Prisma.IntFieldUpdateOperationsInput | number
-  rounded?: Prisma.IntFieldUpdateOperationsInput | number
-  dsr?: Prisma.FloatFieldUpdateOperationsInput | number
   contract_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_no2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1859,6 +1362,9 @@ export type SumdanUpdateWithoutDroppingsInput = {
   file?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sk_akad?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fronting?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  include_blokir?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blokir_mitra?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  provisi_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1880,21 +1386,6 @@ export type SumdanUncheckedUpdateWithoutDroppingsInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tbo?: Prisma.IntFieldUpdateOperationsInput | number
   limit?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  c_margin?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_account_sumdan?: Prisma.IntFieldUpdateOperationsInput | number
-  c_provisi_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_provisi?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_gov?: Prisma.IntFieldUpdateOperationsInput | number
-  c_stamps?: Prisma.IntFieldUpdateOperationsInput | number
-  c_flagging?: Prisma.IntFieldUpdateOperationsInput | number
-  c_information?: Prisma.IntFieldUpdateOperationsInput | number
-  c_ned?: Prisma.IntFieldUpdateOperationsInput | number
-  fee_banpot?: Prisma.FloatFieldUpdateOperationsInput | number
-  max_bpp?: Prisma.IntFieldUpdateOperationsInput | number
-  rounded?: Prisma.IntFieldUpdateOperationsInput | number
-  dsr?: Prisma.FloatFieldUpdateOperationsInput | number
   contract_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_no2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1904,6 +1395,9 @@ export type SumdanUncheckedUpdateWithoutDroppingsInput = {
   file?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sk_akad?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fronting?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  include_blokir?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blokir_mitra?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  provisi_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1925,21 +1419,6 @@ export type SumdanCreateWithoutBerkassInput = {
   email?: string | null
   tbo?: number
   limit?: bigint | number
-  c_margin: number
-  c_adm_sumdan: number
-  c_account_sumdan: number
-  c_provisi_sumdan?: number
-  c_adm: number
-  c_provisi?: number
-  c_gov: number
-  c_stamps: number
-  c_flagging: number
-  c_information: number
-  c_ned?: number
-  fee_banpot?: number
-  max_bpp: number
-  rounded?: number
-  dsr: number
   contract_no?: string | null
   contract_no2?: string | null
   contract_date?: Date | string | null
@@ -1949,6 +1428,9 @@ export type SumdanCreateWithoutBerkassInput = {
   file?: string | null
   sk_akad?: string | null
   fronting?: boolean
+  include_blokir?: boolean
+  blokir_mitra?: boolean
+  provisi_name?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -1970,21 +1452,6 @@ export type SumdanUncheckedCreateWithoutBerkassInput = {
   email?: string | null
   tbo?: number
   limit?: bigint | number
-  c_margin: number
-  c_adm_sumdan: number
-  c_account_sumdan: number
-  c_provisi_sumdan?: number
-  c_adm: number
-  c_provisi?: number
-  c_gov: number
-  c_stamps: number
-  c_flagging: number
-  c_information: number
-  c_ned?: number
-  fee_banpot?: number
-  max_bpp: number
-  rounded?: number
-  dsr: number
   contract_no?: string | null
   contract_no2?: string | null
   contract_date?: Date | string | null
@@ -1994,6 +1461,9 @@ export type SumdanUncheckedCreateWithoutBerkassInput = {
   file?: string | null
   sk_akad?: string | null
   fronting?: boolean
+  include_blokir?: boolean
+  blokir_mitra?: boolean
+  provisi_name?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -2031,21 +1501,6 @@ export type SumdanUpdateWithoutBerkassInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tbo?: Prisma.IntFieldUpdateOperationsInput | number
   limit?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  c_margin?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_account_sumdan?: Prisma.IntFieldUpdateOperationsInput | number
-  c_provisi_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_provisi?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_gov?: Prisma.IntFieldUpdateOperationsInput | number
-  c_stamps?: Prisma.IntFieldUpdateOperationsInput | number
-  c_flagging?: Prisma.IntFieldUpdateOperationsInput | number
-  c_information?: Prisma.IntFieldUpdateOperationsInput | number
-  c_ned?: Prisma.IntFieldUpdateOperationsInput | number
-  fee_banpot?: Prisma.FloatFieldUpdateOperationsInput | number
-  max_bpp?: Prisma.IntFieldUpdateOperationsInput | number
-  rounded?: Prisma.IntFieldUpdateOperationsInput | number
-  dsr?: Prisma.FloatFieldUpdateOperationsInput | number
   contract_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_no2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2055,6 +1510,9 @@ export type SumdanUpdateWithoutBerkassInput = {
   file?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sk_akad?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fronting?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  include_blokir?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blokir_mitra?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  provisi_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2076,21 +1534,6 @@ export type SumdanUncheckedUpdateWithoutBerkassInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tbo?: Prisma.IntFieldUpdateOperationsInput | number
   limit?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  c_margin?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_account_sumdan?: Prisma.IntFieldUpdateOperationsInput | number
-  c_provisi_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_provisi?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_gov?: Prisma.IntFieldUpdateOperationsInput | number
-  c_stamps?: Prisma.IntFieldUpdateOperationsInput | number
-  c_flagging?: Prisma.IntFieldUpdateOperationsInput | number
-  c_information?: Prisma.IntFieldUpdateOperationsInput | number
-  c_ned?: Prisma.IntFieldUpdateOperationsInput | number
-  fee_banpot?: Prisma.FloatFieldUpdateOperationsInput | number
-  max_bpp?: Prisma.IntFieldUpdateOperationsInput | number
-  rounded?: Prisma.IntFieldUpdateOperationsInput | number
-  dsr?: Prisma.FloatFieldUpdateOperationsInput | number
   contract_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_no2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2100,6 +1543,9 @@ export type SumdanUncheckedUpdateWithoutBerkassInput = {
   file?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sk_akad?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fronting?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  include_blokir?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blokir_mitra?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  provisi_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2121,21 +1567,6 @@ export type SumdanCreateWithoutJaminansInput = {
   email?: string | null
   tbo?: number
   limit?: bigint | number
-  c_margin: number
-  c_adm_sumdan: number
-  c_account_sumdan: number
-  c_provisi_sumdan?: number
-  c_adm: number
-  c_provisi?: number
-  c_gov: number
-  c_stamps: number
-  c_flagging: number
-  c_information: number
-  c_ned?: number
-  fee_banpot?: number
-  max_bpp: number
-  rounded?: number
-  dsr: number
   contract_no?: string | null
   contract_no2?: string | null
   contract_date?: Date | string | null
@@ -2145,6 +1576,9 @@ export type SumdanCreateWithoutJaminansInput = {
   file?: string | null
   sk_akad?: string | null
   fronting?: boolean
+  include_blokir?: boolean
+  blokir_mitra?: boolean
+  provisi_name?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -2166,21 +1600,6 @@ export type SumdanUncheckedCreateWithoutJaminansInput = {
   email?: string | null
   tbo?: number
   limit?: bigint | number
-  c_margin: number
-  c_adm_sumdan: number
-  c_account_sumdan: number
-  c_provisi_sumdan?: number
-  c_adm: number
-  c_provisi?: number
-  c_gov: number
-  c_stamps: number
-  c_flagging: number
-  c_information: number
-  c_ned?: number
-  fee_banpot?: number
-  max_bpp: number
-  rounded?: number
-  dsr: number
   contract_no?: string | null
   contract_no2?: string | null
   contract_date?: Date | string | null
@@ -2190,6 +1609,9 @@ export type SumdanUncheckedCreateWithoutJaminansInput = {
   file?: string | null
   sk_akad?: string | null
   fronting?: boolean
+  include_blokir?: boolean
+  blokir_mitra?: boolean
+  provisi_name?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -2227,21 +1649,6 @@ export type SumdanUpdateWithoutJaminansInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tbo?: Prisma.IntFieldUpdateOperationsInput | number
   limit?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  c_margin?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_account_sumdan?: Prisma.IntFieldUpdateOperationsInput | number
-  c_provisi_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_provisi?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_gov?: Prisma.IntFieldUpdateOperationsInput | number
-  c_stamps?: Prisma.IntFieldUpdateOperationsInput | number
-  c_flagging?: Prisma.IntFieldUpdateOperationsInput | number
-  c_information?: Prisma.IntFieldUpdateOperationsInput | number
-  c_ned?: Prisma.IntFieldUpdateOperationsInput | number
-  fee_banpot?: Prisma.FloatFieldUpdateOperationsInput | number
-  max_bpp?: Prisma.IntFieldUpdateOperationsInput | number
-  rounded?: Prisma.IntFieldUpdateOperationsInput | number
-  dsr?: Prisma.FloatFieldUpdateOperationsInput | number
   contract_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_no2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2251,6 +1658,9 @@ export type SumdanUpdateWithoutJaminansInput = {
   file?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sk_akad?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fronting?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  include_blokir?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blokir_mitra?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  provisi_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2272,21 +1682,6 @@ export type SumdanUncheckedUpdateWithoutJaminansInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tbo?: Prisma.IntFieldUpdateOperationsInput | number
   limit?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  c_margin?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_account_sumdan?: Prisma.IntFieldUpdateOperationsInput | number
-  c_provisi_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_provisi?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_gov?: Prisma.IntFieldUpdateOperationsInput | number
-  c_stamps?: Prisma.IntFieldUpdateOperationsInput | number
-  c_flagging?: Prisma.IntFieldUpdateOperationsInput | number
-  c_information?: Prisma.IntFieldUpdateOperationsInput | number
-  c_ned?: Prisma.IntFieldUpdateOperationsInput | number
-  fee_banpot?: Prisma.FloatFieldUpdateOperationsInput | number
-  max_bpp?: Prisma.IntFieldUpdateOperationsInput | number
-  rounded?: Prisma.IntFieldUpdateOperationsInput | number
-  dsr?: Prisma.FloatFieldUpdateOperationsInput | number
   contract_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_no2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2296,6 +1691,9 @@ export type SumdanUncheckedUpdateWithoutJaminansInput = {
   file?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sk_akad?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fronting?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  include_blokir?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blokir_mitra?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  provisi_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2317,21 +1715,6 @@ export type SumdanCreateWithoutSumdanAgentFrontingsInput = {
   email?: string | null
   tbo?: number
   limit?: bigint | number
-  c_margin: number
-  c_adm_sumdan: number
-  c_account_sumdan: number
-  c_provisi_sumdan?: number
-  c_adm: number
-  c_provisi?: number
-  c_gov: number
-  c_stamps: number
-  c_flagging: number
-  c_information: number
-  c_ned?: number
-  fee_banpot?: number
-  max_bpp: number
-  rounded?: number
-  dsr: number
   contract_no?: string | null
   contract_no2?: string | null
   contract_date?: Date | string | null
@@ -2341,6 +1724,9 @@ export type SumdanCreateWithoutSumdanAgentFrontingsInput = {
   file?: string | null
   sk_akad?: string | null
   fronting?: boolean
+  include_blokir?: boolean
+  blokir_mitra?: boolean
+  provisi_name?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -2362,21 +1748,6 @@ export type SumdanUncheckedCreateWithoutSumdanAgentFrontingsInput = {
   email?: string | null
   tbo?: number
   limit?: bigint | number
-  c_margin: number
-  c_adm_sumdan: number
-  c_account_sumdan: number
-  c_provisi_sumdan?: number
-  c_adm: number
-  c_provisi?: number
-  c_gov: number
-  c_stamps: number
-  c_flagging: number
-  c_information: number
-  c_ned?: number
-  fee_banpot?: number
-  max_bpp: number
-  rounded?: number
-  dsr: number
   contract_no?: string | null
   contract_no2?: string | null
   contract_date?: Date | string | null
@@ -2386,6 +1757,9 @@ export type SumdanUncheckedCreateWithoutSumdanAgentFrontingsInput = {
   file?: string | null
   sk_akad?: string | null
   fronting?: boolean
+  include_blokir?: boolean
+  blokir_mitra?: boolean
+  provisi_name?: string | null
   status?: boolean
   created_at?: Date | string
   updated_at?: Date | string
@@ -2423,21 +1797,6 @@ export type SumdanUpdateWithoutSumdanAgentFrontingsInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tbo?: Prisma.IntFieldUpdateOperationsInput | number
   limit?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  c_margin?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_account_sumdan?: Prisma.IntFieldUpdateOperationsInput | number
-  c_provisi_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_provisi?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_gov?: Prisma.IntFieldUpdateOperationsInput | number
-  c_stamps?: Prisma.IntFieldUpdateOperationsInput | number
-  c_flagging?: Prisma.IntFieldUpdateOperationsInput | number
-  c_information?: Prisma.IntFieldUpdateOperationsInput | number
-  c_ned?: Prisma.IntFieldUpdateOperationsInput | number
-  fee_banpot?: Prisma.FloatFieldUpdateOperationsInput | number
-  max_bpp?: Prisma.IntFieldUpdateOperationsInput | number
-  rounded?: Prisma.IntFieldUpdateOperationsInput | number
-  dsr?: Prisma.FloatFieldUpdateOperationsInput | number
   contract_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_no2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2447,6 +1806,9 @@ export type SumdanUpdateWithoutSumdanAgentFrontingsInput = {
   file?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sk_akad?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fronting?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  include_blokir?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blokir_mitra?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  provisi_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2468,21 +1830,6 @@ export type SumdanUncheckedUpdateWithoutSumdanAgentFrontingsInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tbo?: Prisma.IntFieldUpdateOperationsInput | number
   limit?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  c_margin?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_account_sumdan?: Prisma.IntFieldUpdateOperationsInput | number
-  c_provisi_sumdan?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_adm?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_provisi?: Prisma.FloatFieldUpdateOperationsInput | number
-  c_gov?: Prisma.IntFieldUpdateOperationsInput | number
-  c_stamps?: Prisma.IntFieldUpdateOperationsInput | number
-  c_flagging?: Prisma.IntFieldUpdateOperationsInput | number
-  c_information?: Prisma.IntFieldUpdateOperationsInput | number
-  c_ned?: Prisma.IntFieldUpdateOperationsInput | number
-  fee_banpot?: Prisma.FloatFieldUpdateOperationsInput | number
-  max_bpp?: Prisma.IntFieldUpdateOperationsInput | number
-  rounded?: Prisma.IntFieldUpdateOperationsInput | number
-  dsr?: Prisma.FloatFieldUpdateOperationsInput | number
   contract_no?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_no2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2492,6 +1839,9 @@ export type SumdanUncheckedUpdateWithoutSumdanAgentFrontingsInput = {
   file?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sk_akad?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fronting?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  include_blokir?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blokir_mitra?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  provisi_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2589,21 +1939,6 @@ export type SumdanSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   email?: boolean
   tbo?: boolean
   limit?: boolean
-  c_margin?: boolean
-  c_adm_sumdan?: boolean
-  c_account_sumdan?: boolean
-  c_provisi_sumdan?: boolean
-  c_adm?: boolean
-  c_provisi?: boolean
-  c_gov?: boolean
-  c_stamps?: boolean
-  c_flagging?: boolean
-  c_information?: boolean
-  c_ned?: boolean
-  fee_banpot?: boolean
-  max_bpp?: boolean
-  rounded?: boolean
-  dsr?: boolean
   contract_no?: boolean
   contract_no2?: boolean
   contract_date?: boolean
@@ -2613,6 +1948,9 @@ export type SumdanSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   file?: boolean
   sk_akad?: boolean
   fronting?: boolean
+  include_blokir?: boolean
+  blokir_mitra?: boolean
+  provisi_name?: boolean
   status?: boolean
   created_at?: boolean
   updated_at?: boolean
@@ -2638,21 +1976,6 @@ export type SumdanSelectScalar = {
   email?: boolean
   tbo?: boolean
   limit?: boolean
-  c_margin?: boolean
-  c_adm_sumdan?: boolean
-  c_account_sumdan?: boolean
-  c_provisi_sumdan?: boolean
-  c_adm?: boolean
-  c_provisi?: boolean
-  c_gov?: boolean
-  c_stamps?: boolean
-  c_flagging?: boolean
-  c_information?: boolean
-  c_ned?: boolean
-  fee_banpot?: boolean
-  max_bpp?: boolean
-  rounded?: boolean
-  dsr?: boolean
   contract_no?: boolean
   contract_no2?: boolean
   contract_date?: boolean
@@ -2662,12 +1985,15 @@ export type SumdanSelectScalar = {
   file?: boolean
   sk_akad?: boolean
   fronting?: boolean
+  include_blokir?: boolean
+  blokir_mitra?: boolean
+  provisi_name?: boolean
   status?: boolean
   created_at?: boolean
   updated_at?: boolean
 }
 
-export type SumdanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "code" | "description" | "logo" | "address" | "phone" | "email" | "tbo" | "limit" | "c_margin" | "c_adm_sumdan" | "c_account_sumdan" | "c_provisi_sumdan" | "c_adm" | "c_provisi" | "c_gov" | "c_stamps" | "c_flagging" | "c_information" | "c_ned" | "fee_banpot" | "max_bpp" | "rounded" | "dsr" | "contract_no" | "contract_no2" | "contract_date" | "sk_no" | "sk_date" | "pic" | "file" | "sk_akad" | "fronting" | "status" | "created_at" | "updated_at", ExtArgs["result"]["sumdan"]>
+export type SumdanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "code" | "description" | "logo" | "address" | "phone" | "email" | "tbo" | "limit" | "contract_no" | "contract_no2" | "contract_date" | "sk_no" | "sk_date" | "pic" | "file" | "sk_akad" | "fronting" | "include_blokir" | "blokir_mitra" | "provisi_name" | "status" | "created_at" | "updated_at", ExtArgs["result"]["sumdan"]>
 export type SumdanInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   Users?: boolean | Prisma.Sumdan$UsersArgs<ExtArgs>
   ProdukPembiayaans?: boolean | Prisma.Sumdan$ProdukPembiayaansArgs<ExtArgs>
@@ -2699,21 +2025,6 @@ export type $SumdanPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     email: string | null
     tbo: number
     limit: bigint
-    c_margin: number
-    c_adm_sumdan: number
-    c_account_sumdan: number
-    c_provisi_sumdan: number
-    c_adm: number
-    c_provisi: number
-    c_gov: number
-    c_stamps: number
-    c_flagging: number
-    c_information: number
-    c_ned: number
-    fee_banpot: number
-    max_bpp: number
-    rounded: number
-    dsr: number
     contract_no: string | null
     contract_no2: string | null
     contract_date: Date | null
@@ -2723,6 +2034,9 @@ export type $SumdanPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     file: string | null
     sk_akad: string | null
     fronting: boolean
+    include_blokir: boolean
+    blokir_mitra: boolean
+    provisi_name: string | null
     status: boolean
     created_at: Date
     updated_at: Date
@@ -3111,21 +2425,6 @@ export interface SumdanFieldRefs {
   readonly email: Prisma.FieldRef<"Sumdan", 'String'>
   readonly tbo: Prisma.FieldRef<"Sumdan", 'Int'>
   readonly limit: Prisma.FieldRef<"Sumdan", 'BigInt'>
-  readonly c_margin: Prisma.FieldRef<"Sumdan", 'Float'>
-  readonly c_adm_sumdan: Prisma.FieldRef<"Sumdan", 'Float'>
-  readonly c_account_sumdan: Prisma.FieldRef<"Sumdan", 'Int'>
-  readonly c_provisi_sumdan: Prisma.FieldRef<"Sumdan", 'Float'>
-  readonly c_adm: Prisma.FieldRef<"Sumdan", 'Float'>
-  readonly c_provisi: Prisma.FieldRef<"Sumdan", 'Float'>
-  readonly c_gov: Prisma.FieldRef<"Sumdan", 'Int'>
-  readonly c_stamps: Prisma.FieldRef<"Sumdan", 'Int'>
-  readonly c_flagging: Prisma.FieldRef<"Sumdan", 'Int'>
-  readonly c_information: Prisma.FieldRef<"Sumdan", 'Int'>
-  readonly c_ned: Prisma.FieldRef<"Sumdan", 'Int'>
-  readonly fee_banpot: Prisma.FieldRef<"Sumdan", 'Float'>
-  readonly max_bpp: Prisma.FieldRef<"Sumdan", 'Int'>
-  readonly rounded: Prisma.FieldRef<"Sumdan", 'Int'>
-  readonly dsr: Prisma.FieldRef<"Sumdan", 'Float'>
   readonly contract_no: Prisma.FieldRef<"Sumdan", 'String'>
   readonly contract_no2: Prisma.FieldRef<"Sumdan", 'String'>
   readonly contract_date: Prisma.FieldRef<"Sumdan", 'DateTime'>
@@ -3135,6 +2434,9 @@ export interface SumdanFieldRefs {
   readonly file: Prisma.FieldRef<"Sumdan", 'String'>
   readonly sk_akad: Prisma.FieldRef<"Sumdan", 'String'>
   readonly fronting: Prisma.FieldRef<"Sumdan", 'Boolean'>
+  readonly include_blokir: Prisma.FieldRef<"Sumdan", 'Boolean'>
+  readonly blokir_mitra: Prisma.FieldRef<"Sumdan", 'Boolean'>
+  readonly provisi_name: Prisma.FieldRef<"Sumdan", 'String'>
   readonly status: Prisma.FieldRef<"Sumdan", 'Boolean'>
   readonly created_at: Prisma.FieldRef<"Sumdan", 'DateTime'>
   readonly updated_at: Prisma.FieldRef<"Sumdan", 'DateTime'>

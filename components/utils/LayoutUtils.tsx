@@ -576,13 +576,11 @@ export const DetailDapem = ({
                 <Descriptions.Item label="Jenis Pembiayaan">
                   {data.JenisPembiayaan.name}
                 </Descriptions.Item>
-                <Descriptions.Item label="Kantor Bayar">
-                  {data.PrevPayOffice.code}{" "}
-                  {data.JenisPembiayaan.status_mutasi && (
-                    <>
-                      <SwapOutlined /> {data.PayOffice.code}
-                    </>
-                  )}
+                <Descriptions.Item label="Kantor Bayar Asal">
+                  {data.PrevPayOffice.name} {data.pay_kcp}
+                </Descriptions.Item>
+                <Descriptions.Item label="Kantor Bayar Tujuan">
+                  {data.PayOffice.name} {data.pay_next_kcp}
                 </Descriptions.Item>
                 <Descriptions.Item label="Takeover">
                   {data.takeover_from ? (
@@ -638,22 +636,6 @@ export const DetailDapem = ({
                   </div>
                 </div>
                 <div className="flex justify-between border-b border-gray-400 border-dashed">
-                  <div className="w-48">
-                    Provisi
-                    <span className="text-gray-400" style={{ fontSize: 10 }}>
-                      ({data.c_provisi_sumdan.toFixed(2)}% + {}
-                      {data.c_provisi.toFixed(2)}%)
-                    </span>
-                  </div>
-                  <div className="flex-1 text-right">
-                    <span className="text-gray-400" style={{ fontSize: 10 }}>
-                      ({IDRFormat(detail.detail.provisi_sumdan)} +{" "}
-                      {IDRFormat(detail.detail.provisi)})
-                    </span>{" "}
-                    {IDRFormat(detail.provisi)}
-                  </div>
-                </div>
-                <div className="flex justify-between border-b border-gray-400 border-dashed">
                   <div className="w-48">Tatalaksana</div>
                   <div className="flex-1 text-right">
                     {IDRFormat(data.c_gov)}
@@ -669,6 +651,22 @@ export const DetailDapem = ({
                   <div className="w-48">Materai</div>
                   <div className="flex-1 text-right">
                     {IDRFormat(data.c_stamp)}
+                  </div>
+                </div>
+                <div className="flex justify-between border-b border-gray-400 border-dashed">
+                  <div className="w-48">
+                    Provisi
+                    <span className="text-gray-400" style={{ fontSize: 10 }}>
+                      ({data.c_provisi_sumdan.toFixed(2)}% + {}
+                      {data.c_provisi.toFixed(2)}%)
+                    </span>
+                  </div>
+                  <div className="flex-1 text-right">
+                    <span className="text-gray-400" style={{ fontSize: 10 }}>
+                      ({IDRFormat(detail.detail.provisi_sumdan)} +{" "}
+                      {IDRFormat(detail.detail.provisi)})
+                    </span>{" "}
+                    {IDRFormat(detail.provisi)}
                   </div>
                 </div>
                 <div className="flex justify-between border-b border-gray-400 border-dashed">

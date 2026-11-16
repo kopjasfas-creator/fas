@@ -2,9 +2,11 @@
 
 import { FormInput } from "@/components";
 import {
+  FormatProvisi,
   GetSisaPokokMargin,
   IDRFormat,
   IDRToNumber,
+  IsProvisiPercentage,
   serializeForApi,
 } from "@/components/utils/PembiayaanUtil";
 import { IActionTable, IDapem, IPageProps, ISumdan } from "@/libs/IInterfaces";
@@ -13,11 +15,9 @@ import {
   BankOutlined,
   CalendarOutlined,
   DeleteOutlined,
-  DollarCircleOutlined,
   EditOutlined,
   EnvironmentOutlined,
   FileProtectOutlined,
-  FileTextOutlined,
   PhoneOutlined,
   PlusCircleFilled,
   SaveOutlined,
@@ -30,13 +30,11 @@ import {
   App,
   Button,
   Card,
-  Divider,
   Input,
   Modal,
   Progress,
   Table,
   TableProps,
-  Tabs,
   Typography,
 } from "antd";
 import { HookAPI } from "antd/es/modal/useModal";
@@ -145,51 +143,9 @@ export default function Page() {
         return (
           <div>
             <div className="  text-blue-400">
-              <p>Rounded : {IDRFormat(record.rounded)}</p>
-              <p>DSR : {record.dsr}%</p>
               <p>TBO : {record.tbo} Bulan</p>
               <p>Limit : {IDRFormat(Number(record.limit))}</p>
             </div>
-          </div>
-        );
-      },
-    },
-    {
-      title: "Biaya Mitra",
-      dataIndex: "cost_mitra",
-      key: "cost_mitra",
-      render(value, record, index) {
-        return (
-          <div className=" text-blue-400">
-            <p>Admin : {record.c_adm_sumdan}%</p>
-            <p>
-              Provisi :{" "}
-              {record.c_provisi_sumdan < 100
-                ? `${record.c_provisi_sumdan}%`
-                : IDRFormat(record.c_provisi_sumdan)}
-            </p>
-            <p>Rekening : {IDRFormat(record.c_account_sumdan)}</p>
-          </div>
-        );
-      },
-    },
-    {
-      title: "Biaya Koperasi",
-      dataIndex: "cost",
-      key: "cost",
-      render(value, record, index) {
-        return (
-          <div className=" text-blue-400">
-            <p>Admin : {record.c_adm}%</p>
-            <p>
-              Provisi :{" "}
-              {record.c_provisi < 100
-                ? `${record.c_provisi}%`
-                : IDRFormat(record.c_provisi)}
-            </p>
-            <p>Tatalaksana : {IDRFormat(record.c_gov)}</p>
-            <p>Materai : {IDRFormat(record.c_stamps)}</p>
-            <p>Data Informasi : {IDRFormat(record.c_information)}</p>
           </div>
         );
       },
@@ -205,7 +161,7 @@ export default function Page() {
         );
         const os = record.ProdukPembiayaans.flatMap((d) =>
           d.Dapems.filter((dp) => dp.dropping_status === "DISETUJUI").flatMap(
-            (dpa) => GetSisaPokokMargin(dpa as any as IDapem).principal,
+            (dpa) => GetSisaPokokMargin(dpa as unknown as IDapem).principal,
           ),
         ).reduce((acc, curr) => acc + curr, 0);
         return (
@@ -398,31 +354,9 @@ function UpsertSumdan({
 }) {
   const [data, setData] = useState(record ? record : defaultSumdan);
   const [loading, setLoading] = useState(false);
-  const [provisiSumdanType, setProvisiSumdanType] = useState<
-    "percentage" | "nominal"
-  >(data.c_provisi_sumdan < 100 ? "percentage" : "nominal");
-  const [provisiType, setProvisiType] = useState<"percentage" | "nominal">(
-    data.c_provisi < 100 ? "percentage" : "nominal",
-  );
   // const [currentStep, setCurrentStep] = useState(0);
 
   const handleSave = async () => {
-    const isProvisionValid = (value: number, type: "percentage" | "nominal") =>
-      Number.isFinite(value) &&
-      (type === "percentage" ? value >= 0 && value < 100 : value >= 100);
-
-    if (
-      !isProvisionValid(data.c_provisi_sumdan, provisiSumdanType) ||
-      !isProvisionValid(data.c_provisi, provisiType)
-    ) {
-      modal.error({
-        title: "Validasi Provisi",
-        content:
-          "Provisi persentase harus kurang dari 100%. Provisi nominal harus minimal Rp100.",
-      });
-      return;
-    }
-
     setLoading(true);
     const { ProdukPembiayaans, ...saved } = data;
 
@@ -474,448 +408,221 @@ function UpsertSumdan({
       style={{ top: 10 }}
       destroyOnHidden
     >
-      <Tabs
-        defaultActiveKey="data-sumdan"
-        items={[
-          {
-            key: "data-sumdan",
-            label: (
-              <>
-                <FileTextOutlined /> Data Mitra
-              </>
-            ),
-            children: (
-              <div className="flex flex-col sm:flex-row gap-4">
-                <div className="flex-1 flex flex-col gap-1">
-                  <div className="hidden">
-                    <FormInput
-                      data={{
-                        label: "ID",
-                        mode: "horizontal",
-                        type: "text",
-                        value: data.id,
-                        onChange: (e: string) => setData({ ...data, id: e }),
-                      }}
-                    />
-                  </div>
-                  <FormInput
-                    data={{
-                      label: "Nama Mitra",
-                      mode: "horizontal",
-                      required: true,
-                      type: "text",
-                      value: data.name,
-                      onChange: (e: string) => setData({ ...data, name: e }),
-                    }}
-                  />
-                  <FormInput
-                    data={{
-                      label: "Kode Mitra",
-                      mode: "horizontal",
-                      required: true,
-                      type: "text",
-                      value: data.code,
-                      onChange: (e: string) => setData({ ...data, code: e }),
-                    }}
-                  />
-                  <FormInput
-                    data={{
-                      label: "No Telepon",
-                      mode: "horizontal",
-                      required: true,
-                      type: "text",
-                      value: data.phone,
-                      onChange: (e: string) => setData({ ...data, phone: e }),
-                    }}
-                  />
-                  <FormInput
-                    data={{
-                      label: "Email",
-                      mode: "horizontal",
-                      required: true,
-                      type: "text",
-                      value: data.email,
-                      onChange: (e: string) => setData({ ...data, email: e }),
-                    }}
-                  />
-                  <FormInput
-                    data={{
-                      label: "Alamat",
-                      mode: "horizontal",
-                      required: true,
-                      type: "textarea",
-                      value: data.address,
-                      onChange: (e: string) => setData({ ...data, address: e }),
-                    }}
-                  />
-                  <FormInput
-                    data={{
-                      label: "Keterangan",
-                      mode: "horizontal",
-                      required: true,
-                      type: "textarea",
-                      value: data.description,
-                      onChange: (e: string) =>
-                        setData({ ...data, description: e }),
-                    }}
-                  />
-                  <FormInput
-                    data={{
-                      label: "Logo Mitra",
-                      mode: "horizontal",
-                      type: "upload",
-                      accept: "image/png,image/jpg,image/jpeg",
-                      value: data.logo,
-                      onChange: (e: string) => setData({ ...data, logo: e }),
-                    }}
-                  />
-                </div>
-                <div className="flex-1 flex flex-col gap-1">
-                  <FormInput
-                    data={{
-                      label: "No PKS Mitra",
-                      mode: "horizontal",
-                      required: true,
-                      type: "text",
-                      value: data.contract_no,
-                      onChange: (e: string) =>
-                        setData({ ...data, contract_no: e }),
-                    }}
-                  />
-                  <FormInput
-                    data={{
-                      label: "No PKS Koperasi",
-                      mode: "horizontal",
-                      required: true,
-                      type: "text",
-                      value: data.contract_no2,
-                      onChange: (e: string) =>
-                        setData({ ...data, contract_no2: e }),
-                    }}
-                  />
-                  <FormInput
-                    data={{
-                      label: "Tanggal PKS",
-                      mode: "horizontal",
-                      required: true,
-                      type: "date",
-                      value: moment(data.contract_date).format("YYYY-MM-DD"),
-                      onChange: (e: string) =>
-                        setData({ ...data, contract_date: new Date(e) }),
-                    }}
-                  />
-                  <FormInput
-                    data={{
-                      label: "No SK",
-                      mode: "horizontal",
-                      required: true,
-                      type: "text",
-                      value: data.sk_no,
-                      onChange: (e: string) => setData({ ...data, sk_no: e }),
-                    }}
-                  />
-                  <FormInput
-                    data={{
-                      label: "Tanggal SK",
-                      mode: "horizontal",
-                      required: true,
-                      type: "date",
-                      value: moment(data.sk_date).format("YYYY-MM-DD"),
-                      onChange: (e: string) =>
-                        setData({ ...data, sk_date: new Date(e) }),
-                    }}
-                  />
-                  <FormInput
-                    data={{
-                      label: "PIC",
-                      mode: "horizontal",
-                      required: true,
-                      type: "text",
-                      value: data.pic,
-                      onChange: (e: string) => setData({ ...data, pic: e }),
-                    }}
-                  />
-                </div>
-              </div>
-            ),
-          },
-          {
-            key: "biaya",
-            label: (
-              <>
-                <DollarCircleOutlined /> Biaya Biaya
-              </>
-            ),
-            children: (
-              <div className="flex flex-wrap gap-4">
-                <div className="flex-1 flex flex-col gap-1">
-                  <Divider style={{ margin: 5 }}>Pembiayaan Mitra</Divider>
-                  <FormInput
-                    data={{
-                      label: "Admin %",
-                      mode: "horizontal",
-                      type: "number",
-                      value: data.c_adm_sumdan,
-                      onChange: (e: string) =>
-                        setData({ ...data, c_adm_sumdan: parseFloat(e) }),
-                    }}
-                  />
-                  <FormInput
-                    data={{
-                      label: "Satuan Provisi",
-                      mode: "horizontal",
-                      type: "select",
-                      value: provisiSumdanType,
-                      options: [
-                        { label: "Persentase (%)", value: "percentage" },
-                        { label: "Nominal (Rp)", value: "nominal" },
-                      ],
-                      onChange: (value: "percentage" | "nominal") =>
-                        setProvisiSumdanType(value),
-                    }}
-                  />
-                  <FormInput
-                    data={{
-                      label: "Provisi",
-                      mode: "horizontal",
-                      type: "number",
-                      value: data.c_provisi_sumdan,
-                      suffix: provisiSumdanType === "percentage" ? "%" : "Rp",
-                      onChange: (e: string) =>
-                        setData({
-                          ...data,
-                          c_provisi_sumdan: parseFloat(e || "0"),
-                        }),
-                    }}
-                  />
-                  <FormInput
-                    data={{
-                      label: "Buka Rekening",
-                      mode: "horizontal",
-                      type: "text",
-                      value: IDRFormat(data.c_account_sumdan || 0),
-                      onChange: (e: any) =>
-                        setData({ ...data, c_account_sumdan: IDRToNumber(e) }),
-                    }}
-                  />
-                  <FormInput
-                    data={{
-                      label: "DSR/DBR %",
-                      mode: "horizontal",
-                      type: "number",
-                      value: data.dsr,
-                      onChange: (e: any) =>
-                        setData({ ...data, dsr: parseFloat(e) }),
-                    }}
-                  />
-                  <FormInput
-                    data={{
-                      label: "Limit Pembiayaan",
-                      mode: "horizontal",
-                      type: "text",
-                      value: IDRFormat(Number(data.limit) || 0),
-                      onChange: (e: any) =>
-                        setData({
-                          ...data,
-                          limit: BigInt(IDRToNumber(e || "0")),
-                        }),
-                    }}
-                  />
-                  <FormInput
-                    data={{
-                      label: "Suku Bunga %",
-                      mode: "horizontal",
-                      type: "number",
-                      value: data.c_margin,
-                      onChange: (e: any) =>
-                        setData({ ...data, c_margin: parseFloat(e) }),
-                    }}
-                  />
-                  <FormInput
-                    data={{
-                      label: "TBO Berkas",
-                      mode: "horizontal",
-                      type: "number",
-                      value: data.tbo,
-                      onChange: (e: any) =>
-                        setData({ ...data, tbo: parseInt(e) }),
-                    }}
-                  />
-                </div>
-                <div className="flex-1 flex flex-col gap-1">
-                  <Divider style={{ margin: 5 }}>Pembiayaan Koperasi</Divider>
-                  <FormInput
-                    data={{
-                      label: "Admin Koperasi %",
-                      mode: "horizontal",
-                      type: "number",
-                      value: data.c_adm,
-                      onChange: (e: any) =>
-                        setData({ ...data, c_adm: parseFloat(e) }),
-                    }}
-                  />
-                  <FormInput
-                    data={{
-                      label: "Satuan Provisi",
-                      mode: "horizontal",
-                      type: "select",
-                      value: provisiType,
-                      options: [
-                        { label: "Persentase (%)", value: "percentage" },
-                        { label: "Nominal (Rp)", value: "nominal" },
-                      ],
-                      onChange: (value: "percentage" | "nominal") =>
-                        setProvisiType(value),
-                    }}
-                  />
-                  <FormInput
-                    data={{
-                      label: "Provisi",
-                      mode: "horizontal",
-                      type: "number",
-                      value: data.c_provisi,
-                      suffix: provisiType === "percentage" ? "%" : "Rp",
-                      onChange: (e: string) =>
-                        setData({
-                          ...data,
-                          c_provisi: parseFloat(e || "0"),
-                        }),
-                    }}
-                  />
-                  <FormInput
-                    data={{
-                      label: "Tatalaksana",
-                      mode: "horizontal",
-                      type: "text",
-                      value: IDRFormat(data.c_gov),
-                      onChange: (e: any) =>
-                        setData({ ...data, c_gov: IDRToNumber(e) }),
-                    }}
-                  />
-                  {/* <FormInput
-                    data={{
-                      label: "Tambahan Asuransi",
-                      mode: "horizontal",
-                      type: "text",
-                      value: IDRFormat(data.c_flagging),
-                      onChange: (e: any) =>
-                        setData({ ...data, c_flagging: IDRToNumber(e) }),
-                    }}
-                  /> */}
-                  <FormInput
-                    data={{
-                      label: "Data Informasi",
-                      mode: "horizontal",
-                      type: "text",
-                      value: IDRFormat(data.c_information),
-                      onChange: (e: any) =>
-                        setData({ ...data, c_information: IDRToNumber(e) }),
-                    }}
-                  />
-                  <FormInput
-                    data={{
-                      label: "Materai",
-                      mode: "horizontal",
-                      type: "text",
-                      value: IDRFormat(data.c_stamps),
-                      onChange: (e: any) =>
-                        setData({ ...data, c_stamps: IDRToNumber(e) }),
-                    }}
-                  />
-                  {/* <FormInput
-                    data={{
-                      label: "Maks Tatalaksana",
-                      mode: "horizontal",
-                      type: "text",
-                      value: IDRFormat(data.max_bpp),
-                      onChange: (e: any) =>
-                        setData({ ...data, max_bpp: IDRToNumber(e || "0") }),
-                    }}
-                  /> */}
-                  {/* <FormInput
-                    data={{
-                      label: "Fee Banpot %",
-                      mode: "horizontal",
-                      type: "number",
-                      value: data.fee_banpot,
-                      onChange: (e: any) =>
-                        setData({ ...data, fee_banpot: parseFloat(e) }),
-                    }}
-                  /> */}
-                  {/* <FormInput
-                    data={{
-                      label: "NED",
-                      mode: "horizontal",
-                      type: "text",
-                      value: IDRFormat(data.c_ned),
-                      onChange: (e: any) =>
-                        setData({ ...data, c_ned: IDRToNumber(e || "0") }),
-                    }}
-                  /> */}
-                  <FormInput
-                    data={{
-                      label: "Pembulatan",
-                      mode: "horizontal",
-                      type: "text",
-                      value: IDRFormat(data.rounded || 0),
-                      onChange: (e: any) =>
-                        setData({ ...data, rounded: IDRToNumber(e || "0") }),
-                    }}
-                  />
-                </div>
-              </div>
-            ),
-          },
-          // {
-          //   key: "berkas",
-          //   label: (
-          //     <>
-          //       <FolderOutlined /> Berkas berkas
-          //     </>
-          //   ),
-          //   children: (
-          //     <div className="flex flex-col gap-2">
-          //       {/* {ParseStrToFiles(data.file) &&
-          //         ParseStrToFiles(data.file)?.map((f, i) => (
-          //           <div key={f.url}>
-          //             <UpsertFiles
-          //               record={f}
-          //               setRecord={(val: IFiles) => {
-          //                 const curr = ParseStrToFiles(data.file) || [];
-          //                 setData((prev) => ({
-          //                   ...prev,
-          //                   file: JSON.stringify(
-          //                     curr.map((c, ind) => ({
-          //                       // ...c,
-          //                       ...(i === ind ? { ...val } : { ...c }),
-          //                     })),
-          //                   ),
-          //                 }));
-          //               }}
-          //             />
-          //           </div>
-          //         ))} */}
-          //       {/* <div className="mt-2 flex justify-end">
-          //         <Button
-          //           icon={<PlusCircleOutlined />}
-          //           type="primary"
-          //           size="small"
-          //           onClick={() =>
-          //             setData((prev) => {
-          //               const curr = ParseStrToFiles(prev.file) || [];
-          //               curr?.push({ name: "", url: "" });
-          //               return { ...prev, file: JSON.stringify(curr) };
-          //             })
-          //           }
-          //         >
-          //           Tambah berkas
-          //         </Button>
-          //       </div> */}
-          //     </div>
-          //   ),
-          // },
-        ]}
-      />
+      <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex-1 flex flex-col gap-1">
+          <div className="hidden">
+            <FormInput
+              data={{
+                label: "ID",
+                mode: "horizontal",
+                type: "text",
+                value: data.id,
+                onChange: (e: string) => setData({ ...data, id: e }),
+              }}
+            />
+          </div>
+          <FormInput
+            data={{
+              label: "Nama Mitra",
+              mode: "horizontal",
+              required: true,
+              type: "text",
+              value: data.name,
+              onChange: (e: string) => setData({ ...data, name: e }),
+            }}
+          />
+          <FormInput
+            data={{
+              label: "Kode Mitra",
+              mode: "horizontal",
+              required: true,
+              type: "text",
+              value: data.code,
+              onChange: (e: string) => setData({ ...data, code: e }),
+            }}
+          />
+          <FormInput
+            data={{
+              label: "No Telepon",
+              mode: "horizontal",
+              required: true,
+              type: "text",
+              value: data.phone,
+              onChange: (e: string) => setData({ ...data, phone: e }),
+            }}
+          />
+          <FormInput
+            data={{
+              label: "Email",
+              mode: "horizontal",
+              required: true,
+              type: "text",
+              value: data.email,
+              onChange: (e: string) => setData({ ...data, email: e }),
+            }}
+          />
+          <FormInput
+            data={{
+              label: "Alamat",
+              mode: "horizontal",
+              required: true,
+              type: "textarea",
+              value: data.address,
+              onChange: (e: string) => setData({ ...data, address: e }),
+            }}
+          />
+          <FormInput
+            data={{
+              label: "Keterangan",
+              mode: "horizontal",
+              required: true,
+              type: "textarea",
+              value: data.description,
+              onChange: (e: string) => setData({ ...data, description: e }),
+            }}
+          />
+          <FormInput
+            data={{
+              label: "Logo Mitra",
+              mode: "horizontal",
+              type: "upload",
+              accept: "image/png,image/jpg,image/jpeg",
+              value: data.logo,
+              onChange: (e: string) => setData({ ...data, logo: e }),
+            }}
+          />
+        </div>
+        <div className="flex-1 flex flex-col gap-1">
+          <FormInput
+            data={{
+              label: "No PKS Mitra",
+              mode: "horizontal",
+              required: true,
+              type: "text",
+              value: data.contract_no,
+              onChange: (e: string) => setData({ ...data, contract_no: e }),
+            }}
+          />
+          <FormInput
+            data={{
+              label: "No PKS Koperasi",
+              mode: "horizontal",
+              required: true,
+              type: "text",
+              value: data.contract_no2,
+              onChange: (e: string) => setData({ ...data, contract_no2: e }),
+            }}
+          />
+          <FormInput
+            data={{
+              label: "Tanggal PKS",
+              mode: "horizontal",
+              required: true,
+              type: "date",
+              value: moment(data.contract_date).format("YYYY-MM-DD"),
+              onChange: (e: string) =>
+                setData({ ...data, contract_date: new Date(e) }),
+            }}
+          />
+          <FormInput
+            data={{
+              label: "No SK",
+              mode: "horizontal",
+              required: true,
+              type: "text",
+              value: data.sk_no,
+              onChange: (e: string) => setData({ ...data, sk_no: e }),
+            }}
+          />
+          <FormInput
+            data={{
+              label: "Tanggal SK",
+              mode: "horizontal",
+              required: true,
+              type: "date",
+              value: moment(data.sk_date).format("YYYY-MM-DD"),
+              onChange: (e: string) =>
+                setData({ ...data, sk_date: new Date(e) }),
+            }}
+          />
+          <FormInput
+            data={{
+              label: "PIC",
+              mode: "horizontal",
+              required: true,
+              type: "text",
+              value: data.pic,
+              onChange: (e: string) => setData({ ...data, pic: e }),
+            }}
+          />
+          <FormInput
+            data={{
+              label: "Limit Pembiayaan",
+              mode: "horizontal",
+              type: "text",
+              value: IDRFormat(Number(data.limit) || 0),
+              onChange: (e: any) =>
+                setData({
+                  ...data,
+                  limit: BigInt(IDRToNumber(e || "0")),
+                }),
+            }}
+          />
+          <FormInput
+            data={{
+              label: "TBO Berkas",
+              mode: "horizontal",
+              type: "number",
+              value: data.tbo,
+              onChange: (e: any) => setData({ ...data, tbo: parseInt(e) }),
+            }}
+          />
+          <div className="mt-4">
+            Kelengkapan Berkas Standing Instruction (SI)
+          </div>
+          <FormInput
+            data={{
+              label: "Blokir Angsuran",
+              mode: "horizontal",
+              type: "select",
+              value: data.include_blokir,
+              onChange: (e: boolean) => setData({ ...data, include_blokir: e }),
+              options: [
+                { label: "Ya, Ada Blokir Angsuran", value: true },
+                { label: "Tidak, Tanpa Blokir Angsuran", value: false },
+              ],
+            }}
+          />
+          <FormInput
+            data={{
+              label: "Versi Blokir Angsuran",
+              mode: "horizontal",
+              type: "select",
+              value: data.blokir_mitra,
+              onChange: (e: boolean) => setData({ ...data, blokir_mitra: e }),
+              options: [
+                { label: "Angsuran Versi Sumdan", value: true },
+                { label: "Angsuran Versi Koperasi (Full)", value: false },
+              ],
+              hidden: !data.include_blokir,
+            }}
+          />
+          <FormInput
+            data={{
+              label: "Samaran Provisi",
+              mode: "horizontal",
+              type: "text",
+              value: data.provisi_name,
+              onChange: (e: string) =>
+                setData({ ...data, provisi_name: e || null }),
+            }}
+          />
+          <div className="text-xs italix mt-2">
+            Kosongkan samaran provisi jika tidak ada ingin merubah nama biaya
+            provisi
+          </div>
+        </div>
+      </div>
       <div className="flex justify-end gap-4 mt-4">
         <Button onClick={() => setOpen(false)}>Cancel</Button>
         <Button
@@ -1043,6 +750,7 @@ function TableProduk({
               Usia : {record.min_age} - {record.max_age}
             </p>
             <p>Lunas : {record.max_paid}</p>
+            <div>Janis Margin : {record.margin_type}</div>
           </div>
         );
       },
@@ -1056,24 +764,41 @@ function TableProduk({
           <div className="text-blue-400">
             <p>Tenor : {record.max_tenor} Bulan</p>
             <p>Plafond : {IDRFormat(record.max_plafond)}</p>
+            <p>DSR : {record.c_dsr}%</p>
+            <p>Pembulatan : {IDRFormat(record.c_rounded)}</p>
           </div>
         );
       },
     },
     {
-      title: "Biaya - Biaya",
+      title: "Biaya Sumdan",
       dataIndex: "biaya",
       key: "biaya",
       render(value, record, index) {
         return (
           <div className="text-blue-400">
-            <div>
-              Margin : {record.c_margin}%+{record.c_margin_sumdan} (
-              {record.c_margin + record.c_margin_sumdan}
-              %)
-            </div>
+            <div>Margin : {record.c_margin_sumdan}%</div>
+            <div>Adm : {record.c_adm_sumdan}%</div>
+            <div>Provisi : {FormatProvisi(record.c_provisi_sumdan)}</div>
+            <div>Rekening : {record.c_account}%</div>
+          </div>
+        );
+      },
+    },
+    {
+      title: "Biaya Koperasi",
+      dataIndex: "biaya",
+      key: "biaya",
+      render(value, record, index) {
+        return (
+          <div className="text-blue-400">
+            <div>Margin : {record.c_margin}%</div>
+            <div>Adm : {record.c_adm}%</div>
+            <div>Provisi : {FormatProvisi(record.c_provisi)}</div>
             <div>Asuransi : {record.c_insurance}%</div>
-            <div>Janis Margin : {record.margin_type}</div>
+            <div>Tatalaksana : {IDRFormat(record.c_gov)}</div>
+            <div>Materai : {IDRFormat(record.c_stamp)}</div>
+            <div>Data Informasi : {IDRFormat(record.c_information)}</div>
           </div>
         );
       },
@@ -1306,31 +1031,126 @@ function UpsertProduk({
                 setData({ ...data, max_plafond: IDRToNumber(e || "0") }),
             }}
           />
+          <FormInput
+            data={{
+              label: "DBR",
+              mode: "horizontal",
+              required: true,
+              type: "number",
+              value: data.c_dsr,
+              onChange: (e: any) => setData({ ...data, c_dsr: parseFloat(e) }),
+            }}
+          />
+          <FormInput
+            data={{
+              label: "Pembulatan",
+              mode: "horizontal",
+              required: true,
+              type: "text",
+              value: IDRFormat(data.c_rounded),
+              onChange: (e: any) =>
+                setData({ ...data, c_rounded: IDRToNumber(e || "0") }),
+            }}
+          />
+          <FormInput
+            data={{
+              label: "Jenis Margin",
+              mode: "horizontal",
+              type: "select",
+              required: true,
+              options: [
+                { label: "EFEKTIF", value: "EFEKTIF" },
+                { label: "ANUITAS", value: "ANUITAS" },
+                { label: "FLAT", value: "FLAT" },
+              ],
+              value: data.margin_type,
+              onChange: (e: any) => setData({ ...data, margin_type: e }),
+            }}
+          />
         </div>
         <div className="flex-1 flex flex-col gap-1">
-          <FormInput
-            data={{
-              label: "Margin Mitra",
-              mode: "horizontal",
-              type: "number",
-              required: true,
-              value: data.c_margin_sumdan,
-              onChange: (e: any) =>
-                setData({ ...data, c_margin_sumdan: parseFloat(e || "0") }),
-            }}
-          />
-          <FormInput
-            data={{
-              label: "Margin",
-              mode: "horizontal",
-              type: "number",
-              required: true,
-              value: data.c_margin,
-              suffix: `${data.c_margin_sumdan + data.c_margin}%`,
-              onChange: (e: any) =>
-                setData({ ...data, c_margin: parseFloat(e || "0") }),
-            }}
-          />
+          <div className="flex gap-4">
+            <FormInput
+              data={{
+                class: "flex-1",
+                label: "Margin Mitra",
+                mode: "horizontal",
+                type: "number",
+                required: true,
+                value: data.c_margin_sumdan,
+                onChange: (e: any) =>
+                  setData({ ...data, c_margin_sumdan: parseFloat(e || "0") }),
+              }}
+            />
+            <FormInput
+              data={{
+                class: "flex-1",
+                label: "Margin Koperasi",
+                mode: "horizontal",
+                type: "number",
+                required: true,
+                value: data.c_margin,
+                suffix: `${data.c_margin_sumdan + data.c_margin}%`,
+                onChange: (e: any) =>
+                  setData({ ...data, c_margin: parseFloat(e || "0") }),
+              }}
+            />
+          </div>
+          <div className="flex gap-4">
+            <FormInput
+              data={{
+                class: "flex-1",
+                label: "Adm Mitra",
+                mode: "horizontal",
+                type: "number",
+                required: true,
+                value: data.c_adm_sumdan,
+                onChange: (e: any) =>
+                  setData({ ...data, c_adm_sumdan: parseFloat(e || "0") }),
+              }}
+            />
+            <FormInput
+              data={{
+                class: "flex-1",
+                label: "Adm Koperasi",
+                mode: "horizontal",
+                type: "number",
+                required: true,
+                value: data.c_adm,
+                suffix: `${data.c_adm_sumdan + data.c_adm}%`,
+                onChange: (e: any) =>
+                  setData({ ...data, c_adm: parseFloat(e || "0") }),
+              }}
+            />
+          </div>
+          <div className="flex gap-4">
+            <FormInput
+              data={{
+                class: "flex-1",
+                label: "Provisi Mitra",
+                mode: "horizontal",
+                type: "number",
+                required: true,
+                value: data.c_provisi_sumdan,
+                suffix: IsProvisiPercentage(data.c_provisi_sumdan) ? "%" : "Rp",
+                onChange: (e: any) =>
+                  setData({ ...data, c_provisi_sumdan: parseFloat(e || "0") }),
+              }}
+            />
+            <FormInput
+              data={{
+                class: "flex-1",
+                label: "Provisi Koperasi",
+                mode: "horizontal",
+                type: "number",
+                required: true,
+                value: data.c_provisi,
+                suffix: IsProvisiPercentage(data.c_provisi) ? "%" : "Rp",
+                onChange: (e: any) =>
+                  setData({ ...data, c_provisi: parseFloat(e || "0") }),
+              }}
+            />
+          </div>
           <FormInput
             data={{
               label: "Asuransi",
@@ -1344,16 +1164,46 @@ function UpsertProduk({
           />
           <FormInput
             data={{
-              label: "Jenis Margin",
+              label: "Buka Rekening",
               mode: "horizontal",
-              type: "select",
               required: true,
-              options: [
-                { label: "FLAT", value: "FLAT" },
-                { label: "ANUITAS", value: "ANUITAS" },
-              ],
-              value: data.margin_type,
-              onChange: (e: any) => setData({ ...data, margin_type: e }),
+              type: "text",
+              value: IDRFormat(data.c_account),
+              onChange: (e: any) =>
+                setData({ ...data, c_account: IDRToNumber(e || "0") }),
+            }}
+          />
+          <FormInput
+            data={{
+              label: "Tatalaksana",
+              mode: "horizontal",
+              required: true,
+              type: "text",
+              value: IDRFormat(data.c_gov),
+              onChange: (e: any) =>
+                setData({ ...data, c_gov: IDRToNumber(e || "0") }),
+            }}
+          />
+          <FormInput
+            data={{
+              label: "Data Materai",
+              mode: "horizontal",
+              required: true,
+              type: "text",
+              value: IDRFormat(data.c_stamp),
+              onChange: (e: any) =>
+                setData({ ...data, c_stamp: IDRToNumber(e || "0") }),
+            }}
+          />
+          <FormInput
+            data={{
+              label: "Data Informasi",
+              mode: "horizontal",
+              required: true,
+              type: "text",
+              value: IDRFormat(data.c_information),
+              onChange: (e: any) =>
+                setData({ ...data, c_information: IDRToNumber(e || "0") }),
             }}
           />
         </div>
@@ -1446,6 +1296,16 @@ const defaultProduk: ProdukPembiayaan = {
   name: "",
   c_margin: 0,
   c_margin_sumdan: 0,
+  c_adm: 0,
+  c_adm_sumdan: 0,
+  c_provisi: 0,
+  c_provisi_sumdan: 0,
+  c_account: 0,
+  c_gov: 0,
+  c_information: 0,
+  c_stamp: 0,
+  c_rounded: 0,
+  c_dsr: 0,
   min_age: 0,
   max_age: 0,
   max_paid: 0,
@@ -1470,21 +1330,6 @@ const defaultSumdan: ISumdan = {
   description: null,
   logo: null,
   tbo: 3,
-  c_adm_sumdan: 0,
-  c_provisi_sumdan: 0,
-  c_account_sumdan: 0,
-  rounded: 1000,
-  c_adm: 0,
-  c_margin: 0,
-  c_gov: 0,
-  c_stamps: 0,
-  c_provisi: 0,
-  c_information: 0,
-  c_flagging: 0,
-  c_ned: 0,
-  fee_banpot: 0,
-  max_bpp: 0,
-  dsr: 0,
   ProdukPembiayaans: [],
   pic: null,
   file: "",
@@ -1495,6 +1340,9 @@ const defaultSumdan: ISumdan = {
   sk_date: new Date(),
   sk_akad: "",
   limit: BigInt(0),
+  include_blokir: true,
+  blokir_mitra: false,
+  provisi_name: null,
 
   fronting: false,
   status: true,

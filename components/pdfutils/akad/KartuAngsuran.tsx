@@ -51,19 +51,19 @@ export const JadwalAngsuran = (record: IDapem, sub?: string) => {
         <div>Rp. ${IDRFormat(detail.angsuran)}</div>
       </div>
       <div class="flex gap-2">
-        <div class="w-32">Account Officer</div>
+        <div class="w-32">Kantor Bayar</div>
         <div class="w-4">:</div>
-        <div>${ao?.fullname}</div>
+        <div>${record.PayOffice.name}</div>
+      </div>
+      <div class="flex gap-2">
+        <div class="w-32">Kantor cabang</div>
+        <div class="w-4">:</div>
+        <div>${record.pay_next_kcp}</div>
       </div>
       <div class="flex gap-2">
         <div class="w-32">Unit Pelayanan</div>
         <div class="w-4">:</div>
-        <div>${ao?.Cabang.name} - ${ao?.Cabang.Area.name}</div>
-      </div>
-      <div class="flex gap-2">
-        <div class="w-32">Est Tanggal Lunas</div>
-        <div class="w-4">:</div>
-        <div>${moment(record.date_contract).add(record.tenor, "month").format("DD/MM/YYYY")}</div>
+        <div>${ao?.Cabang.name}</div>
       </div>
     </div>
     <div class="w-32 border">
@@ -76,11 +76,10 @@ export const JadwalAngsuran = (record: IDapem, sub?: string) => {
       <thead>
         <tr class="bg-gray-200">
           <th class="border border-gray-400 border-dashed p-1">Periode</th>
-          <th class="border border-gray-400 border-dashed p-1">Jadwal Bayar</th>
-          <th class="border border-gray-400 border-dashed p-1">Total Angsuran</th>
+          <th class="border border-gray-400 border-dashed p-1">Tanggal Bayar</th>
+          <th class="border border-gray-400 border-dashed p-1">Angsuran</th>
           <th class="border border-gray-400 border-dashed p-1">Pokok</th>
           <th class="border border-gray-400 border-dashed p-1">Magin</th>
-          <th class="border border-gray-400 border-dashed p-1">NED+Fee</th>
           <th class="border border-gray-400 border-dashed p-1">Sisa Pokok</th>
         </tr>
       </thead>
@@ -93,7 +92,6 @@ export const JadwalAngsuran = (record: IDapem, sub?: string) => {
             <td class="border border-gray-400 border-dashed p-1 text-right">${r.counter === 0 ? "0" : IDRFormat(detail.angsuran)}</td>
             <td class="border border-gray-400 border-dashed p-1 text-right">${IDRFormat(r.principal)}</td>
             <td class="border border-gray-400 border-dashed p-1 text-right">${IDRFormat(r.margin)}</td>
-            <td class="border border-gray-400 border-dashed p-1 text-right">${r.counter === 0 ? "0" : IDRFormat(r.fee_banpot + r.c_ned)}</td>
             <td class="border border-gray-400 border-dashed p-1 text-right">${IDRFormat(r.remaining)}</td>
           </tr>
         `,

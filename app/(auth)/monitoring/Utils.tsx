@@ -10,6 +10,7 @@ import {
   GetMaxTenor,
   IDRFormat,
   IDRToNumber,
+  IsProvisiPercentage,
 } from "@/components/utils/PembiayaanUtil";
 import {
   IAgentFronting,
@@ -40,6 +41,7 @@ import {
   Berkas,
   Debitur,
   Dropping,
+  EDapemStatus,
   EMarginType,
   EMarriageStatus,
   Jaminan,
@@ -104,6 +106,7 @@ export default function UpsertPermohonan({ record }: { record?: IDapem }) {
     }
     setLoading(true);
     if (!record || !record.userId) {
+      // eslint-disable-next-line react-hooks/immutability
       data.userId = user.id;
     }
     await fetch("/api/dapem", {
@@ -160,6 +163,7 @@ export default function UpsertPermohonan({ record }: { record?: IDapem }) {
       );
       return { ...s, ProdukPembiayaans: prod };
     });
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setSumdanAv(newAv);
     const tempProduk = newAv.flatMap((a) => a.ProdukPembiayaans);
     if (
@@ -175,19 +179,16 @@ export default function UpsertPermohonan({ record }: { record?: IDapem }) {
         produkPembiayaanId: find.id,
         c_margin_sumdan: find.c_margin_sumdan,
         c_margin: find.c_margin,
-        c_adm_sumdan: find.Sumdan.c_adm_sumdan,
-        c_adm: find.Sumdan.c_adm,
-        c_provisi_sumdan: find.Sumdan.c_provisi_sumdan,
-        c_provisi: find.Sumdan.c_provisi,
-        c_account_sumdan: find.Sumdan.c_account_sumdan,
-        c_gov: find.Sumdan.c_gov,
-        c_stamp: find.Sumdan.c_stamps,
-        c_flagging: find.Sumdan.c_flagging,
-        c_infomation: find.Sumdan.c_information,
+        c_adm_sumdan: find.c_adm_sumdan,
+        c_adm: find.c_adm,
+        c_provisi_sumdan: find.c_provisi_sumdan,
+        c_provisi: find.c_provisi,
+        c_account_sumdan: find.c_account,
+        c_gov: find.c_gov,
+        c_stamp: find.c_stamp,
+        c_infomation: find.c_information,
         c_insurance: find.c_insurance,
-        c_ned: find.Sumdan.c_ned,
-        fee_banpot: find.Sumdan.fee_banpot,
-        rounded: find.Sumdan.rounded,
+        rounded: find.c_rounded,
         tbo: find.Sumdan.tbo,
         margin_type: find.margin_type,
       }));
@@ -210,8 +211,8 @@ export default function UpsertPermohonan({ record }: { record?: IDapem }) {
         GetMaxPlafond(
           data.c_margin + data.c_margin_sumdan,
           data.tenor,
-          ((data.salary - 100000) * (data.ProdukPembiayaan.Sumdan?.dsr || 0)) /
-            100,
+          ((data.salary - 100000) * (data.ProdukPembiayaan.c_dsr || 0)) / 100,
+          data.margin_type,
         ),
       ),
     );
@@ -394,6 +395,7 @@ export default function UpsertPermohonan({ record }: { record?: IDapem }) {
             children: (
               <Card
                 title={
+                  // eslint-disable-next-line react-hooks/static-components
                   <SectionTitle
                     icon={<UserOutlined />}
                     title="1. Data Debitur"
@@ -465,7 +467,6 @@ export default function UpsertPermohonan({ record }: { record?: IDapem }) {
                       label: "Nomor KK",
                       type: "text",
                       class: "flex-1",
-                      required: true,
                       value: data.Debitur.number_kk,
                       onChange: (e: string) =>
                         setData({
@@ -531,7 +532,6 @@ export default function UpsertPermohonan({ record }: { record?: IDapem }) {
                       label: "Pengeluaran Perbulan",
                       type: "text",
                       class: "flex-1",
-                      required: true,
                       value: IDRFormat(data.cost_month || 0),
                       onChange: (e: string) =>
                         setData({
@@ -632,7 +632,6 @@ export default function UpsertPermohonan({ record }: { record?: IDapem }) {
                       label: "Nomor NPWP",
                       type: "text",
                       class: "flex-1",
-                      required: true,
                       value: data.Debitur.npwp,
                       onChange: (e: string) =>
                         setData({
@@ -647,7 +646,6 @@ export default function UpsertPermohonan({ record }: { record?: IDapem }) {
                       label: "Kota Terbit KTP",
                       type: "text",
                       class: "flex-1",
-                      required: true,
                       value: data.Debitur.id_publisher,
                       onChange: (e: string) =>
                         setData({
@@ -1668,6 +1666,20 @@ export default function UpsertPermohonan({ record }: { record?: IDapem }) {
                       <FormInput
                         data={{
                           mode: "vertical",
+                          label: "Kantor Cabang",
+                          type: "text",
+                          class: "flex-1",
+                          value: data.pay_kcp,
+                          onChange: (e: string) =>
+                            setData({
+                              ...data,
+                              pay_kcp: e,
+                            }),
+                        }}
+                      />
+                      <FormInput
+                        data={{
+                          mode: "vertical",
                           label: "Kantor Bayar Tujuan",
                           type: "select",
                           class: "flex-1",
@@ -1682,6 +1694,20 @@ export default function UpsertPermohonan({ record }: { record?: IDapem }) {
                               ...data,
                               payOfficeId: e,
                               Debitur: { ...data.Debitur, payOfficeId: e },
+                            }),
+                        }}
+                      />
+                      <FormInput
+                        data={{
+                          mode: "vertical",
+                          label: "Kantor Cabang",
+                          type: "text",
+                          class: "flex-1",
+                          value: data.pay_next_kcp,
+                          onChange: (e: string) =>
+                            setData({
+                              ...data,
+                              pay_next_kcp: e,
                             }),
                         }}
                       />
@@ -1770,20 +1796,17 @@ export default function UpsertPermohonan({ record }: { record?: IDapem }) {
                                 produkPembiayaanId: find.id,
                                 c_margin_sumdan: find.c_margin_sumdan,
                                 c_margin: find.c_margin,
-                                c_adm_sumdan: find.Sumdan.c_adm_sumdan,
-                                c_adm: find.Sumdan.c_adm,
-                                c_provisi_sumdan: find.Sumdan.c_provisi_sumdan,
-                                c_account_sumdan: find.Sumdan.c_account_sumdan,
-                                c_gov: find.Sumdan.c_gov,
-                                c_stamp: find.Sumdan.c_stamps,
-                                c_flagging: find.Sumdan.c_flagging,
-                                c_infomation: find.Sumdan.c_information,
+                                c_adm_sumdan: find.c_adm_sumdan,
+                                c_adm: find.c_adm,
+                                c_provisi_sumdan: find.c_provisi_sumdan,
+                                c_account_sumdan: find.c_account,
+                                c_gov: find.c_gov,
+                                c_stamp: find.c_stamp,
+                                c_infomation: find.c_information,
                                 c_insurance: find.c_insurance,
-                                fee_banpot: find.Sumdan.fee_banpot,
-                                c_ned: find.Sumdan.c_ned,
-                                rounded: find.Sumdan.rounded,
+                                rounded: find.c_rounded,
                                 tbo: find.Sumdan.tbo,
-                                c_provisi: find.Sumdan.c_provisi,
+                                c_provisi: find.c_provisi,
                                 ...(isProductChanged && {
                                   max_tenor: find?.max_tenor,
                                   max_plafond: find?.max_plafond,
@@ -1868,8 +1891,8 @@ export default function UpsertPermohonan({ record }: { record?: IDapem }) {
                             type: "select",
                             class: "flex-1",
                             options: [
+                              { label: "EFEKTIF", value: "EFEKTIF" },
                               { label: "ANUITAS", value: "ANUITAS" },
-                              // { label: "EFEKTIF", value: "EFEKTIF" },
                               { label: "FLAT", value: "FLAT" },
                             ],
                             value: data.margin_type,
@@ -1935,6 +1958,11 @@ export default function UpsertPermohonan({ record }: { record?: IDapem }) {
                           size="small"
                           style={{ width: 100 }}
                           value={data.c_provisi_sumdan}
+                          suffix={
+                            IsProvisiPercentage(data.c_provisi_sumdan)
+                              ? "%"
+                              : "Rp"
+                          }
                           onChange={(e) =>
                             setData({
                               ...data,
@@ -2035,6 +2063,9 @@ export default function UpsertPermohonan({ record }: { record?: IDapem }) {
                             size="small"
                             style={{ width: 65 }}
                             value={data.c_provisi}
+                            suffix={
+                              IsProvisiPercentage(data.c_provisi) ? "%" : "Rp"
+                            }
                             onChange={(e) =>
                               setData({
                                 ...data,
@@ -2141,7 +2172,7 @@ export default function UpsertPermohonan({ record }: { record?: IDapem }) {
                       <span>DBR</span>
                       <span>
                         {(temp.angsuran / (data.salary / 100)).toFixed(2)}% /{" "}
-                        {data.ProdukPembiayaan?.Sumdan?.dsr ?? 0}%
+                        {data.ProdukPembiayaan?.c_dsr ?? 0}%
                       </span>
                     </div>
                     <div className="my-5"></div>
@@ -2340,7 +2371,7 @@ export default function UpsertPermohonan({ record }: { record?: IDapem }) {
                           setData({
                             ...data,
                             AO: find || null,
-                            aoId: e,
+                            aoId: e || null,
                           });
                         },
                       }}
@@ -2721,7 +2752,7 @@ export default function UpsertPermohonan({ record }: { record?: IDapem }) {
                       value: data.audit_date
                         ? moment(data.audit_date).format("YYYY-MM-DD")
                         : null,
-                      onChange: (e: any) =>
+                      onChange: (e: string | Date) =>
                         setData({
                           ...data,
                           audit_date: e ? new Date(e) : null,
@@ -2736,7 +2767,7 @@ export default function UpsertPermohonan({ record }: { record?: IDapem }) {
                       class: "flex-1",
                       required: true,
                       value: data.audit_status,
-                      onChange: (e: any) =>
+                      onChange: (e: EDapemStatus) =>
                         setData({
                           ...data,
                           audit_status: e,
@@ -2825,7 +2856,7 @@ const defaultData: IDapem = {
   fee_banpot: 0,
   tbo: 0,
   rounded: 0,
-  margin_type: "ANUITAS",
+  margin_type: "EFEKTIF",
   agentFrontingId: null,
   c_fee_fronting: 0,
   max_tenor: 120,
@@ -2905,6 +2936,8 @@ const defaultData: IDapem = {
   file_flagging: null,
   video_contract: null,
   file_skep: null,
+  pay_kcp: null,
+  pay_next_kcp: null,
 
   status: true,
   created_at: new Date(),
@@ -2935,7 +2968,7 @@ const defaultData: IDapem = {
   produkPembiayaanId: "",
   jenisPembiayaanId: "",
   userId: "",
-  aoId: "",
+  aoId: null,
   aoCabangId: null,
   aoAreaId: null,
   droppingId: null,
