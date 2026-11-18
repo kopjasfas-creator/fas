@@ -406,7 +406,7 @@ export default function Page() {
                     <span className="font-semibold text-slate-800">
                       {
                         data.droppingall.filter(
-                          (f) => f.Debitur.group_skep === "PT. TASPEN",
+                          (f) => f.Debitur?.group_skep === "PT. TASPEN",
                         ).length
                       }{" "}
                       NOA
@@ -417,7 +417,7 @@ export default function Page() {
                     <span className="font-semibold text-slate-800">
                       {
                         data.droppingall.filter(
-                          (f) => f.Debitur.group_skep === "PT. ASABRI",
+                          (f) => f.Debitur?.group_skep === "PT. ASABRI",
                         ).length
                       }{" "}
                       NOA
