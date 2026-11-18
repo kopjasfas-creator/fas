@@ -215,9 +215,8 @@ export default function Page() {
                 size="small"
                 type="primary"
                 onClick={async () => {
-                  const { printSDStandar } = await import(
-                    "@/components/pdfutils/si/SDStandar"
-                  );
+                  const { printSDStandar } =
+                    await import("@/components/pdfutils/si/SDStandar");
                   printSDStandar(record);
                 }}
               ></Button>
@@ -347,7 +346,7 @@ export default function Page() {
         size="small"
         rowKey={"id"}
         bordered
-        scroll={{ x: "max-content", y: "48vh" }}
+        scroll={{ x: "max-content", y: "57vh" }}
         pagination={{
           current: pageProps.page,
           pageSize: pageProps.limit,

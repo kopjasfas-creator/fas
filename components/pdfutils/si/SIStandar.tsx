@@ -1,46 +1,49 @@
 import moment from "moment";
 import { IDropping } from "@/libs/IInterfaces";
 import { Header } from "../utils";
-import {
-  GetDetailDapem,
-  GetProvisiAmount,
-  IDRFormat,
-} from "@/components/utils/PembiayaanUtil";
+import { GetDetailDapem, IDRFormat } from "@/components/utils/PembiayaanUtil";
 
 moment.locale("id");
 
 const generateSI = (record: IDropping) => {
-  const hasProvisi = record.Dapems.some((d) => d.c_provisi_sumdan !== 0);
-
-  // Pre-calculate data per dapem untuk efisiensi dan konsistensi perhitungan
   const dapemProcessed = record.Dapems.map((curr) => {
-    const adm = curr.plafond * (curr.c_adm_sumdan / 100);
-    const provisi = GetProvisiAmount(curr.plafond, curr.c_provisi_sumdan);
-    const dropping = curr.plafond - (adm + provisi + curr.c_account_sumdan);
-
+    const detail = GetDetailDapem(curr);
+    const blokir_sumdan = curr.c_blokir * detail.detail.angsuran_sumdan;
+    const blokir_full = curr.c_blokir * detail.angsuran;
+    const drop =
+      curr.plafond -
+      (detail.detail.adm_sumdan +
+        detail.detail.provisi_sumdan +
+        curr.c_account_sumdan);
+    const dropping = record.Sumdan.include_blokir
+      ? record.Sumdan.blokir_mitra
+        ? drop - blokir_sumdan
+        : drop - blokir_full
+      : drop;
     return {
       ...curr,
-      adm,
-      provisi,
-      dropping,
+      adm: detail.detail.adm_sumdan,
+      provisi: detail.detail.provisi_sumdan,
+      blokir_sumdan,
+      blokir_full,
+      dropping: dropping,
     };
   });
 
-  // Total kalkulasi dari data yang sudah diproses
   const totalPlafond = dapemProcessed.reduce(
     (acc, curr) => acc + curr.plafond,
     0,
   );
-  const totalAdm = dapemProcessed.reduce((acc, curr) => acc + curr.adm, 0);
-  const totalProvisi = dapemProcessed.reduce(
+  const totaladm = dapemProcessed.reduce((acc, curr) => acc + curr.adm, 0);
+  const totalprovisi = dapemProcessed.reduce(
     (acc, curr) => acc + curr.provisi,
     0,
   );
-  const totalAccount = dapemProcessed.reduce(
+  const totalaccount = dapemProcessed.reduce(
     (acc, curr) => acc + curr.c_account_sumdan,
     0,
   );
-  const totalDropping = dapemProcessed.reduce(
+  const totaldropping = dapemProcessed.reduce(
     (acc, curr) => acc + curr.dropping,
     0,
   );
@@ -108,12 +111,12 @@ const generateSI = (record: IDropping) => {
         <div class="flex gap-3">
           <p class="w-44">Lampiran</p>
           <p class="w-4">:</p>
-          <p class="flex-1">1 Lembar</p>
+          <p class="flex-1">1 (satu) Daftar Permohonan Dropping</p>
         </div>
         <div class="flex gap-3">
           <p class="w-44">Perihal</p>
           <p class="w-4">:</p>
-          <p class="flex-1">Permohonan Dropping Dana Pencairan Pembiayaan Pensiun</p>
+          <p class="flex-1">Pormohonan Dropping Dana Pembiayaan Pensiun Periode Bulan ${moment(record.created_at).format("MMM")} Tahun ${moment(record.created_at).format("YYYY")}</p>
         </div>
       </div>
 
@@ -123,7 +126,7 @@ const generateSI = (record: IDropping) => {
         <p>Di tempat</p>
       </div>
       <div class="mt-2">
-        <p>Sehubungan dengan telah disetujuinya pembiayaan pensiun oleh Komite Bank, bersama ini kami menyampaikan permohonan kepada ${record.Sumdan.name} untuk melakukan dropping dana pencairan pembiayaan dengan rincian sebagai berikut :</p>
+        <p>Bersama surat ini kami ajukan permohonan pencairan dan pemindahbukuan atas pengajuan yang sudah disetujui oleh komite bank. Adapun rekap dropping tersebut kami sampaikan sebagai berikut :</p>
         
         <div class="mt-4 flex gap-2 ml-3">
           <p class="w-44">Jumlah Debitur</p>
@@ -138,29 +141,29 @@ const generateSI = (record: IDropping) => {
         <div class="mb-4 flex gap-2 ml-3">
           <p class="w-44">Jumlah Dropping</p>
           <p class="w-4">:</p>
-          <p class="flex-1">Rp. ${IDRFormat(totalDropping)}</p>
+          <p class="flex-1">Rp. ${IDRFormat(totaldropping)}</p>
         </div>
 
-        <p>Sehubungan dengan hal tersebut, kami menginstruksikan kepada ${record.Sumdan.name} untuk melakukan pencairan (dropping) dana sebesar tersebut di atas ke rekening berikut :</p>
+        <p class="mt-4">Rincian data kami lampirkan bersama surat ini.</p>
+        <p>Dana tersebut diatas mohon dapat disetorkan/ditransfer kepada kami melalui :</p>
 
-        <div class="mt-4 flex gap-2 ml-3">
-          <p class="w-44">Nama Rekening</p>
-          <p class="w-4">:</p>
-          <p class="flex-1">${process.env.NEXT_PUBLIC_APP_COMPANY_ACCOUNT_NAME}</p>
-        </div>
         <div class="flex gap-2 ml-3">
           <p class="w-44">Nomor Rekening</p>
           <p class="w-4">:</p>
           <p class="flex-1">${process.env.NEXT_PUBLIC_APP_COMPANY_ACCOUNT_NUMBER}</p>
         </div>
+        <div class="mt-4 flex gap-2 ml-3">
+          <p class="w-44">Atas Nama</p>
+          <p class="w-4">:</p>
+          <p class="flex-1">${process.env.NEXT_PUBLIC_APP_COMPANY_ACCOUNT_NAME}</p>
+        </div>
         <div class="mb-4 flex gap-2 ml-3">
-          <p class="w-44">Bank</p>
+          <p class="w-44">Nama Bank</p>
           <p class="w-4">:</p>
           <p class="flex-1">${process.env.NEXT_PUBLIC_APP_COMPANY_ACCOUNT_BANK}</p>
         </div>
 
-        <p>Instruksi ini dibuat berdasarkan persetujuan Komite Bank dan menjadi dasar pelaksanaan pencairan dana.</p>
-        <p>Demikian Standing Instruction ini kami sampaikan untuk dapat diproses sebagaimana mestinya. Atas perhatian dan kerja samanya, kami ucapkan terima kasih.</p>
+        <p>Demikian kami sampaikan dan atas perhatian serta kerjasama yang terjalin baik selama ini diucapkan terima kaslh.</p>
       </div>
 
       <div class="mt-20 flex justify-end">
@@ -168,8 +171,8 @@ const generateSI = (record: IDropping) => {
           <p>${process.env.NEXT_PUBLIC_APP_COMPANY_CITY}, ${moment(record.created_at).format("DD-MM-YYYY")}</p>
           <p>${process.env.NEXT_PUBLIC_APP_COMPANY_NAME?.toUpperCase()}</p>
           <div class="h-28"></div>
-          <p class="border-b">${process.env.NEXT_PUBLIC_APP_SI_NAME}</p>
-          <p>${process.env.NEXT_PUBLIC_APP_SI_POSITION}</p>
+          <p class="border-b">${process.env.NEXT_PUBLIC_APP_OPS_NAME}</p>
+          <p>${process.env.NEXT_PUBLIC_APP_OPS_POSITION}</p>
         </div>
       </div>
 
@@ -178,7 +181,30 @@ const generateSI = (record: IDropping) => {
     <div class="page" style="font-size: 12px;">
       ${Header("LAMPIRAN PERMOHONAN DROPPING", record.id, undefined, process.env.NEXT_PUBLIC_APP_LOGO, record.Sumdan.logo)}
 
-      <div class="mt-20">
+      <div class="my-4">
+        <div class="flex gap-3">
+          <p class="w-44">No Surat</p>
+          <p class="w-4">:</p>
+          <p class="flex-1">${record.id}</p>
+        </div>
+        <div class="flex gap-3">
+          <p class="w-44">No Rekening</p>
+          <p class="w-4">:</p>
+          <p class="flex-1">${process.env.NEXT_PUBLIC_APP_COMPANY_ACCOUNT_NUMBER}</p>
+        </div>
+        <div class="flex gap-3">
+          <p class="w-44">Atas Nama</p>
+          <p class="w-4">:</p>
+          <p class="flex-1">${process.env.NEXT_PUBLIC_APP_COMPANY_ACCOUNT_BANK}</p>
+        </div>
+        <div class="flex gap-3">
+          <p class="w-44">Nama Bank</p>
+          <p class="w-4">:</p>
+          <p class="flex-1">${process.env.NEXT_PUBLIC_APP_COMPANY_ACCOUNT_NAME}</p>
+        </div>
+      </div>
+
+      <div class="mt-10">
         <table class="w-full border-collapse border border-gray-400 border-dashed text-sm mb-4">
           <thead>
             <tr class="bg-gray-200">
@@ -186,8 +212,9 @@ const generateSI = (record: IDropping) => {
               <th class="border border-gray-400 border-dashed p-1">Debitur</th>
               <th class="border border-gray-400 border-dashed p-1">Plafond</th>
               <th class="border border-gray-400 border-dashed p-1">Adm Bank</th>
-              ${hasProvisi ? `<th class="border border-gray-400 border-dashed p-1">Provisi Bank</th>` : ""}
-              <th class="border border-gray-400 border-dashed p-1">Buka Tabungan</th>
+              <th class="border border-gray-400 border-dashed p-1">Provisi Bank</th>
+              <th class="border border-gray-400 border-dashed p-1">Buka Rekening</th>
+              ${record.Sumdan.include_blokir ? `<th class="border border-gray-400 border-dashed p-1">Blokir Angsuran</th>` : ""}
               <th class="border border-gray-400 border-dashed p-1">Dropping</th>
             </tr>
           </thead>
@@ -203,8 +230,9 @@ const generateSI = (record: IDropping) => {
                 </td>
                 <td class="border border-gray-400 border-dashed p-1 text-right">${IDRFormat(r.plafond)}</td>
                 <td class="border border-gray-400 border-dashed p-1 text-right">${IDRFormat(r.adm)}</td>
-                ${hasProvisi ? `<td class="border border-gray-400 border-dashed p-1 text-right">${IDRFormat(r.provisi)}</td>` : ""}
+                <td class="border border-gray-400 border-dashed p-1 text-right">${IDRFormat(r.provisi)}</td>
                 <td class="border border-gray-400 border-dashed p-1 text-right">${IDRFormat(r.c_account_sumdan)}</td>
+                ${record.Sumdan.include_blokir ? `<td class="border border-gray-400 border-dashed p-1 text-right">${IDRFormat(record.Sumdan.blokir_mitra ? r.blokir_sumdan : r.blokir_full)}</td>` : ""}
                 <td class="border border-gray-400 border-dashed p-1 text-right">${IDRFormat(r.dropping)}</td>
               </tr>
             `,
@@ -220,33 +248,36 @@ const generateSI = (record: IDropping) => {
                 ${IDRFormat(totalPlafond)}
               </td>
               <td class="border border-gray-400 p-2 text-right border-dashed">
-                ${IDRFormat(totalAdm)}
-              </td>
-              ${
-                hasProvisi
-                  ? `<td class="border border-gray-400 p-2 text-right border-dashed">
-                ${IDRFormat(totalProvisi)}
-              </td>`
-                  : ""
-              }
-              <td class="border border-gray-400 p-2 text-right border-dashed">
-                ${IDRFormat(totalAccount)}
+                ${IDRFormat(totaladm)}
               </td>
               <td class="border border-gray-400 p-2 text-right border-dashed">
-                ${IDRFormat(totalDropping)}
+                ${IDRFormat(totalprovisi)}
+              </td>
+              <td class="border border-gray-400 p-2 text-right border-dashed">
+                ${IDRFormat(totalaccount)}
+              </td>
+              <td class="border border-gray-400 p-2 text-right border-dashed">
+                ${IDRFormat(totaldropping)}
               </td>
             </tr>
           </tfoot>
         </table>
       </div>
 
-      <div class="mt-20 flex justify-end">
+      <div class="mt-20 flex justify-evenly">
         <div class="w-96 text-center">
-          <p>${process.env.NEXT_PUBLIC_APP_COMPANY_CITY}, ${moment(record.created_at).format("DD-MM-YYYY")}</p>
+          <p>Diproses oleh</p>
           <p>${process.env.NEXT_PUBLIC_APP_COMPANY_NAME?.toUpperCase()}</p>
           <div class="h-28"></div>
-          <p class="border-b">${process.env.NEXT_PUBLIC_APP_SI_NAME}</p>
-          <p>${process.env.NEXT_PUBLIC_APP_SI_POSITION}</p>
+          <p class="border-b">${process.env.NEXT_PUBLIC_APP_OPS_NAME}</p>
+          <p>${process.env.NEXT_PUBLIC_APP_OPS_POSITION}</p>
+        </div>
+        <div class="w-96 text-center">
+          <p>Diperiksa oleh</p>
+          <p>${process.env.NEXT_PUBLIC_APP_COMPANY_NAME?.toUpperCase()}</p>
+          <div class="h-28"></div>
+          <p class="border-b">${process.env.NEXT_PUBLIC_APP_ACCOUNTING_NAME}</p>
+          <p>${process.env.NEXT_PUBLIC_APP_ACCOUNTING_POSITION}</p>
         </div>
       </div>
     </div>

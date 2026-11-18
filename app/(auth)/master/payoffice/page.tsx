@@ -49,7 +49,7 @@ export default function Page() {
       page: pageProps.page.toString(),
       limit: pageProps.limit.toString(),
       ...(pageProps.search && { search: pageProps.search }),
-      ...(pageProps.mitra && { mitra: pageProps.mitra }),
+      ...(pageProps.mitra !== undefined && { mitra: pageProps.mitra }),
     });
 
     const res = await fetch(`/api/payoffice?${params.toString()}`);
@@ -67,7 +67,7 @@ export default function Page() {
       await getData();
     }, 200);
     return () => clearTimeout(timeout);
-  }, [pageProps.page, pageProps.limit, pageProps.search]);
+  }, [pageProps.page, pageProps.limit, pageProps.search, pageProps.mitra]);
 
   const columns: TableProps<IPayOffice>["columns"] = [
     {
@@ -173,27 +173,34 @@ export default function Page() {
             Add New
           </Button>
         )}
-        <Select
-          size="small"
-          style={{ width: 100 }}
-          value={pageProps.mitra}
-          onChange={(value) =>
-            setPageProps({ ...pageProps, mitra: value, page: 1 })
-          }
-          options={[
-            { label: "Semua", value: undefined },
-            { label: "Mitra Koperasi", value: true },
-            { label: "Bukan Mitra", value: false },
-          ]}
-        />
-        <Input.Search
-          size="small"
-          style={{ width: 170 }}
-          placeholder="Cari nama..."
-          onChange={(e) =>
-            setPageProps({ ...pageProps, search: e.target.value, page: 1 })
-          }
-        />
+        <div className="flex-1 flex gap-2 justify-end">
+          <Select
+            size="small"
+            style={{ width: 100 }}
+            value={pageProps.mitra ?? "all"}
+            onChange={(value) =>
+              setPageProps({
+                ...pageProps,
+                mitra: value === "all" ? undefined : value,
+                page: 1,
+              })
+            }
+            allowClear
+            options={[
+              { label: "Semua", value: "all" },
+              { label: "Mitra Koperasi", value: "true" },
+              { label: "Bukan Mitra", value: "false" },
+            ]}
+          />
+          <Input.Search
+            size="small"
+            style={{ width: 170 }}
+            placeholder="Cari nama..."
+            onChange={(e) =>
+              setPageProps({ ...pageProps, search: e.target.value, page: 1 })
+            }
+          />
+        </div>
       </div>
 
       <Table
@@ -203,7 +210,7 @@ export default function Page() {
         loading={loading}
         rowKey={"id"}
         bordered
-        scroll={{ x: "max-content", y: "48vh" }}
+        scroll={{ x: "max-content", y: "57vh" }}
         pagination={{
           current: pageProps.page,
           pageSize: pageProps.limit,

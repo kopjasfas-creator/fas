@@ -681,7 +681,7 @@ export default function Page() {
         loading={loading}
         rowKey={"id"}
         bordered
-        scroll={{ x: "max-content", y: "48vh" }}
+        scroll={{ x: "max-content", y: "57vh" }}
         pagination={{
           current: pageProps.page,
           pageSize: pageProps.limit,
@@ -709,7 +709,7 @@ export default function Page() {
           });
 
           return (
-            <Table.Summary.Row className="text-xs bg-blue-400">
+            <Table.Summary.Row className="bg-green-500 text-[10px] text-slate-100">
               <Table.Summary.Cell index={0} colSpan={2} className="text-center">
                 <b>SUMMARY</b>
               </Table.Summary.Cell>

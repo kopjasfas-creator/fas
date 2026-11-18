@@ -369,9 +369,8 @@ export default function Page() {
               type="primary"
               icon={<PrinterOutlined />}
               onClick={async () => {
-                const { printPelunasan } = await import(
-                  "@/components/pdfutils/etc/printPelunasan"
-                );
+                const { printPelunasan } =
+                  await import("@/components/pdfutils/etc/printPelunasan");
                 printPelunasan(record);
               }}
             ></Button>
@@ -469,6 +468,7 @@ export default function Page() {
                 backdate: "",
               }))
             }
+            // eslint-disable-next-line react/no-children-prop
             children={
               <>
                 <div className="my-2">
@@ -476,7 +476,7 @@ export default function Page() {
                   <RangePicker
                     size="small"
                     value={pageProps.backdate}
-                    onChange={(date, dateStr) =>
+                    onChange={(_date, dateStr) =>
                       setPageProps({ ...pageProps, backdate: dateStr, page: 1 })
                     }
                     style={{ width: "100%" }}
@@ -559,7 +559,7 @@ export default function Page() {
         loading={loading}
         rowKey={"id"}
         bordered
-        scroll={{ x: "max-content", y: "48vh" }}
+        scroll={{ x: "max-content", y: "57vh" }}
         pagination={{
           current: pageProps.page,
           pageSize: pageProps.limit,

@@ -334,6 +334,7 @@ export default function Page() {
                 pkwt_status: "",
               }))
             }
+            // eslint-disable-next-line react/no-children-prop
             children={
               <>
                 <div className="my-2 flex gap-2 items-center">
@@ -453,7 +454,7 @@ export default function Page() {
         loading={loading}
         rowKey={"id"}
         bordered
-        scroll={{ x: "max-content", y: "48vh" }}
+        scroll={{ x: "max-content", y: "57vh" }}
         pagination={{
           current: pageProps.page,
           pageSize: pageProps.limit,

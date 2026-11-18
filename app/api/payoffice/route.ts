@@ -17,7 +17,9 @@ export const GET = async (request: NextRequest) => {
       ],
     }),
     status: true,
-    ...(mitra && { mitra: mitra === "true" }),
+    ...(mitra === "true" || mitra === "false"
+      ? { mitra: mitra === "true" }
+      : {}),
   };
 
   const [data, total] = await Promise.all([

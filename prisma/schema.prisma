@@ -91,18 +91,19 @@ model Sumdan {
   tbo         Int     @default(3)
   limit       BigInt  @default(0)
 
-  contract_no    String?
-  contract_no2   String?
-  contract_date  DateTime?
-  sk_no          String?
-  sk_date        DateTime?
-  pic            String?
-  file           String?   @db.Text
-  sk_akad        String?   @db.Text
-  fronting       Boolean   @default(false)
-  include_blokir Boolean   @default(true)
-  blokir_mitra   Boolean   @default(false)
-  provisi_name   String?
+  contract_no     String?
+  contract_no2    String?
+  contract_date   DateTime?
+  sk_no           String?
+  sk_date         DateTime?
+  pic             String?
+  file            String?   @db.Text
+  sk_akad         String?   @db.Text
+  fronting        Boolean   @default(false)
+  include_blokir  Boolean   @default(true)
+  blokir_mitra    Boolean   @default(false)
+  include_provisi Boolean   @default(true)
+  provisi_name    String?
 
   status               Boolean               @default(true)
   created_at           DateTime              @default(now())

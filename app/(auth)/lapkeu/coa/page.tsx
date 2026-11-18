@@ -82,7 +82,9 @@ export default function Page() {
       {
         ...parent,
         Childrens:
-          matchesFilter(parent) && !pageProps.type ? parent.Childrens : children,
+          matchesFilter(parent) && !pageProps.type
+            ? parent.Childrens
+            : children,
       },
     ];
   });
@@ -243,7 +245,7 @@ export default function Page() {
         rowKey={"id"}
         bordered
         expandable={{ defaultExpandAllRows: true }}
-        scroll={{ x: "max-content", y: "60vh" }}
+        scroll={{ x: "max-content", y: "57vh" }}
         pagination={{
           current: pageProps.page,
           pageSize: pageProps.limit,
@@ -311,7 +313,8 @@ const UpsertData = ({
   const [data, setData] = useState<CategoryOfAccount>(
     record || {
       ...defaultdata,
-      type: lists.find((account) => account.id === initialParentId)?.type ??
+      type:
+        lists.find((account) => account.id === initialParentId)?.type ??
         defaultdata.type,
       parentId: initialParentId,
     },
@@ -377,8 +380,8 @@ const UpsertData = ({
                 ...data,
                 type: e,
                 parentId:
-                  lists.find((account) => account.id === data.parentId)?.type ===
-                  e
+                  lists.find((account) => account.id === data.parentId)
+                    ?.type === e
                     ? data.parentId
                     : null,
               }),

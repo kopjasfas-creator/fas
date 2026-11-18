@@ -213,9 +213,8 @@ export default function Page() {
                 size="small"
                 type="primary"
                 onClick={async () => {
-                  const { printSJStandar } = await import(
-                    "@/components/pdfutils/si/SJStandar"
-                  );
+                  const { printSJStandar } =
+                    await import("@/components/pdfutils/si/SJStandar");
                   printSJStandar(record);
                 }}
               ></Button>
@@ -344,7 +343,7 @@ export default function Page() {
         size="small"
         rowKey={"id"}
         bordered
-        scroll={{ x: "max-content", y: "48vh" }}
+        scroll={{ x: "max-content", y: "57vh" }}
         pagination={{
           current: pageProps.page,
           pageSize: pageProps.limit,

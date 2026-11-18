@@ -36,7 +36,7 @@ export default function RootLayout({
             token: {
               fontFamily: "var(--font-geist-mono)",
               borderRadius: 8,
-              fontSize: 13,
+              fontSize: 12,
               colorPrimary: "#2563eb",
               colorInfo: "#2563eb",
             },

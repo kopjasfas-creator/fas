@@ -480,6 +480,7 @@ export default function Page() {
                 payOfficeId: "",
               }))
             }
+            // eslint-disable-next-line react/no-children-prop
             children={
               <>
                 <div className="my-2 ">
@@ -490,7 +491,7 @@ export default function Page() {
                     value={
                       pageProps.backdate ? dayjs(pageProps.backdate) : undefined
                     }
-                    onChange={(date, dateStr) =>
+                    onChange={(_date, dateStr) =>
                       setPageProps((prev) => ({
                         ...prev,
                         backdate: dateStr,
@@ -595,7 +596,7 @@ export default function Page() {
         loading={loading}
         rowKey={"id"}
         bordered
-        scroll={{ x: "max-content", y: "48vh" }}
+        scroll={{ x: "max-content", y: "57vh" }}
         rowSelection={rowSelection}
         pagination={{
           current: pageProps.page,
@@ -635,7 +636,7 @@ export default function Page() {
             plafond += p.plafond;
           });
           return (
-            <Table.Summary.Row className="text-xs bg-blue-400">
+            <Table.Summary.Row className="bg-green-500 text-[10px] text-slate-100">
               <Table.Summary.Cell index={0} colSpan={3} className="text-center">
                 <b>SUMMARY</b>
               </Table.Summary.Cell>
