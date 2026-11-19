@@ -40,6 +40,7 @@ export const GET = async (req: NextRequest) => {
         select: {
           plafond: true,
           dropping_status: true,
+          date_contract: true,
           c_takeover: true,
           takeover_status: true,
           mutasi_status: true,

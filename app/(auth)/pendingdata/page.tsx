@@ -101,7 +101,7 @@ export default function Page() {
     const params = new URLSearchParams({
       page: pageProps.page.toString(),
       limit: pageProps.limit.toString(),
-      dropping_status: "PENDING",
+      pending: "true",
       ...(pageProps.search && { search: pageProps.search }),
       ...(pageProps.sumdanId && { sumdanId: pageProps.sumdanId }),
       ...(pageProps.jenisPembiayaanId && {

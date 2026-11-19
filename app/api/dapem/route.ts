@@ -41,6 +41,7 @@ export const GET = async (request: NextRequest) => {
     group_skep,
     audit_status,
     dev_status,
+    pending,
   } = params;
   const skip = (parseInt(page) - 1) * parseInt(limit);
 
@@ -138,15 +139,25 @@ export const GET = async (request: NextRequest) => {
                   lte: moment().endOf("month").toDate(),
                 },
               },
-              {
-                dropping_status: {
-                  in: ["DRAFT", "PENDING", "PROSES", "DISETUJUI"],
-                },
-              },
+              // {
+              //   dropping_status: {
+              //     in: ["DRAFT", "PENDING", "PROSES", "DISETUJUI"],
+              //   },
+              // },
             ],
           }
         : {}),
     ...whereFunc,
+    ...(pending && {
+      AND: [
+        { dropping_status: { in: ["PENDING", "PROSES", "DISETUJUI"] } },
+        {
+          created_at: {
+            lte: moment().startOf("month").toDate(),
+          },
+        },
+      ],
+    }),
     status: true,
   };
 

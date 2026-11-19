@@ -92,7 +92,7 @@ interface IActionTableAkad<T> extends IActionTable<T> {
 export default function Page() {
   const [pageProps, setPageProps] = useState<IPageProps<IDapem>>({
     page: 1,
-    limit: 100,
+    limit: 50,
     total: 0,
     data: [],
     search: "",
@@ -146,6 +146,7 @@ export default function Page() {
         ...(pageProps.audit_status && { audit_status: pageProps.audit_status }),
         ...(pageProps.group_skep && { group_skep: pageProps.group_skep }),
         ...(pageProps.dev_status && { dev_status: pageProps.dev_status }),
+        currmont: "true",
       });
 
       const res = await fetch(`/api/dapem?${params.toString()}`);

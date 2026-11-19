@@ -249,6 +249,22 @@ export default function Page() {
     { noa: 0, plafond: 0 },
   );
 
+  const akadMonthSummary = useMemo(() => {
+    const applications = data.droppingall.filter(
+      (dapem) =>
+        dapem.date_contract &&
+        moment(dapem.date_contract).isSame(moment(), "month"),
+    );
+
+    return {
+      noa: applications.length,
+      plafond: applications.reduce(
+        (total, application) => total + application.plafond,
+        0,
+      ),
+    };
+  }, [data.droppingall]);
+
   return (
     <Spin spinning={loading} size="large">
       <div className="min-h-screen space-y-7 bg-[#f3f6fa] p-3 sm:p-5 lg:p-6">
@@ -316,10 +332,14 @@ export default function Page() {
               />
             </div>
           </div>
-          <div className="grid grid-cols-1 gap-2.5 p-3 sm:grid-cols-2 sm:p-4 lg:grid-cols-3 2xl:grid-cols-6">
+          <div className="grid grid-cols-1 gap-2.5 p-3 sm:grid-cols-2 sm:p-4 lg:grid-cols-3 2xl:grid-cols-7">
             {monthStatusSummary.map((status) => (
               <MonthStatusCard key={status.key} status={status} />
             ))}
+            <MonthAkadCard
+              noa={akadMonthSummary.noa}
+              plafond={akadMonthSummary.plafond}
+            />
           </div>
         </section>
 
@@ -654,6 +674,31 @@ const MonthStatusCard = ({
     </div>
   );
 };
+
+const MonthAkadCard = ({
+  noa,
+  plafond,
+}: {
+  noa: number;
+  plafond: number;
+}) => (
+  <div className="min-w-0 rounded-xl border border-cyan-200 bg-cyan-50 p-3 text-cyan-700 transition-transform duration-200 hover:-translate-y-0.5">
+    <div className="flex items-center justify-between gap-2">
+      <span className="truncate text-[10px] font-bold uppercase tracking-[0.1em]">
+        Akad Bulan Berjalan
+      </span>
+      <span className="shrink-0 rounded-full bg-white/80 px-2 py-0.5 text-[10px] font-bold">
+        {noa} NOA
+      </span>
+    </div>
+    <p className="mt-3 break-words text-sm font-bold leading-tight text-[#17243b]">
+      Rp {IDRFormat(plafond)}
+    </p>
+    <p className="mt-1 text-[10px] font-medium text-[#728096]">
+      Total pencairan berdasarkan tanggal akad
+    </p>
+  </div>
+);
 
 const SummaryPill = ({
   label,
