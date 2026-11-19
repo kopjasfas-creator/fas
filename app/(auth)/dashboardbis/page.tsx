@@ -40,6 +40,8 @@ type DashboardMocSummary = {
   name: string;
   noa: number;
   plafond: number;
+  target: number;
+  ratio: number;
 };
 
 type DashboardSpvSummary = {
@@ -48,6 +50,8 @@ type DashboardSpvSummary = {
   mocs: DashboardMocSummary[];
   totalNoa: number;
   totalPlafond: number;
+  target: number;
+  ratio: number;
 };
 
 type DashboardBranchSummary = {
@@ -142,6 +146,7 @@ export default function Page() {
                 id: string;
                 name: string;
                 mocs: Map<string, DashboardMocSummary>;
+                target: number;
               }
             >();
             const seenDapems = new Set<string>();
@@ -150,19 +155,24 @@ export default function Page() {
               dapem: IDapem,
               supervisorId: string,
               supervisorName: string,
+              supervisorTarget: number,
               mocId: string,
               mocName: string,
+              mocTarget: number,
             ) => {
               const supervisor = supervisors.get(supervisorId) ?? {
                 id: supervisorId,
                 name: supervisorName,
                 mocs: new Map<string, DashboardMocSummary>(),
+                target: supervisorTarget,
               };
               const moc = supervisor.mocs.get(mocId) ?? {
                 id: mocId,
                 name: mocName,
                 noa: 0,
                 plafond: 0,
+                target: mocTarget,
+                ratio: 0,
               };
               moc.noa += 1;
               moc.plafond += dapem.plafond;
@@ -178,8 +188,10 @@ export default function Page() {
                   dapem,
                   dapem.AOCabang?.id ?? "unassigned",
                   dapem.AOCabang?.fullname ?? "-",
+                  dapem.AOCabang?.target ?? 0,
                   user.id,
                   user.fullname,
+                  user.target ?? 0,
                 );
               });
             });
@@ -192,23 +204,35 @@ export default function Page() {
                   dapem,
                   user.id,
                   user.fullname,
+                  user.target ?? 0,
                   dapem.AO?.id ?? "unassigned",
                   dapem.AO?.fullname ?? "-",
+                  dapem.AO?.target ?? 0,
                 );
               });
             });
 
             return Array.from(supervisors.values()).map((supervisor) => {
-              const mocs = Array.from(supervisor.mocs.values());
+              const mocs = Array.from(supervisor.mocs.values()).map((moc) => ({
+                ...moc,
+                ratio: moc.target > 0 ? (moc.plafond / moc.target) * 100 : 0,
+              }));
+              const totalNoa = mocs.reduce((total, moc) => total + moc.noa, 0);
+              const totalPlafond = mocs.reduce(
+                (total, moc) => total + moc.plafond,
+                0,
+              );
               return {
                 id: supervisor.id,
                 name: supervisor.name,
                 mocs,
-                totalNoa: mocs.reduce((total, moc) => total + moc.noa, 0),
-                totalPlafond: mocs.reduce(
-                  (total, moc) => total + moc.plafond,
-                  0,
-                ),
+                totalNoa,
+                totalPlafond,
+                target: supervisor.target,
+                ratio:
+                  supervisor.target > 0
+                    ? (totalPlafond / supervisor.target) * 100
+                    : 0,
               };
             });
           })(),
@@ -239,9 +263,36 @@ export default function Page() {
   const reportTotals = useMemo(() => {
     const branches = reportData.flatMap((area) => area.branches);
     const supervisors = branches.flatMap((branch) => branch.supervisors);
+    const mocs = new Map<string, DashboardMocSummary>();
+    supervisors.forEach((supervisor) => {
+      supervisor.mocs.forEach((moc) => {
+        if (moc.id !== "unassigned" && !mocs.has(moc.id)) {
+          mocs.set(moc.id, moc);
+        }
+      });
+    });
     const sumdanNoa = sumdanReport.reduce((total, mitra) => total + mitra.noa, 0);
     const sumdanPlafond = sumdanReport.reduce(
       (total, mitra) => total + mitra.plafond,
+      0,
+    );
+    const mocTarget = Array.from(mocs.values()).reduce(
+      (total, moc) => total + moc.target,
+      0,
+    );
+    const actualSpvs = supervisors.filter(
+      (supervisor) => supervisor.id !== "unassigned",
+    );
+    const spvTarget = actualSpvs.reduce(
+      (total, supervisor) => total + supervisor.target,
+      0,
+    );
+    const spvAchievement = actualSpvs.reduce(
+      (total, supervisor) => total + supervisor.totalPlafond,
+      0,
+    );
+    const areaPlafond = supervisors.reduce(
+      (total, supervisor) => total + supervisor.totalPlafond,
       0,
     );
 
@@ -251,13 +302,18 @@ export default function Page() {
       ).length,
       branchCount: branches.filter((branch) => branch.supervisors.length > 0)
         .length,
-      supervisorCount: supervisors.length,
-      mocCount: supervisors.reduce((total, spv) => total + spv.mocs.length, 0),
+      supervisorCount: new Set(
+        supervisors
+          .filter((supervisor) => supervisor.id !== "unassigned")
+          .map((supervisor) => supervisor.id),
+      ).size,
+      mocCount: mocs.size,
       areaNoa: supervisors.reduce((total, spv) => total + spv.totalNoa, 0),
-      areaPlafond: supervisors.reduce(
-        (total, spv) => total + spv.totalPlafond,
-        0,
-      ),
+      areaPlafond,
+      mocTarget,
+      achievementRatio: mocTarget > 0 ? (areaPlafond / mocTarget) * 100 : 0,
+      spvTarget,
+      spvRatio: spvTarget > 0 ? (spvAchievement / spvTarget) * 100 : 0,
       sumdanNoa,
       sumdanPlafond,
     };
@@ -286,12 +342,20 @@ export default function Page() {
         reportTotals.supervisorCount,
         "TOTAL MOC",
         reportTotals.mocCount,
-      ],
-      [
         "TOTAL NOA",
         reportTotals.areaNoa,
         "TOTAL PLAFOND",
         reportTotals.areaPlafond,
+      ],
+      [
+        "TARGET MOC",
+        reportTotals.mocTarget,
+        "RASIO PENCAPAIAN",
+        reportTotals.achievementRatio / 100,
+        "",
+        "",
+        "",
+        "",
         "",
         "",
         "",
@@ -305,14 +369,18 @@ export default function Page() {
         "MOC",
         "NOA",
         "PLAFOND",
-        "TOTAL NOA",
-        "TOTAL PLAFOND",
+        "TARGET MOC",
+        "RASIO MOC",
+        "TOTAL NOA SPV",
+        "TOTAL PLAFOND SPV",
+        "TARGET SPV",
+        "RASIO SPV",
       ],
     ];
     const areaMerges: XLSX.Range[] = [
-      { s: { r: 0, c: 0 }, e: { r: 0, c: 7 } },
-      { s: { r: 1, c: 0 }, e: { r: 1, c: 7 } },
-      { s: { r: 4, c: 3 }, e: { r: 4, c: 7 } },
+      { s: { r: 0, c: 0 }, e: { r: 0, c: 11 } },
+      { s: { r: 1, c: 0 }, e: { r: 1, c: 11 } },
+      { s: { r: 4, c: 3 }, e: { r: 4, c: 11 } },
     ];
     let worksheetRow = 7;
 
@@ -330,14 +398,18 @@ export default function Page() {
               moc.name,
               moc.noa,
               moc.plafond,
+              moc.target,
+              moc.ratio / 100,
               mocIndex === 0 ? supervisor.totalNoa : "",
               mocIndex === 0 ? supervisor.totalPlafond : "",
+              mocIndex === 0 ? supervisor.target : "",
+              mocIndex === 0 ? supervisor.ratio / 100 : "",
             ]);
             worksheetRow += 1;
           });
           const supervisorEnd = worksheetRow - 1;
           if (supervisorEnd > supervisorStart) {
-            [2, 6, 7].forEach((column) =>
+            [2, 8, 9, 10, 11].forEach((column) =>
               areaMerges.push({
                 s: { r: supervisorStart, c: column },
                 e: { r: supervisorEnd, c: column },
@@ -365,28 +437,39 @@ export default function Page() {
     const areaWorksheet = XLSX.utils.aoa_to_sheet(areaTable);
     areaWorksheet["!merges"] = areaMerges;
     areaWorksheet["!cols"] = [
-      { wch: 22 },
-      { wch: 22 },
-      { wch: 22 },
-      { wch: 22 },
-      { wch: 12 },
       { wch: 20 },
+      { wch: 20 },
+      { wch: 20 },
+      { wch: 22 },
+      { wch: 10 },
+      { wch: 18 },
+      { wch: 18 },
+      { wch: 14 },
       { wch: 14 },
       { wch: 20 },
+      { wch: 18 },
+      { wch: 14 },
     ];
     areaWorksheet["!autofilter"] = {
-      ref: `A7:H${Math.max(7, worksheetRow)}`,
+      ref: `A7:L${Math.max(7, worksheetRow)}`,
     };
-    const areaSummaryCell =
+    const areaSummaryTarget =
+      areaWorksheet[XLSX.utils.encode_cell({ r: 4, c: 1 })];
+    const areaSummaryRatio =
       areaWorksheet[XLSX.utils.encode_cell({ r: 4, c: 3 })];
-    if (areaSummaryCell) areaSummaryCell.z = "#,##0";
+    if (areaSummaryTarget) areaSummaryTarget.z = "#,##0";
+    if (areaSummaryRatio) areaSummaryRatio.z = "0.0%";
     for (let row = 7; row < worksheetRow; row += 1) {
-      const amountCell =
-        areaWorksheet[XLSX.utils.encode_cell({ r: row, c: 5 })];
-      const totalCell =
-        areaWorksheet[XLSX.utils.encode_cell({ r: row, c: 7 })];
-      if (amountCell) amountCell.z = "#,##0";
-      if (totalCell) totalCell.z = "#,##0";
+      [5, 6, 9, 10].forEach((column) => {
+        const amountCell =
+          areaWorksheet[XLSX.utils.encode_cell({ r: row, c: column })];
+        if (amountCell) amountCell.z = "#,##0";
+      });
+      [7, 11].forEach((column) => {
+        const ratioCell =
+          areaWorksheet[XLSX.utils.encode_cell({ r: row, c: column })];
+        if (ratioCell) ratioCell.z = "0.0%";
+      });
     }
 
     const sumdanTable: (string | number)[][] = [
@@ -522,10 +605,14 @@ export default function Page() {
               `<td>${escapeHtml(moc.name)}</td>`,
               `<td class="number">${moc.noa}</td>`,
               `<td class="number">${IDRFormat(moc.plafond)}</td>`,
+              `<td class="number">${IDRFormat(moc.target)}</td>`,
+              `<td class="number">${moc.ratio.toFixed(1)}%</td>`,
               ...(mocIndex === 0
                 ? [
                     `<td class="number" rowspan="${supervisor.mocs.length}">${supervisor.totalNoa}</td>`,
                     `<td class="number" rowspan="${supervisor.mocs.length}">${IDRFormat(supervisor.totalPlafond)}</td>`,
+                    `<td class="number" rowspan="${supervisor.mocs.length}">${IDRFormat(supervisor.target)}</td>`,
+                    `<td class="number" rowspan="${supervisor.mocs.length}">${supervisor.ratio.toFixed(1)}%</td>`,
                   ]
                 : []),
             ];
@@ -590,9 +677,12 @@ export default function Page() {
             <div class="summary-grid">
               ${summaryCard("Total Area", reportTotals.areaCount)}
               ${summaryCard("Unit Pelayanan", reportTotals.branchCount)}
-              ${summaryCard("Total SPV / MOC", `${reportTotals.supervisorCount} / ${reportTotals.mocCount}`)}
+              ${summaryCard("Total SPV", reportTotals.supervisorCount)}
+              ${summaryCard("Total MOC", reportTotals.mocCount)}
               ${summaryCard("Total NOA", reportTotals.areaNoa)}
               ${summaryCard("Total Plafond", `Rp ${IDRFormat(reportTotals.areaPlafond)}`)}
+              ${summaryCard("Total Target MOC", `Rp ${IDRFormat(reportTotals.mocTarget)}`)}
+              ${summaryCard("Rasio Pencapaian", `${reportTotals.achievementRatio.toFixed(1)}%`)}
             </div>
             <table>
               <thead>
@@ -603,20 +693,28 @@ export default function Page() {
                   <th>MOC</th>
                   <th>NOA</th>
                   <th>PLAFOND</th>
-                  <th>TOTAL NOA</th>
-                  <th>TOTAL PLAFOND</th>
+                  <th>TARGET MOC</th>
+                  <th>RASIO MOC</th>
+                  <th>TOTAL NOA SPV</th>
+                  <th>TOTAL PLAFOND SPV</th>
+                  <th>TARGET SPV</th>
+                  <th>RASIO SPV</th>
                 </tr>
               </thead>
               <tbody>
-                ${areaRows.length ? areaRows.join("") : '<tr><td colspan="8">Tidak ada data area pada filter ini.</td></tr>'}
+                ${areaRows.length ? areaRows.join("") : '<tr><td colspan="12">Tidak ada data area pada filter ini.</td></tr>'}
               </tbody>
               <tfoot>
                 <tr>
                   <td colspan="4">TOTAL KESELURUHAN</td>
                   <td class="number">${reportTotals.areaNoa}</td>
                   <td></td>
+                  <td class="number">${IDRFormat(reportTotals.mocTarget)}</td>
+                  <td class="number">${reportTotals.achievementRatio.toFixed(1)}%</td>
                   <td class="number">${reportTotals.areaNoa}</td>
                   <td class="number">${IDRFormat(reportTotals.areaPlafond)}</td>
+                  <td class="number">${IDRFormat(reportTotals.spvTarget)}</td>
+                  <td class="number">${reportTotals.spvRatio.toFixed(1)}%</td>
                 </tr>
               </tfoot>
             </table>
