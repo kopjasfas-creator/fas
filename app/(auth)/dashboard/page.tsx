@@ -677,13 +677,7 @@ const MonthStatusCard = ({
   );
 };
 
-const MonthAkadCard = ({
-  noa,
-  plafond,
-}: {
-  noa: number;
-  plafond: number;
-}) => (
+const MonthAkadCard = ({ noa, plafond }: { noa: number; plafond: number }) => (
   <div className="min-w-0 rounded-xl border border-cyan-200 bg-cyan-50 p-3 text-cyan-700 transition-transform duration-200 hover:-translate-y-0.5">
     <div className="flex items-center justify-between gap-2">
       <span className="truncate text-[10px] font-bold uppercase tracking-[0.1em]">

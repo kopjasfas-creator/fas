@@ -1,9 +1,16 @@
 "use client";
 
 import { IDRFormat } from "@/components/utils/PembiayaanUtil";
-import { IArea, IPageProps, ISumdan, IUserDapem } from "@/libs/IInterfaces";
+import {
+  IDapem,
+  IArea,
+  IPageProps,
+  ISumdan,
+  IUserDapem,
+} from "@/libs/IInterfaces";
 
 import {
+  App,
   DatePicker,
   Spin,
   Table,
@@ -13,16 +20,54 @@ import {
   Card,
   Button,
 } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Building2,
   ChevronDown,
   ChevronUp,
+  FileSpreadsheet,
+  FileText,
   LayoutDashboard,
   MapPin,
 } from "lucide-react";
+import * as XLSX from "xlsx";
+import moment from "moment";
 
 const { RangePicker } = DatePicker;
+
+type DashboardMocSummary = {
+  id: string;
+  name: string;
+  noa: number;
+  plafond: number;
+};
+
+type DashboardSpvSummary = {
+  id: string;
+  name: string;
+  mocs: DashboardMocSummary[];
+  totalNoa: number;
+  totalPlafond: number;
+};
+
+type DashboardBranchSummary = {
+  id: string;
+  name: string;
+  supervisors: DashboardSpvSummary[];
+};
+
+type DashboardAreaSummary = {
+  id: string;
+  name: string;
+  branches: DashboardBranchSummary[];
+};
+
+type DashboardReportAssignment = {
+  plafond: number;
+  dropping_status: IDapem["dropping_status"];
+  AO: { id: string; fullname: string } | null;
+  AOCabang: { id: string; fullname: string; cabangId: string } | null;
+};
 
 export default function Page() {
   const [loading, setLoading] = useState(false);
@@ -35,9 +80,13 @@ export default function Page() {
     backdate: "",
   });
   const [sumdan, setSumdan] = useState<ISumdan[]>([]);
+  const [reportAssignments, setReportAssignments] = useState<
+    DashboardReportAssignment[]
+  >([]);
   const [expandedAreas, setExpandedAreas] = useState<string[]>([]);
   const [expandedCabangs, setExpandedCabangs] = useState<string[]>([]);
   const [expandedAOs, setExpandedAOs] = useState<string[]>([]);
+  const { message } = App.useApp();
 
   const toggleArea = (id: string) => {
     setExpandedAreas((prev) =>
@@ -75,6 +124,7 @@ export default function Page() {
         .then((res) => {
           setPageProps((prev) => ({ ...prev, data: res.area }));
           setSumdan(res.sumdan);
+          setReportAssignments(res.reportAssignments);
         });
     } catch (err) {
       console.error(err);
@@ -87,6 +137,264 @@ export default function Page() {
     const timeout = setTimeout(() => getData(), 200);
     return () => clearTimeout(timeout);
   }, [pageProps.backdate]);
+
+  const reportData = useMemo<DashboardAreaSummary[]>(
+    () =>
+      pageProps.data.map((area) => ({
+        id: area.id,
+        name: area.name,
+        branches: area.Cabangs.map((cabang) => ({
+          id: cabang.id,
+          name: cabang.name,
+          supervisors: cabang.Users.map((user) => {
+            const mocs = new Map<string, DashboardMocSummary>();
+            reportAssignments
+              .filter((dapem) => dapem.AOCabang?.id === user.id)
+              .forEach((dapem) => {
+                const id = dapem.AO?.id ?? "unassigned";
+                const existing = mocs.get(id) ?? {
+                  id,
+                  name: dapem.AO?.fullname ?? "-",
+                  noa: 0,
+                  plafond: 0,
+                };
+                if (
+                  dapem.dropping_status === "DISETUJUI" ||
+                  dapem.dropping_status === "PROSES"
+                ) {
+                  existing.noa += 1;
+                  existing.plafond += dapem.plafond;
+                }
+                mocs.set(id, existing);
+              });
+            const mocList = Array.from(mocs.values());
+
+            return {
+              id: user.id,
+              name: user.fullname,
+              mocs: mocList,
+              totalNoa: mocList.reduce((total, moc) => total + moc.noa, 0),
+              totalPlafond: mocList.reduce(
+                (total, moc) => total + moc.plafond,
+                0,
+              ),
+            };
+          }).filter((supervisor) => supervisor.mocs.length > 0),
+        })),
+      })),
+    [pageProps.data, reportAssignments],
+  );
+
+  const exportExcel = () => {
+    const table: (string | number)[][] = [
+      [
+        "AREA PELAYANAN",
+        "UNIT PELAYANAN",
+        "SPV",
+        "MOC",
+        "NOA",
+        "PLAFOND",
+        "TOTAL NOA",
+        "TOTAL PLAFOND",
+      ],
+    ];
+    const merges: XLSX.Range[] = [];
+    let worksheetRow = 1;
+
+    reportData.forEach((area) => {
+      const areaStart = worksheetRow;
+      area.branches.forEach((branch) => {
+        const branchStart = worksheetRow;
+        branch.supervisors.forEach((supervisor) => {
+          const supervisorStart = worksheetRow;
+          supervisor.mocs.forEach((moc, mocIndex) => {
+            table.push([
+              worksheetRow === areaStart ? area.name : "",
+              worksheetRow === branchStart ? branch.name : "",
+              mocIndex === 0 ? supervisor.name : "",
+              moc.name,
+              moc.noa,
+              moc.plafond,
+              mocIndex === 0 ? supervisor.totalNoa : "",
+              mocIndex === 0 ? supervisor.totalPlafond : "",
+            ]);
+            worksheetRow += 1;
+          });
+          const supervisorEnd = worksheetRow - 1;
+          if (supervisorEnd > supervisorStart) {
+            [2, 6, 7].forEach((column) =>
+              merges.push({
+                s: { r: supervisorStart, c: column },
+                e: { r: supervisorEnd, c: column },
+              }),
+            );
+          }
+        });
+        const branchEnd = worksheetRow - 1;
+        if (branchEnd > branchStart) {
+          merges.push({
+            s: { r: branchStart, c: 1 },
+            e: { r: branchEnd, c: 1 },
+          });
+        }
+      });
+      const areaEnd = worksheetRow - 1;
+      if (areaEnd > areaStart) {
+        merges.push({
+          s: { r: areaStart, c: 0 },
+          e: { r: areaEnd, c: 0 },
+        });
+      }
+    });
+
+    const worksheet = XLSX.utils.aoa_to_sheet(table);
+    worksheet["!merges"] = merges;
+    worksheet["!cols"] = [
+      { wch: 22 },
+      { wch: 22 },
+      { wch: 22 },
+      { wch: 22 },
+      { wch: 12 },
+      { wch: 20 },
+      { wch: 14 },
+      { wch: 20 },
+    ];
+    worksheet["!autofilter"] = {
+      ref: `A1:H${Math.max(1, worksheetRow)}`,
+    };
+    for (let row = 1; row < worksheetRow; row += 1) {
+      const amountCell = worksheet[XLSX.utils.encode_cell({ r: row, c: 5 })];
+      const totalCell = worksheet[XLSX.utils.encode_cell({ r: row, c: 7 })];
+      if (amountCell) amountCell.z = "#,##0";
+      if (totalCell) totalCell.z = "#,##0";
+    }
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Dashboard Bisnis");
+    XLSX.writeFile(
+      workbook,
+      `Dashboard_Bisnis_${moment().format("YYYYMMDD_HHmm")}.xlsx`,
+    );
+  };
+
+  const exportPdf = () => {
+    const printWindow = window.open("", "_blank");
+    if (!printWindow) {
+      message.error("Izinkan pop-up untuk mencetak laporan PDF.");
+      return;
+    }
+
+    const escapeHtml = (value: string) =>
+      value.replace(/[&<>"']/g, (character) => {
+        const entities: Record<string, string> = {
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;",
+        };
+        return entities[character];
+      });
+    const bodyRows: string[] = [];
+
+    reportData.forEach((area) => {
+      const areaRowCount = area.branches.reduce(
+        (total, branch) =>
+          total +
+          branch.supervisors.reduce(
+            (supervisorTotal, supervisor) =>
+              supervisorTotal + supervisor.mocs.length,
+            0,
+          ),
+        0,
+      );
+      let firstAreaRow = true;
+
+      area.branches.forEach((branch) => {
+        const branchRowCount = branch.supervisors.reduce(
+          (total, supervisor) => total + supervisor.mocs.length,
+          0,
+        );
+        let firstBranchRow = true;
+
+        branch.supervisors.forEach((supervisor) => {
+          supervisor.mocs.forEach((moc, mocIndex) => {
+            const cells = [
+              ...(firstAreaRow
+                ? [
+                    `<td rowspan="${areaRowCount}">${escapeHtml(area.name)}</td>`,
+                  ]
+                : []),
+              ...(firstBranchRow
+                ? [
+                    `<td rowspan="${branchRowCount}">${escapeHtml(branch.name)}</td>`,
+                  ]
+                : []),
+              ...(mocIndex === 0
+                ? [
+                    `<td rowspan="${supervisor.mocs.length}">${escapeHtml(supervisor.name)}</td>`,
+                  ]
+                : []),
+              `<td>${escapeHtml(moc.name)}</td>`,
+              `<td class="number">${moc.noa}</td>`,
+              `<td class="number">${IDRFormat(moc.plafond)}</td>`,
+              ...(mocIndex === 0
+                ? [
+                    `<td class="number" rowspan="${supervisor.mocs.length}">${supervisor.totalNoa}</td>`,
+                    `<td class="number" rowspan="${supervisor.mocs.length}">${IDRFormat(supervisor.totalPlafond)}</td>`,
+                  ]
+                : []),
+            ];
+            bodyRows.push(`<tr>${cells.join("")}</tr>`);
+            firstAreaRow = false;
+            firstBranchRow = false;
+          });
+        });
+      });
+    });
+
+    printWindow.document.write(`<!doctype html>
+      <html lang="id">
+        <head>
+          <meta charset="utf-8" />
+          <title>Dashboard Bisnis</title>
+          <style>
+            @page { size: landscape; margin: 12mm; }
+            body { font-family: Arial, sans-serif; color: #111; }
+            h1 { font-size: 16px; text-align: center; margin: 0 0 16px; }
+            table { border-collapse: collapse; width: 100%; font-size: 10px; }
+            th, td { border: 1px solid #222; padding: 6px; }
+            th { text-align: center; background: #e8edf5; }
+            td { vertical-align: middle; text-align: center; }
+            .number { text-align: right; white-space: nowrap; }
+            thead { display: table-header-group; }
+            tr { break-inside: avoid; }
+          </style>
+        </head>
+        <body>
+          <h1>REKAPITULASI DASHBOARD BISNIS</h1>
+          <table>
+            <thead>
+              <tr>
+                <th>AREA PELAYANAN</th>
+                <th>UNIT PELAYANAN</th>
+                <th>SPV</th>
+                <th>MOC</th>
+                <th>NOA</th>
+                <th>PLAFOND</th>
+                <th>TOTAL NOA</th>
+                <th>TOTAL PLAFOND</th>
+              </tr>
+            </thead>
+            <tbody>${bodyRows.join("")}</tbody>
+          </table>
+          <script>
+            window.onload = () => { window.focus(); window.print(); };
+          </script>
+        </body>
+      </html>`);
+    printWindow.document.close();
+  };
 
   const columns: TableProps<ISumdan>["columns"] = [
     {
@@ -157,12 +465,24 @@ export default function Page() {
               <p className="text-gray-500">Monitoring wilayah kerja</p>
             </div>
           </div>
-          <RangePicker
-            className="rounded-lg h-10 shadow-sm"
-            onChange={(_, dateStr) =>
-              setPageProps({ ...pageProps, backdate: dateStr })
-            }
-          />
+          <div className="flex flex-wrap items-center gap-2">
+            <RangePicker
+              className="rounded-lg h-10 shadow-sm"
+              onChange={(_, dateStr) =>
+                setPageProps({ ...pageProps, backdate: dateStr })
+              }
+            />
+            <Button icon={<FileSpreadsheet size={16} />} onClick={exportExcel}>
+              Excel
+            </Button>
+            <Button
+              icon={<FileText size={16} />}
+              onClick={exportPdf}
+              type="primary"
+            >
+              Cetak PDF
+            </Button>
+          </div>
         </div>
 
         {/* Areas Section */}
@@ -389,7 +709,7 @@ export default function Page() {
             columns={columns}
             dataSource={sumdan}
             rowKey="id"
-            pagination={{ pageSize: 5 }}
+            pagination={false}
           />
         </Card>
       </div>
