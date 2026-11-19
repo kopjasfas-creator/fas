@@ -30,6 +30,7 @@ export const GET = async (req: NextRequest) => {
           verif_status: true,
           approv_status: true,
           created_at: true,
+          date_contract: true,
         },
       }),
       prisma.dapem.findMany({
@@ -40,7 +41,6 @@ export const GET = async (req: NextRequest) => {
         select: {
           plafond: true,
           dropping_status: true,
-          date_contract: true,
           c_takeover: true,
           takeover_status: true,
           mutasi_status: true,
@@ -197,7 +197,7 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json({ data: null, status: 400 }, { status: 400 });
 
   const where: Prisma.DapemWhereInput = {
-    dropping_status: "DISETUJUI",
+    dropping_status: { in: ["DISETUJUI", "PROSES"] },
     status: true,
     ...(user.sumdanId && {
       ProdukPembiayaan: { sumdanId: user.sumdanId },

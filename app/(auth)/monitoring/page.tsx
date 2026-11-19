@@ -146,7 +146,7 @@ export default function Page() {
         ...(pageProps.audit_status && { audit_status: pageProps.audit_status }),
         ...(pageProps.group_skep && { group_skep: pageProps.group_skep }),
         ...(pageProps.dev_status && { dev_status: pageProps.dev_status }),
-        currmont: "true",
+        currmonth: "true",
       });
 
       const res = await fetch(`/api/dapem?${params.toString()}`);

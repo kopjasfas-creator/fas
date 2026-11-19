@@ -40,6 +40,7 @@ interface IDashboard {
     verif_status: IDapem["verif_status"];
     approv_status: IDapem["approv_status"];
     created_at: Date | string;
+    date_contract: Date | string | null;
   }[];
   droppingall: IDapem[];
   droppingmonthly: IDapem[];
@@ -250,8 +251,9 @@ export default function Page() {
   );
 
   const akadMonthSummary = useMemo(() => {
-    const applications = data.droppingall.filter(
+    const applications = data.alldata.filter(
       (dapem) =>
+        ["DISETUJUI", "LUNAS", "PROSES"].includes(dapem.dropping_status) &&
         dapem.date_contract &&
         moment(dapem.date_contract).isSame(moment(), "month"),
     );
@@ -263,7 +265,7 @@ export default function Page() {
         0,
       ),
     };
-  }, [data.droppingall]);
+  }, [data.alldata]);
 
   return (
     <Spin spinning={loading} size="large">

@@ -73,7 +73,6 @@ export default function Page() {
       await fetch(`/api?${params.toString()}`, { method: "POST" })
         .then((res) => res.json())
         .then((res) => {
-          console.log(res);
           setPageProps((prev) => ({ ...prev, data: res.area }));
           setSumdan(res.sumdan);
         });

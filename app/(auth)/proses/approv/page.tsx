@@ -54,7 +54,7 @@ const { RangePicker } = DatePicker;
 export default function Page() {
   const [pageProps, setPageProps] = useState<IPageProps<IDapem>>({
     page: 1,
-    limit: 100,
+    limit: 50,
     total: 0,
     data: [],
     search: "",

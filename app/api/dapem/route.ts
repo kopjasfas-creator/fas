@@ -150,7 +150,7 @@ export const GET = async (request: NextRequest) => {
     ...whereFunc,
     ...(pending && {
       AND: [
-        { dropping_status: { in: ["PENDING", "PROSES", "DISETUJUI"] } },
+        { dropping_status: { in: ["PENDING", "PROSES"] } },
         {
           created_at: {
             lte: moment().startOf("month").toDate(),
