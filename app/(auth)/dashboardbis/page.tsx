@@ -2,6 +2,7 @@
 
 import { IDRFormat } from "@/components/utils/PembiayaanUtil";
 import {
+  IDapem,
   IArea,
   IPageProps,
   ISumdan,
@@ -134,39 +135,98 @@ export default function Page() {
         branches: area.Cabangs.map((cabang) => ({
           id: cabang.id,
           name: cabang.name,
-          supervisors: cabang.Users.map((user) => {
-            const mocs = new Map<string, DashboardMocSummary>();
-            user.AOCabangs.forEach((dapem) => {
-              const id = dapem.AO?.id ?? "unassigned";
-              const existing = mocs.get(id) ?? {
-                id,
-                name: dapem.AO?.fullname ?? "-",
+          supervisors: (() => {
+            const supervisors = new Map<
+              string,
+              {
+                id: string;
+                name: string;
+                mocs: Map<string, DashboardMocSummary>;
+              }
+            >();
+            const seenDapems = new Set<string>();
+
+            const addDapem = (
+              dapem: IDapem,
+              supervisorId: string,
+              supervisorName: string,
+              mocId: string,
+              mocName: string,
+            ) => {
+              const supervisor = supervisors.get(supervisorId) ?? {
+                id: supervisorId,
+                name: supervisorName,
+                mocs: new Map<string, DashboardMocSummary>(),
+              };
+              const moc = supervisor.mocs.get(mocId) ?? {
+                id: mocId,
+                name: mocName,
                 noa: 0,
                 plafond: 0,
               };
-              existing.noa += 1;
-              existing.plafond += dapem.plafond;
-              mocs.set(id, existing);
-            });
-            const mocList = Array.from(mocs.values());
-
-            return {
-              id: user.id,
-              name: user.fullname,
-              mocs: mocList,
-              totalNoa: mocList.reduce((total, moc) => total + moc.noa, 0),
-              totalPlafond: mocList.reduce(
-                (total, moc) => total + moc.plafond,
-                0,
-              ),
+              moc.noa += 1;
+              moc.plafond += dapem.plafond;
+              supervisor.mocs.set(mocId, moc);
+              supervisors.set(supervisorId, supervisor);
             };
-          }).filter((supervisor) => supervisor.mocs.length > 0),
+
+            cabang.Users.forEach((user) => {
+              user.AOs.forEach((dapem) => {
+                if (seenDapems.has(dapem.id)) return;
+                seenDapems.add(dapem.id);
+                addDapem(
+                  dapem,
+                  dapem.AOCabang?.id ?? "unassigned",
+                  dapem.AOCabang?.fullname ?? "-",
+                  user.id,
+                  user.fullname,
+                );
+              });
+            });
+
+            cabang.Users.forEach((user) => {
+              user.AOCabangs.forEach((dapem) => {
+                if (seenDapems.has(dapem.id)) return;
+                seenDapems.add(dapem.id);
+                addDapem(
+                  dapem,
+                  user.id,
+                  user.fullname,
+                  dapem.AO?.id ?? "unassigned",
+                  dapem.AO?.fullname ?? "-",
+                );
+              });
+            });
+
+            return Array.from(supervisors.values()).map((supervisor) => {
+              const mocs = Array.from(supervisor.mocs.values());
+              return {
+                id: supervisor.id,
+                name: supervisor.name,
+                mocs,
+                totalNoa: mocs.reduce((total, moc) => total + moc.noa, 0),
+                totalPlafond: mocs.reduce(
+                  (total, moc) => total + moc.plafond,
+                  0,
+                ),
+              };
+            });
+          })(),
         })),
       })),
     [pageProps.data],
   );
 
+  const hasReportData = reportData.some((area) =>
+    area.branches.some((branch) => branch.supervisors.length > 0),
+  );
+
   const exportExcel = () => {
+    if (!hasReportData) {
+      message.warning("Tidak ada data yang dapat dicetak sesuai filter.");
+      return;
+    }
+
     const table: (string | number)[][] = [
       [
         "AREA PELAYANAN",
@@ -259,6 +319,11 @@ export default function Page() {
   };
 
   const exportPdf = () => {
+    if (!hasReportData) {
+      message.warning("Tidak ada data yang dapat dicetak sesuai filter.");
+      return;
+    }
+
     const printWindow = window.open("", "_blank");
     if (!printWindow) {
       message.error("Izinkan pop-up untuk mencetak laporan PDF.");

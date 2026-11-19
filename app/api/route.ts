@@ -267,6 +267,7 @@ export const POST = async (req: NextRequest) => {
                     plafond: true,
                     tenor: true,
                     dropping_status: true,
+                    AOCabang: { select: { id: true, fullname: true } },
                     Debitur: { select: { fullname: true, nopen: true } },
                     ProdukPembiayaan: { select: { name: true } },
                     JenisPembiayaan: { select: { name: true } },
