@@ -199,6 +199,7 @@ export const POST = async (req: NextRequest) => {
   const where: Prisma.DapemWhereInput = {
     dropping_status: { in: ["DISETUJUI", "PROSES"] },
     status: true,
+    date_contract: { not: null },
     ...(user.sumdanId && {
       ProdukPembiayaan: { sumdanId: user.sumdanId },
     }),
@@ -227,7 +228,7 @@ export const POST = async (req: NextRequest) => {
       agentFrontingId: user.agentFrontingId,
     }),
     ...(backdate && {
-      created_at: {
+      date_contract: {
         gte: moment(backdate.split(",")[0]).toDate(),
         lte: moment(backdate.split(",")[1]).toDate(),
       },

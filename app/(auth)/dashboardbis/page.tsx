@@ -220,14 +220,84 @@ export default function Page() {
   const hasReportData = reportData.some((area) =>
     area.branches.some((branch) => branch.supervisors.length > 0),
   );
+  const sumdanReport = useMemo(
+    () =>
+      sumdan.map((mitra) => {
+        const dapems = mitra.ProdukPembiayaans.flatMap(
+          (produk) => produk.Dapems,
+        );
+        return {
+          id: mitra.id,
+          name: mitra.name,
+          code: mitra.code ?? "-",
+          noa: dapems.length,
+          plafond: dapems.reduce((total, dapem) => total + dapem.plafond, 0),
+        };
+      }),
+    [sumdan],
+  );
+  const reportTotals = useMemo(() => {
+    const branches = reportData.flatMap((area) => area.branches);
+    const supervisors = branches.flatMap((branch) => branch.supervisors);
+    const sumdanNoa = sumdanReport.reduce((total, mitra) => total + mitra.noa, 0);
+    const sumdanPlafond = sumdanReport.reduce(
+      (total, mitra) => total + mitra.plafond,
+      0,
+    );
+
+    return {
+      areaCount: reportData.filter((area) =>
+        area.branches.some((branch) => branch.supervisors.length > 0),
+      ).length,
+      branchCount: branches.filter((branch) => branch.supervisors.length > 0)
+        .length,
+      supervisorCount: supervisors.length,
+      mocCount: supervisors.reduce((total, spv) => total + spv.mocs.length, 0),
+      areaNoa: supervisors.reduce((total, spv) => total + spv.totalNoa, 0),
+      areaPlafond: supervisors.reduce(
+        (total, spv) => total + spv.totalPlafond,
+        0,
+      ),
+      sumdanNoa,
+      sumdanPlafond,
+    };
+  }, [reportData, sumdanReport]);
+  const periodLabel = pageProps.backdate
+    ? String(pageProps.backdate).replace(",", " s.d. ")
+    : "Semua periode";
+  const hasAnyReportData = hasReportData || sumdanReport.length > 0;
 
   const exportExcel = () => {
-    if (!hasReportData) {
+    if (!hasAnyReportData) {
       message.warning("Tidak ada data yang dapat dicetak sesuai filter.");
       return;
     }
 
-    const table: (string | number)[][] = [
+    const areaTable: (string | number)[][] = [
+      ["REKAPITULASI PEMBIAYAAN BERDASARKAN AREA"],
+      [`Periode data: ${periodLabel}`],
+      [],
+      [
+        "TOTAL AREA",
+        reportTotals.areaCount,
+        "TOTAL UNIT",
+        reportTotals.branchCount,
+        "TOTAL SPV",
+        reportTotals.supervisorCount,
+        "TOTAL MOC",
+        reportTotals.mocCount,
+      ],
+      [
+        "TOTAL NOA",
+        reportTotals.areaNoa,
+        "TOTAL PLAFOND",
+        reportTotals.areaPlafond,
+        "",
+        "",
+        "",
+        "",
+      ],
+      [],
       [
         "AREA PELAYANAN",
         "UNIT PELAYANAN",
@@ -239,8 +309,12 @@ export default function Page() {
         "TOTAL PLAFOND",
       ],
     ];
-    const merges: XLSX.Range[] = [];
-    let worksheetRow = 1;
+    const areaMerges: XLSX.Range[] = [
+      { s: { r: 0, c: 0 }, e: { r: 0, c: 7 } },
+      { s: { r: 1, c: 0 }, e: { r: 1, c: 7 } },
+      { s: { r: 4, c: 3 }, e: { r: 4, c: 7 } },
+    ];
+    let worksheetRow = 7;
 
     reportData.forEach((area) => {
       const areaStart = worksheetRow;
@@ -249,7 +323,7 @@ export default function Page() {
         branch.supervisors.forEach((supervisor) => {
           const supervisorStart = worksheetRow;
           supervisor.mocs.forEach((moc, mocIndex) => {
-            table.push([
+            areaTable.push([
               worksheetRow === areaStart ? area.name : "",
               worksheetRow === branchStart ? branch.name : "",
               mocIndex === 0 ? supervisor.name : "",
@@ -264,7 +338,7 @@ export default function Page() {
           const supervisorEnd = worksheetRow - 1;
           if (supervisorEnd > supervisorStart) {
             [2, 6, 7].forEach((column) =>
-              merges.push({
+              areaMerges.push({
                 s: { r: supervisorStart, c: column },
                 e: { r: supervisorEnd, c: column },
               }),
@@ -273,7 +347,7 @@ export default function Page() {
         });
         const branchEnd = worksheetRow - 1;
         if (branchEnd > branchStart) {
-          merges.push({
+          areaMerges.push({
             s: { r: branchStart, c: 1 },
             e: { r: branchEnd, c: 1 },
           });
@@ -281,16 +355,16 @@ export default function Page() {
       });
       const areaEnd = worksheetRow - 1;
       if (areaEnd > areaStart) {
-        merges.push({
+        areaMerges.push({
           s: { r: areaStart, c: 0 },
           e: { r: areaEnd, c: 0 },
         });
       }
     });
 
-    const worksheet = XLSX.utils.aoa_to_sheet(table);
-    worksheet["!merges"] = merges;
-    worksheet["!cols"] = [
+    const areaWorksheet = XLSX.utils.aoa_to_sheet(areaTable);
+    areaWorksheet["!merges"] = areaMerges;
+    areaWorksheet["!cols"] = [
       { wch: 22 },
       { wch: 22 },
       { wch: 22 },
@@ -300,18 +374,82 @@ export default function Page() {
       { wch: 14 },
       { wch: 20 },
     ];
-    worksheet["!autofilter"] = {
-      ref: `A1:H${Math.max(1, worksheetRow)}`,
+    areaWorksheet["!autofilter"] = {
+      ref: `A7:H${Math.max(7, worksheetRow)}`,
     };
-    for (let row = 1; row < worksheetRow; row += 1) {
-      const amountCell = worksheet[XLSX.utils.encode_cell({ r: row, c: 5 })];
-      const totalCell = worksheet[XLSX.utils.encode_cell({ r: row, c: 7 })];
+    const areaSummaryCell =
+      areaWorksheet[XLSX.utils.encode_cell({ r: 4, c: 3 })];
+    if (areaSummaryCell) areaSummaryCell.z = "#,##0";
+    for (let row = 7; row < worksheetRow; row += 1) {
+      const amountCell =
+        areaWorksheet[XLSX.utils.encode_cell({ r: row, c: 5 })];
+      const totalCell =
+        areaWorksheet[XLSX.utils.encode_cell({ r: row, c: 7 })];
       if (amountCell) amountCell.z = "#,##0";
       if (totalCell) totalCell.z = "#,##0";
     }
 
+    const sumdanTable: (string | number)[][] = [
+      ["REKAPITULASI PEMBIAYAAN BERDASARKAN MITRA"],
+      [`Periode data: ${periodLabel}`],
+      [],
+      [
+        "JUMLAH MITRA",
+        sumdanReport.length,
+        "TOTAL NOA",
+        reportTotals.sumdanNoa,
+        "TOTAL PLAFOND",
+        reportTotals.sumdanPlafond,
+      ],
+      [],
+      [
+        "MITRA PEMBIAYAAN",
+        "KODE MITRA",
+        "NOA",
+        "TOTAL PLAFOND",
+        "",
+        "",
+      ],
+      ...sumdanReport.map((mitra) => [
+        mitra.name,
+        mitra.code,
+        mitra.noa,
+        mitra.plafond,
+        "",
+        "",
+      ]),
+      [
+        "TOTAL MITRA",
+        "",
+        reportTotals.sumdanNoa,
+        reportTotals.sumdanPlafond,
+        "",
+        "",
+      ],
+    ];
+    const sumdanWorksheet = XLSX.utils.aoa_to_sheet(sumdanTable);
+    sumdanWorksheet["!merges"] = [
+      { s: { r: 0, c: 0 }, e: { r: 0, c: 5 } },
+      { s: { r: 1, c: 0 }, e: { r: 1, c: 5 } },
+    ];
+    sumdanWorksheet["!cols"] = [
+      { wch: 32 },
+      { wch: 18 },
+      { wch: 14 },
+      { wch: 22 },
+    ];
+    sumdanWorksheet["!autofilter"] = {
+      ref: `A6:D${Math.max(6, sumdanReport.length + 6)}`,
+    };
+    for (let row = 6; row < sumdanReport.length + 7; row += 1) {
+      const amountCell =
+        sumdanWorksheet[XLSX.utils.encode_cell({ r: row, c: 3 })];
+      if (amountCell) amountCell.z = "#,##0";
+    }
+
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Dashboard Bisnis");
+    XLSX.utils.book_append_sheet(workbook, areaWorksheet, "By Area");
+    XLSX.utils.book_append_sheet(workbook, sumdanWorksheet, "By Sumdan");
     XLSX.writeFile(
       workbook,
       `Dashboard_Bisnis_${moment().format("YYYYMMDD_HHmm")}.xlsx`,
@@ -319,7 +457,7 @@ export default function Page() {
   };
 
   const exportPdf = () => {
-    if (!hasReportData) {
+    if (!hasAnyReportData) {
       message.warning("Tidak ada data yang dapat dicetak sesuai filter.");
       return;
     }
@@ -341,7 +479,7 @@ export default function Page() {
         };
         return entities[character];
       });
-    const bodyRows: string[] = [];
+    const areaRows: string[] = [];
 
     reportData.forEach((area) => {
       const areaRowCount = area.branches.reduce(
@@ -391,7 +529,7 @@ export default function Page() {
                   ]
                 : []),
             ];
-            bodyRows.push(`<tr>${cells.join("")}</tr>`);
+            areaRows.push(`<tr>${cells.join("")}</tr>`);
             firstAreaRow = false;
             firstBranchRow = false;
           });
@@ -399,41 +537,122 @@ export default function Page() {
       });
     });
 
+    const sumdanRows = sumdanReport
+      .map(
+        (mitra) => `<tr>
+          <td>${escapeHtml(mitra.name)}</td>
+          <td>${escapeHtml(mitra.code)}</td>
+          <td class="number">${mitra.noa}</td>
+          <td class="number">${IDRFormat(mitra.plafond)}</td>
+        </tr>`,
+      )
+      .join("");
+    const summaryCard = (label: string, value: string | number) =>
+      `<div class="summary-card"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong></div>`;
+
     printWindow.document.write(`<!doctype html>
       <html lang="id">
         <head>
           <meta charset="utf-8" />
           <title>Dashboard Bisnis</title>
           <style>
-            @page { size: landscape; margin: 12mm; }
-            body { font-family: Arial, sans-serif; color: #111; }
-            h1 { font-size: 16px; text-align: center; margin: 0 0 16px; }
-            table { border-collapse: collapse; width: 100%; font-size: 10px; }
-            th, td { border: 1px solid #222; padding: 6px; }
-            th { text-align: center; background: #e8edf5; }
+            @page { size: landscape; margin: 11mm; }
+            * { box-sizing: border-box; }
+            body { margin: 0; font-family: Arial, sans-serif; color: #17243b; }
+            .report-page { break-after: page; page-break-after: always; }
+            .report-page-last { break-after: auto; page-break-after: auto; }
+            .report-header { padding: 16px 20px; color: #fff; background: #17243b; border-radius: 12px; }
+            .eyebrow { color: #87d9e8; font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+            h1 { margin: 5px 0; font-size: 19px; }
+            .period { color: #c5d2e2; font-size: 10px; }
+            .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 12px 0; }
+            .summary-card { min-height: 48px; padding: 8px 10px; border: 1px solid #dce6f4; border-radius: 8px; background: #f2f7fd; }
+            .summary-card span { display: block; color: #64748b; font-size: 8px; font-weight: 700; text-transform: uppercase; }
+            .summary-card strong { display: block; margin-top: 4px; color: #17243b; font-size: 12px; }
+            table { border-collapse: collapse; width: 100%; font-size: 9px; }
+            th, td { border: 1px solid #aebccd; padding: 6px; }
+            th { color: #fff; text-align: center; background: #31547c; }
             td { vertical-align: middle; text-align: center; }
             .number { text-align: right; white-space: nowrap; }
+            tfoot td { color: #17243b; font-weight: 700; background: #e8f0fa; }
             thead { display: table-header-group; }
             tr { break-inside: avoid; }
+            @media print { .report-header, .summary-card, th, tfoot td { print-color-adjust: exact; -webkit-print-color-adjust: exact; } }
           </style>
         </head>
         <body>
-          <h1>REKAPITULASI DASHBOARD BISNIS</h1>
-          <table>
-            <thead>
-              <tr>
-                <th>AREA PELAYANAN</th>
-                <th>UNIT PELAYANAN</th>
-                <th>SPV</th>
-                <th>MOC</th>
-                <th>NOA</th>
-                <th>PLAFOND</th>
-                <th>TOTAL NOA</th>
-                <th>TOTAL PLAFOND</th>
-              </tr>
-            </thead>
-            <tbody>${bodyRows.join("")}</tbody>
-          </table>
+          <section class="report-page">
+            <header class="report-header">
+              <div class="eyebrow">Dashboard Pencapaian</div>
+              <h1>Rekapitulasi Pembiayaan Berdasarkan Area</h1>
+              <div class="period">Periode data: ${escapeHtml(periodLabel)}</div>
+            </header>
+            <div class="summary-grid">
+              ${summaryCard("Total Area", reportTotals.areaCount)}
+              ${summaryCard("Unit Pelayanan", reportTotals.branchCount)}
+              ${summaryCard("Total SPV / MOC", `${reportTotals.supervisorCount} / ${reportTotals.mocCount}`)}
+              ${summaryCard("Total NOA", reportTotals.areaNoa)}
+              ${summaryCard("Total Plafond", `Rp ${IDRFormat(reportTotals.areaPlafond)}`)}
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>AREA PELAYANAN</th>
+                  <th>UNIT PELAYANAN</th>
+                  <th>SPV</th>
+                  <th>MOC</th>
+                  <th>NOA</th>
+                  <th>PLAFOND</th>
+                  <th>TOTAL NOA</th>
+                  <th>TOTAL PLAFOND</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${areaRows.length ? areaRows.join("") : '<tr><td colspan="8">Tidak ada data area pada filter ini.</td></tr>'}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="4">TOTAL KESELURUHAN</td>
+                  <td class="number">${reportTotals.areaNoa}</td>
+                  <td></td>
+                  <td class="number">${reportTotals.areaNoa}</td>
+                  <td class="number">${IDRFormat(reportTotals.areaPlafond)}</td>
+                </tr>
+              </tfoot>
+            </table>
+          </section>
+          <section class="report-page report-page-last">
+            <header class="report-header">
+              <div class="eyebrow">Dashboard Pencapaian</div>
+              <h1>Rekapitulasi Pembiayaan Berdasarkan Mitra</h1>
+              <div class="period">Periode data: ${escapeHtml(periodLabel)}</div>
+            </header>
+            <div class="summary-grid">
+              ${summaryCard("Jumlah Mitra", sumdanReport.length)}
+              ${summaryCard("Total NOA", reportTotals.sumdanNoa)}
+              ${summaryCard("Total Plafond", `Rp ${IDRFormat(reportTotals.sumdanPlafond)}`)}
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>MITRA PEMBIAYAAN</th>
+                  <th>KODE MITRA</th>
+                  <th>NOA</th>
+                  <th>TOTAL PLAFOND</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${sumdanRows || '<tr><td colspan="4">Tidak ada data mitra pada filter ini.</td></tr>'}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="2">TOTAL MITRA</td>
+                  <td class="number">${reportTotals.sumdanNoa}</td>
+                  <td class="number">${IDRFormat(reportTotals.sumdanPlafond)}</td>
+                </tr>
+              </tfoot>
+            </table>
+          </section>
           <script>
             window.onload = () => { window.focus(); window.print(); };
           </script>
