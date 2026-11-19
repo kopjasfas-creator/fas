@@ -234,10 +234,7 @@ export const POST = async (req: NextRequest) => {
     }),
   };
 
-  const reportWhere: Prisma.DapemWhereInput = { ...where };
-  delete reportWhere.dropping_status;
-
-  const [area, sumdan, reportAssignments] = await Promise.all([
+  const [area, sumdan] = await Promise.all([
     prisma.area.findMany({
       where: {
         status: true,
@@ -283,6 +280,7 @@ export const POST = async (req: NextRequest) => {
                     plafond: true,
                     tenor: true,
                     dropping_status: true,
+                    AO: { select: { id: true, fullname: true } },
                     Debitur: { select: { fullname: true, nopen: true } },
                     ProdukPembiayaan: { select: { name: true } },
                     JenisPembiayaan: { select: { name: true } },
@@ -330,23 +328,10 @@ export const POST = async (req: NextRequest) => {
         },
       },
     }),
-    prisma.dapem.findMany({
-      where: reportWhere,
-      select: {
-        plafond: true,
-        dropping_status: true,
-        AO: { select: { id: true, fullname: true } },
-        AOCabang: { select: { id: true, fullname: true, cabangId: true } },
-      },
-    }),
   ]);
 
   return NextResponse.json(
-    {
-      area: serializeForApi(area),
-      sumdan: serializeForApi(sumdan),
-      reportAssignments: serializeForApi(reportAssignments),
-    },
+    { area: serializeForApi(area), sumdan: serializeForApi(sumdan) },
     { status: 200 },
   );
 };

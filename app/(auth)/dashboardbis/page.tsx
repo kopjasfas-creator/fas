@@ -2,7 +2,6 @@
 
 import { IDRFormat } from "@/components/utils/PembiayaanUtil";
 import {
-  IDapem,
   IArea,
   IPageProps,
   ISumdan,
@@ -62,13 +61,6 @@ type DashboardAreaSummary = {
   branches: DashboardBranchSummary[];
 };
 
-type DashboardReportAssignment = {
-  plafond: number;
-  dropping_status: IDapem["dropping_status"];
-  AO: { id: string; fullname: string } | null;
-  AOCabang: { id: string; fullname: string; cabangId: string } | null;
-};
-
 export default function Page() {
   const [loading, setLoading] = useState(false);
   const [pageProps, setPageProps] = useState<IPageProps<IArea>>({
@@ -80,9 +72,6 @@ export default function Page() {
     backdate: "",
   });
   const [sumdan, setSumdan] = useState<ISumdan[]>([]);
-  const [reportAssignments, setReportAssignments] = useState<
-    DashboardReportAssignment[]
-  >([]);
   const [expandedAreas, setExpandedAreas] = useState<string[]>([]);
   const [expandedCabangs, setExpandedCabangs] = useState<string[]>([]);
   const [expandedAOs, setExpandedAOs] = useState<string[]>([]);
@@ -124,7 +113,6 @@ export default function Page() {
         .then((res) => {
           setPageProps((prev) => ({ ...prev, data: res.area }));
           setSumdan(res.sumdan);
-          setReportAssignments(res.reportAssignments);
         });
     } catch (err) {
       console.error(err);
@@ -148,25 +136,18 @@ export default function Page() {
           name: cabang.name,
           supervisors: cabang.Users.map((user) => {
             const mocs = new Map<string, DashboardMocSummary>();
-            reportAssignments
-              .filter((dapem) => dapem.AOCabang?.id === user.id)
-              .forEach((dapem) => {
-                const id = dapem.AO?.id ?? "unassigned";
-                const existing = mocs.get(id) ?? {
-                  id,
-                  name: dapem.AO?.fullname ?? "-",
-                  noa: 0,
-                  plafond: 0,
-                };
-                if (
-                  dapem.dropping_status === "DISETUJUI" ||
-                  dapem.dropping_status === "PROSES"
-                ) {
-                  existing.noa += 1;
-                  existing.plafond += dapem.plafond;
-                }
-                mocs.set(id, existing);
-              });
+            user.AOCabangs.forEach((dapem) => {
+              const id = dapem.AO?.id ?? "unassigned";
+              const existing = mocs.get(id) ?? {
+                id,
+                name: dapem.AO?.fullname ?? "-",
+                noa: 0,
+                plafond: 0,
+              };
+              existing.noa += 1;
+              existing.plafond += dapem.plafond;
+              mocs.set(id, existing);
+            });
             const mocList = Array.from(mocs.values());
 
             return {
@@ -182,7 +163,7 @@ export default function Page() {
           }).filter((supervisor) => supervisor.mocs.length > 0),
         })),
       })),
-    [pageProps.data, reportAssignments],
+    [pageProps.data],
   );
 
   const exportExcel = () => {
