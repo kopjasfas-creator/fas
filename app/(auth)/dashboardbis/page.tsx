@@ -35,6 +35,9 @@ import moment from "moment";
 
 const { RangePicker } = DatePicker;
 
+const getAchievementRatio = (achievement: number, target: number) =>
+  target > 0 ? (achievement / target) * 100 : achievement > 0 ? 100 : 0;
+
 type DashboardMocSummary = {
   id: string;
   name: string;
@@ -58,12 +61,20 @@ type DashboardBranchSummary = {
   id: string;
   name: string;
   supervisors: DashboardSpvSummary[];
+  totalNoa: number;
+  totalPlafond: number;
+  target: number;
+  ratio: number;
 };
 
 type DashboardAreaSummary = {
   id: string;
   name: string;
   branches: DashboardBranchSummary[];
+  totalNoa: number;
+  totalPlafond: number;
+  target: number;
+  ratio: number;
 };
 
 export default function Page() {
@@ -133,13 +144,9 @@ export default function Page() {
 
   const reportData = useMemo<DashboardAreaSummary[]>(
     () =>
-      pageProps.data.map((area) => ({
-        id: area.id,
-        name: area.name,
-        branches: area.Cabangs.map((cabang) => ({
-          id: cabang.id,
-          name: cabang.name,
-          supervisors: (() => {
+      pageProps.data.map((area) => {
+        const branches = area.Cabangs.map((cabang) => {
+          const supervisors = (() => {
             const supervisors = new Map<
               string,
               {
@@ -215,7 +222,7 @@ export default function Page() {
             return Array.from(supervisors.values()).map((supervisor) => {
               const mocs = Array.from(supervisor.mocs.values()).map((moc) => ({
                 ...moc,
-                ratio: moc.target > 0 ? (moc.plafond / moc.target) * 100 : 0,
+                ratio: getAchievementRatio(moc.plafond, moc.target),
               }));
               const totalNoa = mocs.reduce((total, moc) => total + moc.noa, 0);
               const totalPlafond = mocs.reduce(
@@ -229,15 +236,77 @@ export default function Page() {
                 totalNoa,
                 totalPlafond,
                 target: supervisor.target,
-                ratio:
-                  supervisor.target > 0
-                    ? (totalPlafond / supervisor.target) * 100
-                    : 0,
+                ratio: getAchievementRatio(
+                  totalPlafond,
+                  supervisor.target,
+                ),
               };
             });
-          })(),
-        })),
-      })),
+          })();
+          const branchMocs = new Map<string, DashboardMocSummary>();
+          supervisors.forEach((supervisor) =>
+            supervisor.mocs.forEach((moc) => {
+              if (moc.id !== "unassigned" && !branchMocs.has(moc.id)) {
+                branchMocs.set(moc.id, moc);
+              }
+            }),
+          );
+          const totalNoa = supervisors.reduce(
+            (total, supervisor) => total + supervisor.totalNoa,
+            0,
+          );
+          const totalPlafond = supervisors.reduce(
+            (total, supervisor) => total + supervisor.totalPlafond,
+            0,
+          );
+          const target = Array.from(branchMocs.values()).reduce(
+            (total, moc) => total + moc.target,
+            0,
+          );
+
+          return {
+            id: cabang.id,
+            name: cabang.name,
+            supervisors,
+            totalNoa,
+            totalPlafond,
+            target,
+            ratio: getAchievementRatio(totalPlafond, target),
+          };
+        });
+        const areaMocs = new Map<string, DashboardMocSummary>();
+        branches.forEach((branch) =>
+          branch.supervisors.forEach((supervisor) =>
+            supervisor.mocs.forEach((moc) => {
+              if (moc.id !== "unassigned" && !areaMocs.has(moc.id)) {
+                areaMocs.set(moc.id, moc);
+              }
+            }),
+          ),
+        );
+        const totalNoa = branches.reduce(
+          (total, branch) => total + branch.totalNoa,
+          0,
+        );
+        const totalPlafond = branches.reduce(
+          (total, branch) => total + branch.totalPlafond,
+          0,
+        );
+        const target = Array.from(areaMocs.values()).reduce(
+          (total, moc) => total + moc.target,
+          0,
+        );
+
+        return {
+          id: area.id,
+          name: area.name,
+          branches,
+          totalNoa,
+          totalPlafond,
+          target,
+          ratio: getAchievementRatio(totalPlafond, target),
+        };
+      }),
     [pageProps.data],
   );
 
@@ -311,9 +380,9 @@ export default function Page() {
       areaNoa: supervisors.reduce((total, spv) => total + spv.totalNoa, 0),
       areaPlafond,
       mocTarget,
-      achievementRatio: mocTarget > 0 ? (areaPlafond / mocTarget) * 100 : 0,
+      achievementRatio: getAchievementRatio(areaPlafond, mocTarget),
       spvTarget,
-      spvRatio: spvTarget > 0 ? (spvAchievement / spvTarget) * 100 : 0,
+      spvRatio: getAchievementRatio(spvAchievement, spvTarget),
       sumdanNoa,
       sumdanPlafond,
     };
@@ -350,7 +419,7 @@ export default function Page() {
       [
         "TARGET MOC",
         reportTotals.mocTarget,
-        "RASIO PENCAPAIAN",
+        "RASIO AREA",
         reportTotals.achievementRatio / 100,
         "",
         "",
@@ -392,8 +461,12 @@ export default function Page() {
           const supervisorStart = worksheetRow;
           supervisor.mocs.forEach((moc, mocIndex) => {
             areaTable.push([
-              worksheetRow === areaStart ? area.name : "",
-              worksheetRow === branchStart ? branch.name : "",
+              worksheetRow === areaStart
+                ? `${area.name} | Rasio ${area.ratio.toFixed(1)}%`
+                : "",
+              worksheetRow === branchStart
+                ? `${branch.name} | Rasio ${branch.ratio.toFixed(1)}%`
+                : "",
               mocIndex === 0 ? supervisor.name : "",
               moc.name,
               moc.noa,
@@ -589,12 +662,12 @@ export default function Page() {
             const cells = [
               ...(firstAreaRow
                 ? [
-                    `<td rowspan="${areaRowCount}">${escapeHtml(area.name)}</td>`,
+                    `<td rowspan="${areaRowCount}"><strong>${escapeHtml(area.name)}</strong><br><small>Target Rp ${IDRFormat(area.target)} | Rasio ${area.ratio.toFixed(1)}%</small></td>`,
                   ]
                 : []),
               ...(firstBranchRow
                 ? [
-                    `<td rowspan="${branchRowCount}">${escapeHtml(branch.name)}</td>`,
+                    `<td rowspan="${branchRowCount}"><strong>${escapeHtml(branch.name)}</strong><br><small>Target Rp ${IDRFormat(branch.target)} | Rasio ${branch.ratio.toFixed(1)}%</small></td>`,
                   ]
                 : []),
               ...(mocIndex === 0
@@ -682,7 +755,7 @@ export default function Page() {
               ${summaryCard("Total NOA", reportTotals.areaNoa)}
               ${summaryCard("Total Plafond", `Rp ${IDRFormat(reportTotals.areaPlafond)}`)}
               ${summaryCard("Total Target MOC", `Rp ${IDRFormat(reportTotals.mocTarget)}`)}
-              ${summaryCard("Rasio Pencapaian", `${reportTotals.achievementRatio.toFixed(1)}%`)}
+              ${summaryCard("Rasio Area", `${reportTotals.achievementRatio.toFixed(1)}%`)}
             </div>
             <table>
               <thead>
