@@ -122,6 +122,24 @@ export const GET = async (request: NextRequest) => {
                 lte: moment(backdate.split(",")[1]).toDate(),
               },
             },
+            {
+              Dropping: {
+                OR: [
+                  {
+                    created_at: {
+                      gte: moment(backdate.split(",")[0]).toDate(),
+                      lte: moment(backdate.split(",")[1]).toDate(),
+                    },
+                  },
+                  {
+                    process_at: {
+                      gte: moment(backdate.split(",")[0]).toDate(),
+                      lte: moment(backdate.split(",")[1]).toDate(),
+                    },
+                  },
+                ],
+              },
+            },
           ],
         }
       : currmonth

@@ -83,7 +83,7 @@ const GENERAL_STATUS_OPTIONS = [
 export default function Page() {
   const [pageProps, setPageProps] = useState<IPageProps<IDapem>>({
     page: 1,
-    limit: 50,
+    limit: 25,
     total: 0,
     data: [],
     search: "",
@@ -324,13 +324,28 @@ export default function Page() {
         dataIndex: "aoup",
         key: "aoup",
         render: (_, record) => {
+          const ao = record.AO;
+          const aoCabang = record.AOCabang;
+          return (
+            <div>
+              {ao && <div>{ao?.fullname}</div>}
+              {aoCabang && (
+                <div className="opacity-80">{aoCabang?.fullname}</div>
+              )}
+            </div>
+          );
+        },
+      },
+      {
+        title: "Unit Pelayanan",
+        dataIndex: "aoup",
+        key: "aoup",
+        render: (_, record) => {
           const ao = record.AO || record.AOCabang || record.AOArea;
           return (
             <div>
-              <div>{ao?.fullname}</div>
-              <div className=" opacity-80">
-                {ao?.Cabang?.name} | {ao?.Cabang?.Area?.name}
-              </div>
+              <div>{ao?.Cabang.name}</div>
+              <div className="opacity-80">{ao?.Cabang.Area.name}</div>
             </div>
           );
         },
