@@ -33,6 +33,8 @@ import {
   ReadOutlined,
   RobotOutlined,
   SwapOutlined,
+  TeamOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 
 import { useUser } from "@/components/UserContext";
@@ -347,10 +349,12 @@ export default function Page() {
           const aoCabang = record.AOCabang;
           return (
             <div>
-              {ao && <div>{ao?.fullname}</div>}
-              {aoCabang && (
-                <div className="opacity-80">{aoCabang?.fullname}</div>
-              )}
+              <div>
+                <UserOutlined /> {ao?.fullname || "-"}
+              </div>
+              <div className="opacity-80">
+                <TeamOutlined /> {aoCabang?.fullname || "-"}
+              </div>
             </div>
           );
         },
@@ -1290,17 +1294,18 @@ const PrintContractSubmission = ({
   };
 
   const handleGeneratePK = () => {
-    let noPK = "";
-    switch (data.ProdukPembiayaan.Sumdan.code) {
-      case "BPR BBTM":
-        noPK = `${data.id.replace("P", "")}/SPK-BBTM/${process.env.NEXT_PUBLIC_APP_CODE_FILE || "FAS"}/${GetRoman(new Date(temp.date_contract || new Date()).getMonth() + 1)}/${moment(temp.date_contract || new Date()).format("YYYY")}`;
-        break;
-      default:
-        noPK = `${data.id.replace("P", "")}/${process.env.NEXT_PUBLIC_APP_CODE_FILE || "FAS"}-${data.ProdukPembiayaan.Sumdan.code.replace(" ", "").replace("BPR", "").replace("BANK", "")}/${moment(temp.date_contract || new Date()).format("MM-YYYY")}`;
-    }
+    // let noPK = "";
+    // switch (data.ProdukPembiayaan.Sumdan.code) {
+    //   case "BPR BBTM":
+    //     noPK = `${data.id.replace("P", "")}/SPK-BBTM/${process.env.NEXT_PUBLIC_APP_CODE_FILE || "FAS"}/${GetRoman(new Date(temp.date_contract || new Date()).getMonth() + 1)}/${moment(temp.date_contract || new Date()).format("YYYY")}`;
+    //     break;
+    //   default:
+    //     noPK = `${data.id.replace("P", "")}/${process.env.NEXT_PUBLIC_APP_CODE_FILE || "FAS"}-${data.ProdukPembiayaan.Sumdan.code.replace(" ", "").replace("BPR", "").replace("BANK", "")}/${moment(temp.date_contract || new Date()).format("MM-YYYY")}`;
+    // }
+    const ao = data.AO || data.AOCabang || data.AOArea;
     setTemp((prev) => ({
       ...prev,
-      no_contract: noPK,
+      no_contract: `${data.id.replace("P", "")}/${process.env.NEXT_PUBLIC_APP_CODE_FILE || "FAS"}${ao ? "-" + ao?.Cabang.name : "PUSAT"}/${data.ProdukPembiayaan.Sumdan.code.replace(" ", "").replace("BPR", "").replace("BANK", "")}/${moment(temp.date_contract || new Date()).format("DDMMYYYY")}`,
     }));
   };
 

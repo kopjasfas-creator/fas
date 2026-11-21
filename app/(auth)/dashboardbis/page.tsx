@@ -111,7 +111,8 @@ export default function Page() {
 
   const getActiveAOData = (user: IUserDapem) => {
     if (user?.AOs?.length) return user.AOs;
-    if (user?.AOCabangs?.length) return user.AOCabangs;
+    const fallbackAOCabangs = user?.AOCabangs?.filter((dapem) => !dapem.AO);
+    if (fallbackAOCabangs?.length) return fallbackAOCabangs;
     if (user?.AOAreas?.length) return user.AOAreas;
 
     return [];
@@ -157,6 +158,11 @@ export default function Page() {
               }
             >();
             const seenDapems = new Set<string>();
+            const branchSupervisorIds = new Set(
+              cabang.Users.flatMap((user) => user.AOs)
+                .map((dapem) => dapem.AOCabang?.id)
+                .filter((id): id is string => Boolean(id)),
+            );
 
             const addDapem = (
               dapem: IDapem,
@@ -191,11 +197,16 @@ export default function Page() {
               user.AOs.forEach((dapem) => {
                 if (seenDapems.has(dapem.id)) return;
                 seenDapems.add(dapem.id);
+                const isSelfSupervised =
+                  !dapem.AOCabang && branchSupervisorIds.has(user.id);
                 addDapem(
                   dapem,
-                  dapem.AOCabang?.id ?? "unassigned",
-                  dapem.AOCabang?.fullname ?? "-",
-                  dapem.AOCabang?.target ?? 0,
+                  dapem.AOCabang?.id ??
+                    (isSelfSupervised ? user.id : "unassigned"),
+                  dapem.AOCabang?.fullname ??
+                    (isSelfSupervised ? user.fullname : "-"),
+                  dapem.AOCabang?.target ??
+                    (isSelfSupervised ? (user.target ?? 0) : 0),
                   user.id,
                   user.fullname,
                   user.target ?? 0,
@@ -205,25 +216,47 @@ export default function Page() {
 
             cabang.Users.forEach((user) => {
               user.AOCabangs.forEach((dapem) => {
+                if (dapem.AO || seenDapems.has(dapem.id)) return;
+                seenDapems.add(dapem.id);
+                addDapem(
+                  dapem,
+                  "unassigned",
+                  "-",
+                  0,
+                  user.id,
+                  user.fullname,
+                  user.target ?? 0,
+                );
+              });
+            });
+
+            cabang.Users.forEach((user) => {
+              user.AOAreas.forEach((dapem) => {
                 if (seenDapems.has(dapem.id)) return;
                 seenDapems.add(dapem.id);
                 addDapem(
                   dapem,
+                  "unassigned",
+                  "-",
+                  0,
                   user.id,
                   user.fullname,
                   user.target ?? 0,
-                  dapem.AO?.id ?? "unassigned",
-                  dapem.AO?.fullname ?? "-",
-                  dapem.AO?.target ?? 0,
                 );
               });
             });
 
             return Array.from(supervisors.values()).map((supervisor) => {
-              const mocs = Array.from(supervisor.mocs.values()).map((moc) => ({
-                ...moc,
-                ratio: getAchievementRatio(moc.plafond, moc.target),
-              }));
+              const mocs = Array.from(supervisor.mocs.values())
+                .map((moc) => ({
+                  ...moc,
+                  ratio: getAchievementRatio(moc.plafond, moc.target),
+                }))
+                .sort(
+                  (a, b) =>
+                    Number(b.id === supervisor.id) -
+                    Number(a.id === supervisor.id),
+                );
               const totalNoa = mocs.reduce((total, moc) => total + moc.noa, 0);
               const totalPlafond = mocs.reduce(
                 (total, moc) => total + moc.plafond,
@@ -236,10 +269,7 @@ export default function Page() {
                 totalNoa,
                 totalPlafond,
                 target: supervisor.target,
-                ratio: getAchievementRatio(
-                  totalPlafond,
-                  supervisor.target,
-                ),
+                ratio: getAchievementRatio(totalPlafond, supervisor.target),
               };
             });
           })();
@@ -340,24 +370,16 @@ export default function Page() {
         }
       });
     });
-    const sumdanNoa = sumdanReport.reduce((total, mitra) => total + mitra.noa, 0);
+    const sumdanNoa = sumdanReport.reduce(
+      (total, mitra) => total + mitra.noa,
+      0,
+    );
     const sumdanPlafond = sumdanReport.reduce(
       (total, mitra) => total + mitra.plafond,
       0,
     );
-    const mocTarget = Array.from(mocs.values()).reduce(
-      (total, moc) => total + moc.target,
-      0,
-    );
-    const actualSpvs = supervisors.filter(
-      (supervisor) => supervisor.id !== "unassigned",
-    );
-    const spvTarget = actualSpvs.reduce(
-      (total, supervisor) => total + supervisor.target,
-      0,
-    );
-    const spvAchievement = actualSpvs.reduce(
-      (total, supervisor) => total + supervisor.totalPlafond,
+    const totalTarget = branches.reduce(
+      (total, branch) => total + branch.target,
       0,
     );
     const areaPlafond = supervisors.reduce(
@@ -379,10 +401,8 @@ export default function Page() {
       mocCount: mocs.size,
       areaNoa: supervisors.reduce((total, spv) => total + spv.totalNoa, 0),
       areaPlafond,
-      mocTarget,
-      achievementRatio: getAchievementRatio(areaPlafond, mocTarget),
-      spvTarget,
-      spvRatio: getAchievementRatio(spvAchievement, spvTarget),
+      totalTarget,
+      achievementRatio: getAchievementRatio(areaPlafond, totalTarget),
       sumdanNoa,
       sumdanPlafond,
     };
@@ -417,8 +437,8 @@ export default function Page() {
         reportTotals.areaPlafond,
       ],
       [
-        "TARGET MOC",
-        reportTotals.mocTarget,
+        "TOTAL TARGET",
+        reportTotals.totalTarget,
         "RASIO AREA",
         reportTotals.achievementRatio / 100,
         "",
@@ -440,10 +460,10 @@ export default function Page() {
         "PLAFOND",
         "TARGET MOC",
         "RASIO MOC",
-        "TOTAL NOA SPV",
-        "TOTAL PLAFOND SPV",
-        "TARGET SPV",
-        "RASIO SPV",
+        "TOTAL NOA CABANG",
+        "TOTAL PLAFOND CABANG",
+        "TARGET CABANG",
+        "RASIO CABANG",
       ],
     ];
     const areaMerges: XLSX.Range[] = [
@@ -459,7 +479,11 @@ export default function Page() {
         const branchStart = worksheetRow;
         branch.supervisors.forEach((supervisor) => {
           const supervisorStart = worksheetRow;
+          const hasSameSpvAndMoc = supervisor.mocs.some(
+            (moc) => moc.id === supervisor.id,
+          );
           supervisor.mocs.forEach((moc, mocIndex) => {
+            const isSameSpvAndMoc = moc.id === supervisor.id;
             areaTable.push([
               worksheetRow === areaStart
                 ? `${area.name} | Rasio ${area.ratio.toFixed(1)}%`
@@ -467,22 +491,34 @@ export default function Page() {
               worksheetRow === branchStart
                 ? `${branch.name} | Rasio ${branch.ratio.toFixed(1)}%`
                 : "",
-              mocIndex === 0 ? supervisor.name : "",
-              moc.name,
+              hasSameSpvAndMoc
+                ? isSameSpvAndMoc
+                  ? supervisor.name
+                  : ""
+                : mocIndex === 0
+                  ? supervisor.name
+                  : "",
+              isSameSpvAndMoc ? "" : moc.name,
               moc.noa,
               moc.plafond,
               moc.target,
               moc.ratio / 100,
-              mocIndex === 0 ? supervisor.totalNoa : "",
-              mocIndex === 0 ? supervisor.totalPlafond : "",
-              mocIndex === 0 ? supervisor.target : "",
-              mocIndex === 0 ? supervisor.ratio / 100 : "",
+              worksheetRow === branchStart ? branch.totalNoa : "",
+              worksheetRow === branchStart ? branch.totalPlafond : "",
+              worksheetRow === branchStart ? branch.target : "",
+              worksheetRow === branchStart ? branch.ratio / 100 : "",
             ]);
+            if (isSameSpvAndMoc) {
+              areaMerges.push({
+                s: { r: worksheetRow, c: 2 },
+                e: { r: worksheetRow, c: 3 },
+              });
+            }
             worksheetRow += 1;
           });
           const supervisorEnd = worksheetRow - 1;
-          if (supervisorEnd > supervisorStart) {
-            [2, 8, 9, 10, 11].forEach((column) =>
+          if (supervisorEnd > supervisorStart && !hasSameSpvAndMoc) {
+            [2].forEach((column) =>
               areaMerges.push({
                 s: { r: supervisorStart, c: column },
                 e: { r: supervisorEnd, c: column },
@@ -496,6 +532,12 @@ export default function Page() {
             s: { r: branchStart, c: 1 },
             e: { r: branchEnd, c: 1 },
           });
+          [8, 9, 10, 11].forEach((column) =>
+            areaMerges.push({
+              s: { r: branchStart, c: column },
+              e: { r: branchEnd, c: column },
+            }),
+          );
         }
       });
       const areaEnd = worksheetRow - 1;
@@ -558,14 +600,7 @@ export default function Page() {
         reportTotals.sumdanPlafond,
       ],
       [],
-      [
-        "MITRA PEMBIAYAAN",
-        "KODE MITRA",
-        "NOA",
-        "TOTAL PLAFOND",
-        "",
-        "",
-      ],
+      ["MITRA PEMBIAYAAN", "KODE MITRA", "NOA", "TOTAL PLAFOND", "", ""],
       ...sumdanReport.map((mitra) => [
         mitra.name,
         mitra.code,
@@ -658,7 +693,11 @@ export default function Page() {
         let firstBranchRow = true;
 
         branch.supervisors.forEach((supervisor) => {
+          const hasSameSpvAndMoc = supervisor.mocs.some(
+            (moc) => moc.id === supervisor.id,
+          );
           supervisor.mocs.forEach((moc, mocIndex) => {
+            const isSameSpvAndMoc = moc.id === supervisor.id;
             const cells = [
               ...(firstAreaRow
                 ? [
@@ -670,22 +709,27 @@ export default function Page() {
                     `<td rowspan="${branchRowCount}"><strong>${escapeHtml(branch.name)}</strong><br><small>Target Rp ${IDRFormat(branch.target)} | Rasio ${branch.ratio.toFixed(1)}%</small></td>`,
                   ]
                 : []),
-              ...(mocIndex === 0
+              ...(!hasSameSpvAndMoc && mocIndex === 0
                 ? [
                     `<td rowspan="${supervisor.mocs.length}">${escapeHtml(supervisor.name)}</td>`,
                   ]
                 : []),
-              `<td>${escapeHtml(moc.name)}</td>`,
+              ...(isSameSpvAndMoc
+                ? [`<td colspan="2">${escapeHtml(supervisor.name)}</td>`]
+                : [
+                    ...(hasSameSpvAndMoc ? ["<td></td>"] : []),
+                    `<td>${escapeHtml(moc.name)}</td>`,
+                  ]),
               `<td class="number">${moc.noa}</td>`,
               `<td class="number">${IDRFormat(moc.plafond)}</td>`,
               `<td class="number">${IDRFormat(moc.target)}</td>`,
               `<td class="number">${moc.ratio.toFixed(1)}%</td>`,
-              ...(mocIndex === 0
+              ...(firstBranchRow
                 ? [
-                    `<td class="number" rowspan="${supervisor.mocs.length}">${supervisor.totalNoa}</td>`,
-                    `<td class="number" rowspan="${supervisor.mocs.length}">${IDRFormat(supervisor.totalPlafond)}</td>`,
-                    `<td class="number" rowspan="${supervisor.mocs.length}">${IDRFormat(supervisor.target)}</td>`,
-                    `<td class="number" rowspan="${supervisor.mocs.length}">${supervisor.ratio.toFixed(1)}%</td>`,
+                    `<td class="number" rowspan="${branchRowCount}">${branch.totalNoa}</td>`,
+                    `<td class="number" rowspan="${branchRowCount}">${IDRFormat(branch.totalPlafond)}</td>`,
+                    `<td class="number" rowspan="${branchRowCount}">${IDRFormat(branch.target)}</td>`,
+                    `<td class="number" rowspan="${branchRowCount}">${branch.ratio.toFixed(1)}%</td>`,
                   ]
                 : []),
             ];
@@ -754,7 +798,7 @@ export default function Page() {
               ${summaryCard("Total MOC", reportTotals.mocCount)}
               ${summaryCard("Total NOA", reportTotals.areaNoa)}
               ${summaryCard("Total Plafond", `Rp ${IDRFormat(reportTotals.areaPlafond)}`)}
-              ${summaryCard("Total Target MOC", `Rp ${IDRFormat(reportTotals.mocTarget)}`)}
+              ${summaryCard("Total Target", `Rp ${IDRFormat(reportTotals.totalTarget)}`)}
               ${summaryCard("Rasio Area", `${reportTotals.achievementRatio.toFixed(1)}%`)}
             </div>
             <table>
@@ -768,10 +812,10 @@ export default function Page() {
                   <th>PLAFOND</th>
                   <th>TARGET MOC</th>
                   <th>RASIO MOC</th>
-                  <th>TOTAL NOA SPV</th>
-                  <th>TOTAL PLAFOND SPV</th>
-                  <th>TARGET SPV</th>
-                  <th>RASIO SPV</th>
+                  <th>TOTAL NOA CABANG</th>
+                  <th>TOTAL PLAFOND CABANG</th>
+                  <th>TARGET CABANG</th>
+                  <th>RASIO CABANG</th>
                 </tr>
               </thead>
               <tbody>
@@ -782,12 +826,12 @@ export default function Page() {
                   <td colspan="4">TOTAL KESELURUHAN</td>
                   <td class="number">${reportTotals.areaNoa}</td>
                   <td></td>
-                  <td class="number">${IDRFormat(reportTotals.mocTarget)}</td>
+                  <td class="number">${IDRFormat(reportTotals.totalTarget)}</td>
                   <td class="number">${reportTotals.achievementRatio.toFixed(1)}%</td>
                   <td class="number">${reportTotals.areaNoa}</td>
                   <td class="number">${IDRFormat(reportTotals.areaPlafond)}</td>
-                  <td class="number">${IDRFormat(reportTotals.spvTarget)}</td>
-                  <td class="number">${reportTotals.spvRatio.toFixed(1)}%</td>
+                  <td class="number">${IDRFormat(reportTotals.totalTarget)}</td>
+                  <td class="number">${reportTotals.achievementRatio.toFixed(1)}%</td>
                 </tr>
               </tfoot>
             </table>
@@ -950,11 +994,11 @@ export default function Page() {
                   onClick={() => toggleArea(area.id)}
                 >
                   <div className="flex items-center gap-3">
-                    {isAreaExpanded ? (
+                    {/* {isAreaExpanded ? (
                       <ChevronUp size={20} />
                     ) : (
                       <ChevronDown size={20} />
-                    )}
+                    )} */}
                     <div>
                       <h2 className="text-lg font-bold flex items-center gap-2">
                         <MapPin size={16} className="text-blue-400" />{" "}
@@ -963,12 +1007,15 @@ export default function Page() {
                     </div>
                   </div>
                   <div className="flex gap-6 items-center">
-                    <div className="hidden md:block text-right">
+                    <div className="text-right">
                       <div className="text-sm font-mono">
-                        {IDRFormat(areaPencapaian)}
+                        {IDRFormat(areaPencapaian)}/
+                        <span className="text-[10px] text-slate-400">
+                          {IDRFormat(areaTarget)}
+                        </span>
                       </div>
                       <div className="text-[10px] text-slate-400">
-                        Total Progress: {areaPercent.toFixed(1)}%
+                        Progress: {areaPercent.toFixed(1)}%
                       </div>
                     </div>
                     <Button
@@ -977,7 +1024,7 @@ export default function Page() {
                       ghost
                       className="border-slate-500 text-slate-200"
                     >
-                      {isAreaExpanded ? "Sembunyikan" : "Lihat Cabang"}
+                      {isAreaExpanded ? <ChevronUp /> : <ChevronDown />}
                     </Button>
                   </div>
                 </div>

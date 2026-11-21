@@ -291,7 +291,11 @@ export const POST = async (req: NextRequest) => {
                   },
                 },
                 AOAreas: {
-                  where,
+                  where: {
+                    ...where,
+                    AO: { is: null },
+                    AOCabang: { is: null },
+                  },
                   select: {
                     id: true,
                     nopen: true,

@@ -34,6 +34,8 @@ import {
   PlusCircleOutlined,
   PrinterOutlined,
   SwapOutlined,
+  TeamOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 
 import { FormInput, ViewFiles } from "@/components";
@@ -328,10 +330,12 @@ export default function Page() {
           const aoCabang = record.AOCabang;
           return (
             <div>
-              {ao && <div>{ao?.fullname}</div>}
-              {aoCabang && (
-                <div className="opacity-80">{aoCabang?.fullname}</div>
-              )}
+              <div>
+                <UserOutlined /> {ao?.fullname || "-"}
+              </div>
+              <div className="opacity-80">
+                <TeamOutlined /> {aoCabang?.fullname || "-"}
+              </div>
             </div>
           );
         },
