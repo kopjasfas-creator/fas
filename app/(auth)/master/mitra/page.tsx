@@ -51,7 +51,7 @@ export default function Page() {
   });
   const [pageProps, setPageProps] = useState<IPageProps<ISumdan>>({
     page: 1,
-    limit: 10,
+    limit: 25,
     total: 0,
     data: [],
     search: "",
@@ -68,7 +68,7 @@ export default function Page() {
       page: pageProps.page.toString(),
       limit: pageProps.limit.toString(),
       ...(pageProps.search && { search: pageProps.search }),
-      includes: "true",
+      includeproduct: "true",
     });
     const res = await fetch(`/api/sumdan?${params.toString()}`);
     const json = await res.json();
@@ -146,35 +146,6 @@ export default function Page() {
               <p>TBO : {record.tbo} Bulan</p>
               <p>Limit : {IDRFormat(Number(record.limit))}</p>
             </div>
-          </div>
-        );
-      },
-    },
-    {
-      title: "Limit",
-      dataIndex: "limit",
-      key: "limit",
-      render(value, record, index) {
-        const total = record.ProdukPembiayaans.flatMap((d) => d.Dapems).reduce(
-          (acc, curr) => acc + curr.plafond,
-          0,
-        );
-        const os = record.ProdukPembiayaans.flatMap((d) =>
-          d.Dapems.filter((dp) => dp.dropping_status === "DISETUJUI").flatMap(
-            (dpa) => GetSisaPokokMargin(dpa as unknown as IDapem).principal,
-          ),
-        ).reduce((acc, curr) => acc + curr, 0);
-        return (
-          <div className="flex flex-col">
-            <Progress
-              percent={Number(
-                ((total / Number(record.limit)) * 100).toFixed(2),
-              )}
-            />
-            <div className="opacity-80">
-              {IDRFormat(total)} | {IDRFormat(Number(record.limit))}
-            </div>
-            <div className="opacity-80 text-center">OS {IDRFormat(os)}</div>
           </div>
         );
       },
@@ -301,7 +272,7 @@ export default function Page() {
               limit: pageSize,
             }));
           },
-          pageSizeOptions: [50, 100, 500, 1000],
+          pageSizeOptions: [25, 50, 100, 500, 1000],
           showSizeChanger: true,
         }}
         expandable={{

@@ -75,7 +75,7 @@ export const GET = async (request: NextRequest) => {
               Dapems: {
                 where: {
                   status: true,
-                  dropping_status: { in: ["DISETUJUI", "LUNAS"] },
+                  dropping_status: { in: ["DISETUJUI", "LUNAS", "PROSES"] },
                   ...whereFunc,
                 },
                 include: { Angsurans: true },
