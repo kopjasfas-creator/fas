@@ -377,6 +377,22 @@ export const GET = async (request: NextRequest) => {
             },
           },
         },
+        AOCabang: {
+          select: {
+            fullname: true,
+            Cabang: {
+              select: { name: true, Area: { select: { name: true } } },
+            },
+          },
+        },
+        AOArea: {
+          select: {
+            fullname: true,
+            Cabang: {
+              select: { name: true, Area: { select: { name: true } } },
+            },
+          },
+        },
         Dropping: { select: { process_at: true } },
       },
     }),
