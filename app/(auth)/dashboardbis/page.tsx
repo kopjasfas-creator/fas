@@ -220,9 +220,9 @@ export default function Page() {
                 seenDapems.add(dapem.id);
                 addDapem(
                   dapem,
-                  "unassigned",
-                  "-",
-                  0,
+                  user.id,
+                  user.fullname,
+                  user.target ?? 0,
                   user.id,
                   user.fullname,
                   user.target ?? 0,
@@ -479,11 +479,7 @@ export default function Page() {
         const branchStart = worksheetRow;
         branch.supervisors.forEach((supervisor) => {
           const supervisorStart = worksheetRow;
-          const hasSameSpvAndMoc = supervisor.mocs.some(
-            (moc) => moc.id === supervisor.id,
-          );
           supervisor.mocs.forEach((moc, mocIndex) => {
-            const isSameSpvAndMoc = moc.id === supervisor.id;
             areaTable.push([
               worksheetRow === areaStart
                 ? `${area.name} | Rasio ${area.ratio.toFixed(1)}%`
@@ -491,14 +487,8 @@ export default function Page() {
               worksheetRow === branchStart
                 ? `${branch.name} | Rasio ${branch.ratio.toFixed(1)}%`
                 : "",
-              hasSameSpvAndMoc
-                ? isSameSpvAndMoc
-                  ? supervisor.name
-                  : ""
-                : mocIndex === 0
-                  ? supervisor.name
-                  : "",
-              isSameSpvAndMoc ? "" : moc.name,
+              mocIndex === 0 ? supervisor.name : "",
+              moc.name,
               moc.noa,
               moc.plafond,
               moc.target,
@@ -508,16 +498,10 @@ export default function Page() {
               worksheetRow === branchStart ? branch.target : "",
               worksheetRow === branchStart ? branch.ratio / 100 : "",
             ]);
-            if (isSameSpvAndMoc) {
-              areaMerges.push({
-                s: { r: worksheetRow, c: 2 },
-                e: { r: worksheetRow, c: 3 },
-              });
-            }
             worksheetRow += 1;
           });
           const supervisorEnd = worksheetRow - 1;
-          if (supervisorEnd > supervisorStart && !hasSameSpvAndMoc) {
+          if (supervisorEnd > supervisorStart) {
             [2].forEach((column) =>
               areaMerges.push({
                 s: { r: supervisorStart, c: column },
@@ -693,11 +677,7 @@ export default function Page() {
         let firstBranchRow = true;
 
         branch.supervisors.forEach((supervisor) => {
-          const hasSameSpvAndMoc = supervisor.mocs.some(
-            (moc) => moc.id === supervisor.id,
-          );
           supervisor.mocs.forEach((moc, mocIndex) => {
-            const isSameSpvAndMoc = moc.id === supervisor.id;
             const cells = [
               ...(firstAreaRow
                 ? [
@@ -709,17 +689,12 @@ export default function Page() {
                     `<td rowspan="${branchRowCount}"><strong>${escapeHtml(branch.name)}</strong><br><small>Target Rp ${IDRFormat(branch.target)} | Rasio ${branch.ratio.toFixed(1)}%</small></td>`,
                   ]
                 : []),
-              ...(!hasSameSpvAndMoc && mocIndex === 0
+              ...(mocIndex === 0
                 ? [
                     `<td rowspan="${supervisor.mocs.length}">${escapeHtml(supervisor.name)}</td>`,
                   ]
                 : []),
-              ...(isSameSpvAndMoc
-                ? [`<td colspan="2">${escapeHtml(supervisor.name)}</td>`]
-                : [
-                    ...(hasSameSpvAndMoc ? ["<td></td>"] : []),
-                    `<td>${escapeHtml(moc.name)}</td>`,
-                  ]),
+              `<td>${escapeHtml(moc.name)}</td>`,
               `<td class="number">${moc.noa}</td>`,
               `<td class="number">${IDRFormat(moc.plafond)}</td>`,
               `<td class="number">${IDRFormat(moc.target)}</td>`,
@@ -931,7 +906,7 @@ export default function Page() {
 
   return (
     <Spin spinning={loading}>
-      <div className="p-6 bg-gray-50 min-h-screen">
+      <div className="p-2 bg-gray-50 min-h-screen">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
           <div className="flex items-center gap-3">
