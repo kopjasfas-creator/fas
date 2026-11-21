@@ -93,7 +93,6 @@ export default function Page() {
       }),
       ...(pageProps.backdate && { backdate: pageProps.backdate }),
       includes: true,
-      ...(!pageProps.approv_status && { dropping_status: "PENDING" }),
     });
 
     const res = await fetch(`/api/dapem?${params.toString()}`);
